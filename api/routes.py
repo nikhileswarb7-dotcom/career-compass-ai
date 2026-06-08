@@ -7,14 +7,14 @@ import os
 import io
 import pypdf
 
-# Include model in import path
+# Include root in import path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from model.recommendation_engine import generate_recommendation
-from model.roadmap_generator import generate_timeline
-from model.skill_gap_engine import analyze_gaps
-from model.readiness_score import calculate_readiness
-from model.interview_recommender import recommend_questions
+from ai_engine.recommendation_engine import generate_recommendation
+from ai_engine.roadmap_generator import generate_timeline
+from ai_engine.skill_gap_engine import analyze_gaps
+from ai_engine.readiness_score import calculate_readiness
+from ai_engine.interview_recommender import recommend_questions
 from services.career_guidance_service import CareerGuidanceService
 from profile_analyzer.linkedin_parser import LinkedInParser
 from profile_analyzer.github_analyzer import GitHubAnalyzer
@@ -26,7 +26,7 @@ from api.database_connector import (
     get_company_job_description, get_company_interview_experiences, get_skill_roadmap_details,
     create_analysis_session, get_analysis_session, update_analysis_session_status, get_career_transitions
 )
-from model.nlp_classifier import classify_and_respond
+from ai_engine.nlp.nlp_classifier import classify_and_respond
 
 router = APIRouter()
 

@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from ai_engine.assessment.career_stage_assessor import classify_career_stage, evaluate_career_stage
 from ai_engine.assessment.company_readiness_engine import evaluate_company_readiness, get_company_tier, set_company_tier
 from ai_engine.assessment.readiness_engine import configure_readiness_weights, evaluate_career_readiness
-from model.recommendation_engine import generate_recommendation
+from ai_engine.recommendation_engine import generate_recommendation
 
 def verify_intelligence_upgrades():
     print("\nCareerCompass AI - Intelligence Upgrades Verification Suite")

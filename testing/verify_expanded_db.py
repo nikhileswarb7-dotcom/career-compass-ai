@@ -6,7 +6,7 @@ import sys
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(BASE_DIR)
 
-from model.recommendation_engine import generate_recommendation
+from ai_engine.recommendation_engine import generate_recommendation
 
 def verify_all():
     print("\n" + "="*50)
@@ -40,7 +40,7 @@ def verify_all():
     
     # 3. Verify interview_questions.csv & json
     iq_csv_path = os.path.join(BASE_DIR, "database", "hiring_layer", "interview_questions.csv")
-    iq_json_path = os.path.join(BASE_DIR, "datasets", "interview_questions", "interview_questions.json")
+    iq_json_path = os.path.join(BASE_DIR, "database", "datasets", "interview_questions", "interview_questions.json")
     assert os.path.exists(iq_csv_path), "interview_questions.csv missing!"
     assert os.path.exists(iq_json_path), "interview_questions.json missing!"
     
@@ -56,7 +56,7 @@ def verify_all():
     
     # 4. Verify learning_resources.csv & json
     lr_csv_path = os.path.join(BASE_DIR, "database", "learning_layer", "learning_resources.csv")
-    lr_json_path = os.path.join(BASE_DIR, "datasets", "resources", "learning_resources.json")
+    lr_json_path = os.path.join(BASE_DIR, "database", "datasets", "resources", "learning_resources.json")
     assert os.path.exists(lr_csv_path), "learning_resources.csv missing!"
     assert os.path.exists(lr_json_path), "learning_resources.json missing!"
     
@@ -73,7 +73,7 @@ def verify_all():
     # 5. Verify projects_master.csv & projects.json
     pm_csv_path = os.path.join(BASE_DIR, "database", "learning_layer", "projects_master.csv")
     ps_map_path = os.path.join(BASE_DIR, "database", "learning_layer", "project_skill_mapping.csv")
-    pm_json_path = os.path.join(BASE_DIR, "datasets", "projects", "projects.json")
+    pm_json_path = os.path.join(BASE_DIR, "database", "datasets", "projects", "projects.json")
     assert os.path.exists(pm_csv_path), "projects_master.csv missing!"
     assert os.path.exists(ps_map_path), "project_skill_mapping.csv missing!"
     assert os.path.exists(pm_json_path), "projects.json missing!"

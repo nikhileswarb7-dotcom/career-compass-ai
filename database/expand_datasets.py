@@ -3,8 +3,8 @@ import json
 import csv
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-DATASETS_DIR = os.path.join(BASE_DIR, "datasets")
 DB_DIR = os.path.join(BASE_DIR, "database")
+DATASETS_DIR = os.path.join(DB_DIR, "datasets")
 
 # Subdirectories
 HIRING_CSV_DIR = os.path.join(DB_DIR, "hiring_layer")

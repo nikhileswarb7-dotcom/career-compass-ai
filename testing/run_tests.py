@@ -10,8 +10,8 @@ import json
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "model"))
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "backend", "nlp"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "ai_engine"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "ai_engine", "nlp"))
 
 from recommendation_engine import generate_recommendation
 from nlp_processor import parse_user_input

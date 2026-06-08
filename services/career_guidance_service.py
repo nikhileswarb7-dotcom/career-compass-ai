@@ -11,7 +11,7 @@ from typing import Dict, Any
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from api.database_connector import get_db_connection
-from model.recommendation_engine import generate_recommendation
+from ai_engine.recommendation_engine import generate_recommendation
 
 # Configure logger
 logging.basicConfig(level=logging.INFO)

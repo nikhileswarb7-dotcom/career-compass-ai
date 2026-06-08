@@ -51,3 +51,5 @@ Thumbs.db
 *.tgz
 scratch/
 frontend-backup/
+frontend-build/
+search_fallbacks.py
