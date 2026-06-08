@@ -28,8 +28,8 @@ app = FastAPI(
 )
 
 # Mount the frontend directory to serve static UI pages
-frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
-app.mount("/frontend", StaticFiles(directory=frontend_path), name="frontend")
+frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend-build"))
+app.mount("/frontend", StaticFiles(directory=frontend_path, html=True), name="frontend")
 
 # Enable CORS for frontend pages
 app.add_middleware(

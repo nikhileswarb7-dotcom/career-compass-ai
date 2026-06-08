@@ -11,7 +11,7 @@ from pypdf import PdfReader
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 EMPLOYEES_DIR = os.path.join(BASE_DIR, "database", "industry_layer")
 CAREER_DIR = os.path.join(BASE_DIR, "database", "career_layer")
-PROFILES_DIR = os.path.join(BASE_DIR, "researched profiles")
+PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "Profiles(Linkedin)")
 RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 IMPORT_DATA_PATH = os.path.join(BASE_DIR, "backend", "api", "import_data.py")
 

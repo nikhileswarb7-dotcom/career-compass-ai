@@ -395,3 +395,102 @@ CREATE TABLE profile_builder_templates (
     github_readme       TEXT NOT NULL
 );
 
+-- ============================================================
+-- LAYER 15: USERS, PLACEMENT OUTCOMES & INDUSTRY PROFILES
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS student_outcomes (
+    outcome_id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES students(student_id) ON DELETE CASCADE,
+    placed_company_id INT REFERENCES companies(company_id) ON DELETE SET NULL,
+    placed_role_id INT REFERENCES roles(role_id) ON DELETE SET NULL,
+    package_lpa FLOAT,
+    placed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    placement_status VARCHAR(50) DEFAULT 'Placed', -- Placed, Interned, Graduated, Seeking
+    prediction_accuracy_score FLOAT, -- Match prediction confidence score (e.g. 0.85)
+    feedback_notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS employee_profiles (
+    profile_id INT PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    role_id INT REFERENCES roles(role_id) ON DELETE SET NULL,
+    current_company VARCHAR(100),
+    experience_years FLOAT,
+    college VARCHAR(200),
+    degree VARCHAR(200),
+    previous_company VARCHAR(100),
+    career_path TEXT,
+    linkedin_url VARCHAR(500),
+    github_url VARCHAR(500),
+    career_stage VARCHAR(100),
+    company_tier INT
+);
+
+CREATE TABLE IF NOT EXISTS education_profiles (
+    education_id INT PRIMARY KEY,
+    profile_id INT REFERENCES employee_profiles(profile_id) ON DELETE CASCADE,
+    college VARCHAR(200),
+    degree VARCHAR(200),
+    field VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS employee_skills (
+    profile_id INT REFERENCES employee_profiles(profile_id) ON DELETE CASCADE,
+    skill_id INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    PRIMARY KEY (profile_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS career_transitions (
+    transition_id INT PRIMARY KEY,
+    profile_id INT REFERENCES employee_profiles(profile_id) ON DELETE CASCADE,
+    source_company_id INT REFERENCES companies(company_id) ON DELETE CASCADE,
+    target_company_id INT REFERENCES companies(company_id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS skills_frequency (
+    skill_id INT PRIMARY KEY REFERENCES skills(skill_id) ON DELETE CASCADE,
+    skill_name VARCHAR(100),
+    frequency INT,
+    importance_score INT
+);
+
+CREATE TABLE IF NOT EXISTS career_patterns (
+    pattern_id INT PRIMARY KEY,
+    pattern_name VARCHAR(200),
+    frequency INT,
+    description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS hiring_signals (
+    signal_id INT PRIMARY KEY,
+    signal_name VARCHAR(200),
+    signal_type VARCHAR(50),
+    weight INT,
+    description TEXT
+);
+
+-- ============================================================
+-- VIEWS
+-- ============================================================
+
+CREATE OR REPLACE VIEW v_career_transitions AS
+SELECT 
+    ct.transition_id,
+    p.name AS employee_name,
+    p.college,
+    c_src.company_name AS source_company,
+    c_tgt.company_name AS target_company
+FROM career_transitions ct
+JOIN employee_profiles p ON ct.profile_id = p.profile_id
+JOIN companies c_src ON ct.source_company_id = c_src.company_id
+JOIN companies c_tgt ON ct.target_company_id = c_tgt.company_id;
+
+
