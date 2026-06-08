@@ -1,0 +1,27 @@
+skill_id,skill_name
+1,Go
+2,Java
+3,Python
+4,Kafka
+5,Redis
+6,PostgreSQL
+7,Docker
+8,Kubernetes
+9,gRPC
+10,Microservices
+11,Spring Boot
+12,NodeJS
+13,AWS
+14,GCP
+15,DynamoDB
+16,MySQL
+17,ElasticSearch
+18,Django
+19,React
+20,TypeScript
+21,NextJS
+22,Kotlin
+23,Android
+24,SRE
+25,System Design
+26,Distributed Systems

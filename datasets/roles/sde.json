@@ -1,0 +1,68 @@
+{
+  "role_name": "Software Development Engineer",
+  "short_name": "SDE",
+  "department": "Engineering",
+  "description": "Designs, builds, and maintains backend services and APIs that power Blinkit's quick commerce platform at massive scale.",
+  "responsibilities": [
+    "Design and develop scalable backend microservices",
+    "Write production-ready, well-tested Java/Python code",
+    "Design and implement REST APIs",
+    "Database schema design and query optimization",
+    "Participate in system design and architecture reviews",
+    "Code reviews and mentoring junior engineers",
+    "On-call responsibility for critical services",
+    "Collaborate with product, design, and data teams",
+    "Write technical documentation"
+  ],
+  "required_skills": {
+    "programming": ["Java (Primary)", "Python (Secondary)"],
+    "core_cs": ["Data Structures", "Algorithms", "DBMS", "Operating Systems", "Computer Networks", "OOP"],
+    "backend": ["Spring Boot", "REST APIs", "Microservices Architecture"],
+    "databases": ["MySQL", "Redis", "SQL"],
+    "tools": ["Git", "Linux"],
+    "design": ["Low Level Design", "High Level Design", "System Design"]
+  },
+  "preferred_skills": [
+    "Apache Kafka",
+    "Docker & Kubernetes",
+    "AWS",
+    "Elasticsearch",
+    "PostgreSQL"
+  ],
+  "experience_levels": [
+    {
+      "level": "Intern",
+      "experience": "0 years",
+      "expectations": "Basic DSA, one language, 1-2 projects"
+    },
+    {
+      "level": "SDE-1",
+      "experience": "0-2 years",
+      "expectations": "Strong DSA, Java, DBMS, OS, CN, LLD basics, 2-3 good projects"
+    },
+    {
+      "level": "SDE-2",
+      "experience": "2-5 years",
+      "expectations": "Advanced System Design, leadership, ownership of modules"
+    },
+    {
+      "level": "Senior SDE",
+      "experience": "5+ years",
+      "expectations": "Architecture decisions, cross-team impact, mentoring"
+    }
+  ],
+  "hiring_criteria": {
+    "cgpa_cutoff": 6.5,
+    "backlogs_allowed": false,
+    "branches_preferred": ["CSE", "IT", "ECE", "EEE", "Mechanical (with coding skills)"],
+    "coding_profile_required": true,
+    "expected_leetcode_level": "150+ problems with Medium/Hard"
+  },
+  "what_blinkit_looks_for": [
+    "Problem-solving mindset",
+    "Clean and readable code",
+    "Understanding of trade-offs in system design",
+    "Ability to work in fast-paced environment",
+    "Communication and collaboration skills"
+  ]
+}

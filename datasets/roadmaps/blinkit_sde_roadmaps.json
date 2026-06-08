@@ -1,0 +1,363 @@
+{
+  "target_company": "Blinkit",
+  "target_role": "Software Development Engineer",
+  "roadmaps": [
+    {
+      "qualification": "1st Year Student",
+      "total_duration_months": 48,
+      "overview": "Deep, unhurried foundation. Think 4-year sprint, not 4-year wait. Build one skill at a time.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "Programming Foundation",
+          "duration_weeks": 12,
+          "weekly_hours": 8,
+          "focus_area": "Learn your first language properly",
+          "learning_goals": ["Understand variables, loops, functions, arrays", "Write clean readable code", "Solve 20 basic problems"],
+          "skills": ["C Programming", "Python"],
+          "projects": ["Calculator", "Temperature Converter", "Number Guessing Game"],
+          "milestone": "Can write a basic program independently without help"
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "Object Oriented Programming",
+          "duration_weeks": 8,
+          "weekly_hours": 10,
+          "focus_area": "Java + OOP concepts",
+          "learning_goals": ["Classes, Objects, Inheritance, Polymorphism, Encapsulation, Abstraction", "Java syntax and collections"],
+          "skills": ["Java", "Object Oriented Programming"],
+          "projects": ["Student Management System", "Bank Account Simulator"],
+          "milestone": "Can model real-world entities in code using OOP"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "Version Control & Developer Setup",
+          "duration_weeks": 4,
+          "weekly_hours": 8,
+          "focus_area": "Git, GitHub, Linux basics",
+          "learning_goals": ["Git commits, branches, pull requests", "Host projects on GitHub", "Basic Linux commands"],
+          "skills": ["Git & GitHub", "Linux Basics"],
+          "projects": ["Upload all previous projects to GitHub with proper README"],
+          "milestone": "GitHub profile with 3 public repositories"
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "Introduction to DSA",
+          "duration_weeks": 16,
+          "weekly_hours": 12,
+          "focus_area": "Arrays, Strings, Recursion, Sorting",
+          "learning_goals": ["Understand time and space complexity (Big O)", "Solve 50 easy LeetCode problems", "Arrays, Strings, Searching, Sorting"],
+          "skills": ["Data Structures", "Algorithms"],
+          "projects": ["Library Management System (console-based)"],
+          "milestone": "Comfortable solving Easy LeetCode problems independently"
+        }
+      ]
+    },
+    {
+      "qualification": "2nd Year Student",
+      "total_duration_months": 36,
+      "overview": "Foundation is set. Now build the competitive programmer mindset and backend basics.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "DSA Deep Dive — Part 1",
+          "duration_weeks": 12,
+          "weekly_hours": 15,
+          "focus_area": "Arrays, LinkedList, Stack, Queue, Trees",
+          "learning_goals": ["Master core data structures", "Solve 80 LeetCode problems (Easy + Medium)", "Understand recursion and backtracking"],
+          "skills": ["DSA (Combined)"],
+          "projects": ["Expense Tracker", "To-Do App (CLI)"],
+          "milestone": "Can solve Medium LeetCode problems with hints"
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "DBMS & SQL",
+          "duration_weeks": 8,
+          "weekly_hours": 12,
+          "focus_area": "Database fundamentals",
+          "learning_goals": ["Normalization, ACID, Transactions, Indexing", "Write complex SQL queries", "Joins, subqueries, stored procedures"],
+          "skills": ["DBMS", "SQL", "MySQL"],
+          "projects": ["Student Database System with SQL queries"],
+          "milestone": "Can design a normalized schema and write complex queries"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "DSA Deep Dive — Part 2",
+          "duration_weeks": 12,
+          "weekly_hours": 15,
+          "focus_area": "Graphs, Dynamic Programming, Heaps",
+          "learning_goals": ["Graph BFS/DFS", "DP patterns (knapsack, LCS)", "Solve 120 LeetCode problems total"],
+          "skills": ["DSA (Combined)", "Algorithms"],
+          "projects": ["URL Shortener (basic version)", "Chat Application (CLI)"],
+          "milestone": "Consistently solving Medium problems. Attempted a few Hard."
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "Spring Boot Basics",
+          "duration_weeks": 8,
+          "weekly_hours": 12,
+          "focus_area": "Backend development",
+          "learning_goals": ["REST API creation with Spring Boot", "Spring MVC, JPA/Hibernate", "Connect to MySQL database"],
+          "skills": ["Spring Boot", "REST APIs"],
+          "projects": ["Student Management REST API"],
+          "milestone": "Can build and run a basic REST API with database connection"
+        }
+      ]
+    },
+    {
+      "qualification": "3rd Year Student",
+      "total_duration_months": 18,
+      "overview": "Placement season is near. Accelerated mode. Every week counts.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "DSA Intensive",
+          "duration_weeks": 10,
+          "weekly_hours": 25,
+          "focus_area": "Complete DSA — all topics",
+          "learning_goals": ["Follow Striver A2Z DSA Sheet", "Solve 150+ LeetCode problems", "Arrays, Strings, DP, Graphs, Trees, Heaps, Tries"],
+          "skills": ["DSA (Combined)", "Algorithms"],
+          "projects": [],
+          "milestone": "150+ LeetCode solved. Comfortable with Medium. Attempted 20+ Hard."
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "Core CS Subjects",
+          "duration_weeks": 8,
+          "weekly_hours": 20,
+          "focus_area": "DBMS + OS + CN — placement essentials",
+          "learning_goals": ["DBMS: Normalization, Transactions, Indexing, SQL", "OS: Processes, Threads, Scheduling, Deadlock, Memory", "CN: OSI/TCP, HTTP, DNS, Load Balancer"],
+          "skills": ["DBMS", "Operating Systems", "Computer Networks"],
+          "projects": ["Library Management System with REST API and MySQL"],
+          "milestone": "Can confidently answer Blinkit-level interview questions in all 3 subjects"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "Backend Project — Production Level",
+          "duration_weeks": 6,
+          "weekly_hours": 20,
+          "focus_area": "Build a real-world backend project",
+          "learning_goals": ["Spring Boot + MySQL + Redis caching", "REST API with authentication (JWT)", "Proper project structure and documentation"],
+          "skills": ["Spring Boot", "REST APIs", "MySQL", "Redis"],
+          "projects": ["Food Delivery Backend", "Inventory Management System"],
+          "milestone": "Live GitHub project with README, architecture diagram, and API documentation"
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "System Design Introduction",
+          "duration_weeks": 6,
+          "weekly_hours": 15,
+          "focus_area": "LLD and HLD basics",
+          "learning_goals": ["LLD: Design Parking Lot, Library System, Ride Sharing", "HLD: Understand CAP theorem, Load Balancing, Caching, CDN", "Practice designing systems from scratch"],
+          "skills": ["Low Level Design", "High Level Design", "System Design"],
+          "projects": [],
+          "milestone": "Can design LLD of 3 common systems. Understands HLD vocabulary."
+        },
+        {
+          "stage_number": 5,
+          "stage_title": "Resume, LinkedIn, GitHub Polish",
+          "duration_weeks": 3,
+          "weekly_hours": 10,
+          "focus_area": "Placement profile readiness",
+          "learning_goals": ["ATS-optimized resume", "LinkedIn headline, about, featured section", "GitHub profile README and pinned repos"],
+          "skills": ["Git & GitHub"],
+          "projects": [],
+          "milestone": "Resume reviewed. LinkedIn connection > 300. GitHub has 2 strong projects."
+        }
+      ]
+    },
+    {
+      "qualification": "4th Year Student",
+      "total_duration_months": 6,
+      "overview": "Final year. Pure interview mode. DSA + System Design + Mocks.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "DSA Revision Sprint",
+          "duration_weeks": 6,
+          "weekly_hours": 35,
+          "focus_area": "LeetCode 300+ problems",
+          "learning_goals": ["Revision of all patterns: DP, Graph, Binary Search, Two Pointer, Sliding Window", "Company-specific LeetCode problems (Blinkit, Zomato tag)"],
+          "skills": ["DSA (Combined)"],
+          "projects": [],
+          "milestone": "300+ problems solved. All patterns comfortable."
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "System Design Mastery",
+          "duration_weeks": 6,
+          "weekly_hours": 30,
+          "focus_area": "LLD + HLD",
+          "learning_goals": ["Design 10+ LLD systems", "Design 5+ HLD systems (Blinkit delivery, URL shortener, notification service)", "Understand tradeoffs (SQL vs NoSQL, Cache eviction policies)"],
+          "skills": ["Low Level Design", "High Level Design", "System Design"],
+          "projects": [],
+          "milestone": "Can confidently present a system design in 45 minutes with diagram"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "Mock Interviews",
+          "duration_weeks": 6,
+          "weekly_hours": 25,
+          "focus_area": "Simulate real interview conditions",
+          "learning_goals": ["1-2 mock interviews per week", "DSA + LLD + HLD mocks", "Behavioral interview preparation"],
+          "skills": [],
+          "projects": [],
+          "milestone": "Consistent performance in mock interviews. Feedback loop established."
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "Applications & Networking",
+          "duration_weeks": 4,
+          "weekly_hours": 20,
+          "focus_area": "Apply and network actively",
+          "learning_goals": ["Apply on LinkedIn, company portals, Unstop, Naukri", "Network with Blinkit engineers on LinkedIn", "Target referrals"],
+          "skills": [],
+          "projects": [],
+          "milestone": "10+ active applications. 3+ responses. 1 interview scheduled."
+        }
+      ]
+    },
+    {
+      "qualification": "Fresh Graduate",
+      "total_duration_months": 6,
+      "overview": "Off-campus mode. Apply while preparing. Don't wait to be perfect.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "Gap Assessment + Quick Wins",
+          "duration_weeks": 2,
+          "weekly_hours": 40,
+          "focus_area": "Identify exactly what's missing vs Blinkit SDE requirements",
+          "learning_goals": ["Map current skills to Blinkit requirements", "Create a targeted study plan", "Set up application profiles on LinkedIn, Naukri, Unstop"],
+          "skills": [],
+          "projects": [],
+          "milestone": "Clear study plan ready. Profiles updated."
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "DSA Sprint",
+          "duration_weeks": 8,
+          "weekly_hours": 40,
+          "focus_area": "300+ LeetCode, company-tagged problems",
+          "learning_goals": ["Complete all DSA patterns", "Blinkit/Zomato company-tagged problems", "Timed practice sessions"],
+          "skills": ["DSA (Combined)"],
+          "projects": [],
+          "milestone": "300+ problems solved. Consistent in mock coding rounds."
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "System Design + Core CS",
+          "duration_weeks": 6,
+          "weekly_hours": 35,
+          "focus_area": "Interview-level System Design + DBMS/OS/CN revision",
+          "learning_goals": ["5+ LLD designs", "3+ HLD designs", "Revise DBMS/OS/CN for interviews"],
+          "skills": ["System Design", "DBMS", "Operating Systems", "Computer Networks"],
+          "projects": [],
+          "milestone": "System Design rounds passable. Core CS answers sharp."
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "Active Applications + Mocks",
+          "duration_weeks": 8,
+          "weekly_hours": 30,
+          "focus_area": "Apply daily. Mock weekly.",
+          "learning_goals": ["Apply to 5 companies/week", "2 mock interviews/week", "Follow up on applications"],
+          "skills": [],
+          "projects": [],
+          "milestone": "Multiple OA invitations. 1-2 interview calls."
+        }
+      ]
+    },
+    {
+      "qualification": "Trainee Engineer",
+      "total_duration_months": 9,
+      "overview": "Working professional. Consistency over intensity. 2 hours/day beats weekend marathons.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "DSA Fundamentals (Evenings)",
+          "duration_weeks": 12,
+          "weekly_hours": 14,
+          "focus_area": "Systematic DSA revision",
+          "learning_goals": ["100+ LeetCode problems", "Focus on patterns, not memorization", "30 minutes DSA every morning or evening"],
+          "skills": ["DSA (Combined)"],
+          "projects": [],
+          "milestone": "100+ problems solved. Comfortable with Easy/Medium."
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "Upgrade Tech Stack",
+          "duration_weeks": 8,
+          "weekly_hours": 14,
+          "focus_area": "Spring Boot + System Design basics",
+          "learning_goals": ["Spring Boot if not used at work", "REST API best practices", "Introduction to System Design"],
+          "skills": ["Spring Boot", "REST APIs", "System Design"],
+          "projects": ["Food Delivery Backend (mini version)"],
+          "milestone": "One production-quality project on GitHub"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "Interview Preparation",
+          "duration_weeks": 10,
+          "weekly_hours": 15,
+          "focus_area": "Mocks + Core CS + HLD",
+          "learning_goals": ["DBMS/OS/CN revision for interviews", "3+ HLD practice", "2 mock interviews"],
+          "skills": ["DBMS", "Operating Systems", "Computer Networks", "High Level Design"],
+          "projects": [],
+          "milestone": "Consistent OA performance. Cleared 1 mock interview."
+        }
+      ]
+    },
+    {
+      "qualification": "Junior Software Engineer",
+      "total_duration_months": 12,
+      "overview": "Target SDE-2 bar. Leverage existing experience. Focus on gaps only.",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_title": "Skill Gap Analysis",
+          "duration_weeks": 2,
+          "weekly_hours": 10,
+          "focus_area": "Precisely identify what's missing for Blinkit SDE-2",
+          "learning_goals": ["Compare current stack to Blinkit requirements", "Map experience to Blinkit responsibilities"],
+          "skills": [],
+          "projects": [],
+          "milestone": "Clear gap list ready with priority order"
+        },
+        {
+          "stage_number": 2,
+          "stage_title": "Advanced DSA + Hard Problems",
+          "duration_weeks": 8,
+          "weekly_hours": 12,
+          "focus_area": "Company-level Hard problems",
+          "learning_goals": ["150+ LeetCode (focus on Hard + patterns not seen)", "System design problems from ByteByteGo"],
+          "skills": ["DSA (Combined)"],
+          "projects": [],
+          "milestone": "Cleared 50+ Medium, 30+ Hard problems"
+        },
+        {
+          "stage_number": 3,
+          "stage_title": "System Design Mastery",
+          "duration_weeks": 12,
+          "weekly_hours": 12,
+          "focus_area": "Senior-level HLD + distributed systems",
+          "learning_goals": ["Design Blinkit-like delivery system", "Kafka, Redis, distributed caching", "Scalability patterns: CQRS, Event Sourcing, Saga"],
+          "skills": ["High Level Design", "System Design", "Message Queues (Kafka)", "Redis"],
+          "projects": ["Distributed notification system", "Real-time order tracking backend"],
+          "milestone": "Can design a complete HLD with trade-off discussion in 45 min"
+        },
+        {
+          "stage_number": 4,
+          "stage_title": "Interviews + Referral Network",
+          "duration_weeks": 8,
+          "weekly_hours": 10,
+          "focus_area": "Apply, network, mock interviews",
+          "learning_goals": ["Connect with Blinkit engineers on LinkedIn", "Get a referral if possible", "3 mock interviews targeting SDE-2 bar"],
+          "skills": [],
+          "projects": [],
+          "milestone": "1 referral secured or direct application submitted"
+        }
+      ]
+    }
+  ]
+}

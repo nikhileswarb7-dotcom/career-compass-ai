@@ -1,0 +1,162 @@
+[
+    {
+        "stage_id": 1,
+        "mcqs": [
+            {
+                "question": "What is the primary purpose of version control systems like Git?",
+                "options": [
+                    "To automate backend deployments",
+                    "To track change history and collaborate on source code",
+                    "To host SQL databases in the cloud",
+                    "To speed up local machine boot times"
+                ],
+                "correct": 1
+            },
+            {
+                "question": "Which technology is primarily used to isolate and run microservices in uniform containers?",
+                "options": [
+                    "Kafka",
+                    "Docker",
+                    "Redis",
+                    "Elasticsearch"
+                ],
+                "correct": 1
+            },
+            {
+                "question": "What is the average search complexity in a balanced Binary Search Tree (BST)?",
+                "options": [
+                    "O(N)",
+                    "O(N log N)",
+                    "O(log N)",
+                    "O(1)"
+                ],
+                "correct": 2
+            }
+        ],
+        "coding_challenge": {
+            "title": "Height-Balanced Binary Tree Check",
+            "desc": "Implement a function isBalanced(root) that returns true if a binary tree is height-balanced, otherwise false. A tree is height-balanced if the depth of its two subtrees never differs by more than 1.",
+            "template": "function isBalanced(root) {\n    if (root === null) return true;\n    function checkHeight(node) {\n        if (node === null) return 0;\n        let left = checkHeight(node.left);\n        let right = checkHeight(node.right);\n        if (left === -1 || right === -1 || Math.abs(left - right) > 1) return -1;\n        return Math.max(left, right) + 1;\n    }\n    return checkHeight(root) !== -1;\n}"
+        }
+    },
+    {
+        "stage_id": 2,
+        "mcqs": [
+            {
+                "question": "In Go, what is the idiomatic way to safely pass data between concurrent goroutines?",
+                "options": [
+                    "Writing to local text files",
+                    "Using global shared variables",
+                    "Communicating via Go channels",
+                    "Using database transactions"
+                ],
+                "correct": 2
+            },
+            {
+                "question": "How does Apache Kafka guarantee message ordering?",
+                "options": [
+                    "Ordering is guaranteed across all topics globally",
+                    "Ordering is guaranteed within a single partition",
+                    "Ordering is guaranteed by consumer group offsets",
+                    "Ordering is guaranteed using system timestamps"
+                ],
+                "correct": 1
+            },
+            {
+                "question": "Which indexing model in PostgreSQL is most appropriate for high-concurrency range queries?",
+                "options": [
+                    "Hash Index",
+                    "B-Tree Index",
+                    "GIN Index",
+                    "BRIN Index"
+                ],
+                "correct": 1
+            }
+        ],
+        "coding_challenge": {
+            "title": "Concurrent Channel Worker",
+            "desc": "Write a Go function workerPool(jobs, results) to process job requests concurrently using worker goroutines and channels.",
+            "template": "package main\n\nimport \"fmt\"\n\nfunc worker(id int, jobs <-chan int, results chan<- int) {\n    for j := range jobs {\n        fmt.Println(\"worker\", id, \"started job\", j)\n        results <- j * 2\n    }\n}"
+        }
+    },
+    {
+        "stage_id": 3,
+        "mcqs": [
+            {
+                "question": "Which caching design pattern updates both cache and DB in a single atomic transaction block?",
+                "options": [
+                    "Cache-Aside pattern",
+                    "Write-Through pattern",
+                    "Write-Behind/Write-Back pattern",
+                    "Read-Through pattern"
+                ],
+                "correct": 1
+            },
+            {
+                "question": "Which Redis command is optimal for tracking geo-coordinates of quick-commerce riders?",
+                "options": [
+                    "HSET",
+                    "GEOADD",
+                    "ZADD",
+                    "LPUSH"
+                ],
+                "correct": 1
+            },
+            {
+                "question": "What is the primary benefit of read-replicas in PostgreSQL?",
+                "options": [
+                    "Decrease writing response latency",
+                    "Improve database schema normalizations",
+                    "Scale read transactions and handle node failure redundancy",
+                    "Increase network packet compression"
+                ],
+                "correct": 2
+            }
+        ],
+        "coding_challenge": {
+            "title": "Redis Simple Rate Limiter",
+            "desc": "Implement a rate limiter class in JavaScript that checks if a user has exceeded 5 requests per minute, returns false if rate-limited.",
+            "template": "class RateLimiter {\n    constructor() {\n        this.requests = new Map();\n    }\n    isAllowed(userId) {\n        const now = Date.now();\n        return true;\n    }\n}"
+        }
+    },
+    {
+        "stage_id": 4,
+        "mcqs": [
+            {
+                "question": "In behavioral SDE rounds, what does the 'A' represent in the STAR template?",
+                "options": [
+                    "Assessment",
+                    "Allocation",
+                    "Action taken",
+                    "Algorithmic score"
+                ],
+                "correct": 2
+            },
+            {
+                "question": "What is the best way to showcase achievements on an SDE resume?",
+                "options": [
+                    "Explain lines of code written",
+                    "Detail the group's general code layout",
+                    "Quantify personal impact (e.g. 'reduced latency by 30% using Redis')",
+                    "List all keywords in alphabet order"
+                ],
+                "correct": 2
+            },
+            {
+                "question": "How should code complexity be discussed during a live SDE whiteboard interview?",
+                "options": [
+                    "Wait for the interviewer to prompt you",
+                    "Calculate time and space bounds step-by-step as you construct the code",
+                    "State O(N) immediately for all solutions",
+                    "Say complexity doesn't matter for initial prototypes"
+                ],
+                "correct": 1
+            }
+        ],
+        "coding_challenge": {
+            "title": "Two Sum Optimal O(N)",
+            "desc": "Write a function twoSum(nums, target) returning indices of the two elements adding up to target in linear time complexity.",
+            "template": "function twoSum(nums, target) {\n    const map = new Map();\n    for (let i = 0; i < nums.length; i++) {\n        const complement = target - nums[i];\n        if (map.has(complement)) {\n            return [map.get(complement), i];\n        }\n        map.set(nums[i], i);\n    }\n    return [];\n}"
+        }
+    }
+]

@@ -1,0 +1,185 @@
+profile_id,name,role_id,current_company,experience_years,college,degree,previous_company,career_path,linkedin_url,github_url,career_stage,company_tier
+1,Sathish Reddy Bijjam,2,Amazon,5.4,JNTU Vizianagaram,BTech,FactSet,FactSet->Amazon,www.linkedin.com/in/sathish-reddy-,,Senior,1
+2,Taitiksh Sharma,2,Amazon,6.5,VIT Vellore,BTech,American Express,American Express->Amazon,www.linkedin.com/in/taitiksh-,,Senior,1
+3,Ashok Palli,8,Amazon,6.3,,,,Intern->SDE1->SDE2,www.linkedin.com/in/ashok-palli-,,Senior,1
+4,Divya Saniganti,8,Tata Consultancy Services,1.2,,,,Campus->Tata Consultancy Services,www.linkedin.com/in/divya-,,Entry,2
+5,Amit Parida,8,Amazon,7.2,,,,Campus->Amazon,www.linkedin.com/in/amit-parida,,Senior,1
+6,Satyam Verma,8,Software Development Engineer III,10.9,PES University,BE,Swiggy,Swiggy->Software Development Engineer III,www.linkedin.com/in/i-am-satyam-,,Senior,2
+7,Web Content Accessibility,8,Amazon,2.1,Raghu Engineering College,BTech,Accenture,Accenture->Amazon,www.linkedin.com/in/ashokmalleti,,Mid,1
+8,Syed Shuaib Zaidi,8,Amazon,5.1,"Faculty of Engineering and Technology, Jamia Millia Islamia, Central",University,,Campus->Amazon,www.linkedin.com/in/syed-shuaib-,,Senior,1
+9,Vineela KV,8,Amazon,3.2,,,MyMedGlobal,MyMedGlobal->Amazon,www.linkedin.com/in/kvvineela,,Mid,1
+10,Object-Oriented Programming,2,Amazon,5.4,Jaypee Institute Of Information Technology,BTech,,Intern->SDE,www.linkedin.com/in/yashkhare165,,Senior,1
+11,Nishitha Krishnam,8,Amazon,3.7,Gayatri Vidya Parishad College of Engineering,BTech,Zoho,Zoho->Amazon,www.linkedin.com/in/nishitha-,,Mid,1
+12,AWS CDK,8,Amazon,6.2,,,Voice Qube,Voice Qube->Amazon,www.linkedin.com/in/saitejas1,github.com/Saiteja69 (Portfolio),Senior,1
+13,Revant Tiwari,8,Amazon,8.0,"GALGOTIA S COLLEGE OF ENGINEERING AND TECHNOLOGY,",BTech,30% of development efforts leading to higher throughputs,30% of development efforts leading to higher throughputs->Amazon,www.linkedin.com/in/revant-tiwari,,Senior,1
+14,Srishti Ranjan,8,Amazon,6.2,"Indian Institute of Information Technology, SriCity",Bachelor's degree,Toddle - Your Teaching Partner,Toddle - Your Teaching Partner->Amazon,www.linkedin.com/in/srishti-,,Senior,1
+15,Srilekha N,8,Rocket,4.2,,,Tata Consultancy Services,Tata Consultancy Services->Rocket,www.linkedin.com/in/srilekha-n,,Mid,2
+16,Nizam Mohammed,8,Amazon,6.2,,,EPAM Systems,EPAM Systems->Amazon,www.linkedin.com/in/nizam-md,,Senior,1
+17,AKHIL SINGH,8,Amazon,5.1,International Institute of Information Technology Hyderabad,BTech,Jio Platforms,Jio Platforms->Amazon,www.linkedin.com/in/akhil-,github.com/akki111singh (Other),Senior,1
+18,Apoorv Garg,2,Amazon,5.5,SRM University,Bachelor's degree,Samsung Electronics,Samsung Electronics->Amazon,www.linkedin.com/in/apoorv-garg-,,Senior,1
+19,Distributed Algorithms,5,Amazon,10.2,West Bengal University of Technology,BTech,Rippling,Rippling->Amazon,www.linkedin.com/in/sourav1994,,Senior,1
+20,Paidipala Supraja,2,Amazon,5.8,VNR Vignanajyothi Institute of Engineering & Technology,BTech,cppsecrets.com,cppsecrets.com->Amazon,www.linkedin.com/in/paidipala-,,Senior,1
+21,Postman API,8,Amazon,4.2,PSG College of Technology,MSc,Cogos Technologies Pvt Ltd,Cogos Technologies Pvt Ltd->Amazon,www.linkedin.com/in/gsakthig,,Mid,1
+22,Web Development,8,Amazon,5.4,Bhagwan Parshuram Institute Of Technology,BTech,Josh Technology Group,Josh Technology Group->Amazon,,,Senior,1
+23,UTKARSH PANDEY,8,Tata Consultancy Services,2.1,,,Deloitte,Deloitte->Tata Consultancy Services,www.linkedin.com/in/pandey-,,Mid,2
+24,Onkar Bendre,2,Amazon,5.8,Pune Institute of Computer Technology,BE,FlexTrade,FlexTrade->Amazon,www.linkedin.com/in/onkar-bendre-,,Senior,1
+25,Coding Standards,8,Amazon,7.3,"College of Engineering, Guindy",BTech,,Intern->SDE,,,Senior,1
+26,Vishal Maurya,2,Amazon,8.8,Harcourt Butler Technological Institute,BTech,,Campus->Amazon,www.linkedin.com/in/vishal-,,Senior,1
+27,REST APIs,2,Amazon,6.2,"The National Institute Of Engineering, Mysore",BE,,Campus->Amazon,www.linkedin.com/in/code2sengar,github.com/prashant-sengar,Senior,1
+28,Harshita Shrivas,8,Tata Consultancy Services,3.6,,,Codingal,Codingal->Tata Consultancy Services,www.linkedin.com/in/harshita-,,Mid,2
+29,NADIPINENI BHARGAV,8,Amazon,2.9,,,Zolo,Zolo->Amazon,www.linkedin.com/in/bhargav-,,Mid,1
+30,Aman Budhrani,8,Amazon,2.5,,,MAQ Software,MAQ Software->Amazon,www.linkedin.com/in/aman-,,Mid,1
+31,Software Development,8,Amazon,4.8,The Coding School,Certificate,The Sparks Foundation,The Sparks Foundation->Amazon,www.linkedin.com/in/harshalgadhe,,Mid,1
+32,Soumadev Ghosh,2,Blinkit,6.7,Netaji Subhash Engineering College,MCA,e3NexT Solutions,e3NexT Solutions->Blinkit,www.linkedin.com/in/soumadev-,,Senior,1
+33,Asad Abidi,2,Blinkit,4.3,"Indian Institute of Technology, Bhilai",Page 2 of 3 Bachelor's degree,Prismforce,Prismforce->Blinkit,www.linkedin.com/in/asad-abidi,,Mid,1
+34,Soumya Sirohi,8,Blinkit,7.8,INDIRA GANDHI DELHI TECHNICAL UNIVERSITY FOR WOMEN,BTech,Amazon,Amazon->Blinkit,www.linkedin.com/in/soumya-,,Senior,1
+35,Aditya Deshmukh,8,Blinkit,5.2,College of Engineering Pune,MTech,NEWME,NEWME->Blinkit,www.linkedin.com/in/aditya-,,Senior,1
+36,Tailwind CSS,8,Blinkit,4.0,BMS Institute of Technology,BE,backend changes. Developed the project using ReactJs and ReScript.,backend changes. Developed the project using ReactJs and ReScript.->Blinkit,,github.com/ritika-singh2000 (Other),Mid,1
+37,Siddhant Dixit,8,Blinkit,4.5,Indian Institute of Information Technology Dharwad,BTech,Bungee Tech,Bungee Tech->Blinkit,www.linkedin.com/in/sid-dixit,,Mid,1
+38,Abhishek Gautam,8,Blinkit,4.9,"Indraprastha Institute of Information Technology, Delhi",BTech,Jio Platforms,Jio Platforms->Blinkit,www.linkedin.com/in/li-abhishek-,,Mid,1
+39,Priyanshu Shekhar Singh,8,Blinkit,4.7,,,Pocket FM,Pocket FM->Blinkit,www.linkedin.com/in/priyanshu-,,Mid,1
+40,Spring Boot,8,Blinkit,2.4,VIT Vellore,BTech,Yubi,Yubi->Blinkit,www.linkedin.com/in/kartikechadha,,Mid,1
+41,Ekansh Jain,8,Blinkit,4.3,"Indian Institute of Technology, Kharagpur",Minor in Mathematics & Computing + Micro in Entrepreneurship and Innovation   ·,MapOut,MapOut->Blinkit,www.linkedin.com/in/ekansh-,,Mid,1
+42,Nilesh Sikri,8,Blinkit,5.9,VIT Vellore,BTech,Crio.Do,Crio.Do->Blinkit,www.linkedin.com/in/nilesh-,,Senior,1
+43,Divya Kriplani,2,Blinkit,4.8,Malaviya National Institute of Technology Jaipur,BTech,Probo,Probo->Blinkit,www.linkedin.com/in/divya-,,Mid,1
+44,Natural Language Processing,8,Blinkit,8.4,"Indraprastha Institute of Information Technology, Delhi",MTech,Amazon,Amazon->Blinkit,www.linkedin.com/in/mayankmani,,Senior,1
+45,Mohit Singhal,8,Blinkit,6.5,"Indian Institute of Technology, Ropar",BTech,Urban Company,Urban Company->Blinkit,www.linkedin.com/in/m0s,,Senior,1
+46,Distributed Systems,8,Blinkit,5.4,PES University,BTech,significantly.,significantly.->Blinkit,www.linkedin.com/in/ketanp13899,,Senior,1
+47,Data Structures,2,Blinkit,6.2,VIT Vellore,Bachelor's degree,Swayam Infotech,Swayam Infotech->Blinkit,,,Senior,1
+48,Machine Learning Specialization,8,Blinkit,5.1,"Indian Institute of Technology, Roorkee",BTech,Finrep AI,Finrep AI->Blinkit,www.linkedin.com/in/samratmiddha,,Senior,1
+49,Anugya Jain,8,Blinkit,3.8,KIET Group of Institutions,BTech,Lowe's India,Lowe's India->Blinkit,www.linkedin.com/in/anugya-jain,,Mid,1
+50,Aikansh Yadav,8,Blinkit,4.0,,,FRND,FRND->Blinkit,www.linkedin.com/in/aikansh-,,Mid,1
+51,Ad Tech,2,Blinkit,4.3,Indian Institute of Information Technology Kota,BTech,Zomato,Zomato->Blinkit,www.linkedin.com/in/parthmangal,,Mid,1
+52,Programming Languages,2,Blinkit,4.2,Indian Institute Of Information Technology Allahabad,BTech,Meesho,Meesho->Blinkit,www.linkedin.com/in/prerna0311,,Mid,1
+53,Shrilekh Kalas,8,Blinkit,7.8,Page 1 of,BTech,Vedanta Limited - Aluminium Business,Vedanta Limited - Aluminium Business->Blinkit,www.linkedin.com/in/shrilekh-kalas,,Senior,1
+54,Aman Mathur,8,Blinkit,4.4,,,Flipkart,Flipkart->Blinkit,www.linkedin.com/in/aman-mathur-,,Mid,1
+55,Aadhar Kansal,5,Blinkit,5.2,"Indian Institute of Technology , Varanasi",Dual Degree,Alltius,Alltius->Blinkit,www.linkedin.com/in/aadhar-kansal,,Senior,1
+56,WOUNDED HEART,2,Blinkit,3.2,,,IndusianAssist Private Limited,IndusianAssist Private Limited->Blinkit,www.linkedin.com/in/tanishksahni,,Mid,1
+57,Cloud Applications,8,Blinkit,5.3,Thapar Institute of Engineering & Technology,BTech,Working in the Catalogue Mangement System team,Working in the Catalogue Mangement System team->Blinkit,www.linkedin.com/in/sukritsethi18,,Senior,1
+58,Apache Kafka,2,Blinkit,4.0,,,PhonePe,PhonePe->Blinkit,www.linkedin.com/in/ravikothari25,,Mid,1
+59,Roushan Singh,8,Blinkit,4.7,,,WheelsEye,WheelsEye->Blinkit,www.linkedin.com/in/roushan-,,Mid,1
+60,Ajay Negi,2,Blinkit,5.9,Page 1 of,Indian Institute of Engineering Science and Technology (IIEST),Tokopedia,Tokopedia->Blinkit,www.linkedin.com/in/ajay-,,Senior,1
+61,Nishant Narjinary,1,Blinkit,1.1,,,Zomato,Zomato->Blinkit,www.linkedin.com/in/nishant-,,Entry,1
+62,Shambhavi Pardhi,8,Blinkit,4.4,"Indian Institute of Technology, Bombay",BTech,Adobe,Adobe->Blinkit,www.linkedin.com/in/shambhavi-,,Mid,1
+63,Koustav Sen,8,Blinkit,2.9,,,Accenture,Accenture->Blinkit,www.linkedin.com/in/koustav-,,Mid,1
+64,Arnav Singhal,8,Blinkit,1.9,Page 1 of,Indian Institute of Technology Jodhpur Computer Science and Engineering,United Techlab,United Techlab->Blinkit,www.linkedin.com/in/arnav-,,Entry,1
+65,Amazon SQS,8,Blinkit,3.7,,,Morgan Stanley,Morgan Stanley->Blinkit,www.linkedin.com/in/madhur312,,Mid,1
+66,Ayush Goel,8,Blinkit,5.2,Netaji Subhas Institute of Technology,BE,OYO,OYO->Blinkit,www.linkedin.com/in/ayush-,,Senior,1
+67,Mayank Kumar,8,Blinkit,5.2,Indian Institute of Information Technology Guwahati,BTech,Mindtickle,Mindtickle->Blinkit,www.linkedin.com/in/mayank-,,Senior,1
+68,Naman Jain,8,Blinkit,7.4,"Kurukshetra University, Kurukshetra",BTech,Yamaha Motor Solutions India Pvt.Ltd.,Yamaha Motor Solutions India Pvt.Ltd.->Blinkit,www.linkedin.com/in/naman-,,Senior,1
+69,Mayank Kapur,8,Blinkit,9.8,Maharaja Surajmal Institute Of Technology,BTech,Accenture,Accenture->Blinkit,www.linkedin.com/in/mayank-kapur,github.com/kapurm17 (Other),Senior,1
+70,Anku Khandelwal,8,Blinkit,8.9,"Birla Institute of Technology and Science, Pilani",BE,Spinny,Spinny->Blinkit,www.linkedin.com/in/anku-,,Senior,1
+71,Prasanta Roy,8,Microsoft,7.3,"Indian Institute of Technology, Guwahati",MTech,IBM,IBM->Microsoft,www.linkedin.com/in/p-roy,,Senior,1
+72,Usha Kumari,8,Microsoft,7.2,National Institute of Technology Jamshedpur,BTech,Amazon,Amazon->Microsoft,www.linkedin.com/in/usha-,,Senior,1
+73,Pushyanth Soma,8,Microsoft,7.5,Sreenidhi Institute of Science and Technology,Engineer’s Degree,Amazon,Amazon->Microsoft,,,Senior,1
+74,Airtel Ace Award,8,Microsoft,2.8,Netaji Subhas Institute of Technology,BTech,Airtel Digital,Airtel Digital->Microsoft,www.linkedin.com/in/samyakjain9,,Mid,1
+75,Tanu Jain,8,Microsoft,6.7,,,American Express,American Express->Microsoft,www.linkedin.com/in/tanu-,,Senior,1
+76,Operating Systems,8,Microsoft,6.0,National Institute of Technology Rourkela,Minor in Computer Science and Engineering,Zeta,Zeta->Microsoft,www.linkedin.com/in/imu2018,,Senior,1
+77,Vishal Katiyar,8,Microsoft,6.2,Institute of Engineering and Technology,BTech,Amazon,Amazon->Microsoft,www.linkedin.com/in/vishal-,,Senior,1
+78,Aditya Bahuguna,8,Microsoft,5.4,International Institute of Information Technology Bangalore,MTech,Qualcomm,Qualcomm->Microsoft,www.linkedin.com/in/aditya-,,Senior,1
+79,Shiwanjaly Chandra,8,Microsoft,9.2,,,FarEye,FarEye->Microsoft,,,Senior,1
+80,Saksham Chhabra,8,Microsoft,5.9,,,Flipkart,Flipkart->Microsoft,www.linkedin.com/in/saksham-,,Senior,1
+81,Raj kumar Gnanavel,2,Google,8.8,Thiagarajar College of Engineering,BTech,Walmart Global Tech India,Walmart Global Tech India->Google,www.linkedin.com/in/raj-kumar-,,Senior,1
+82,Naina Agrawal,8,Microsoft,3.2,NIT -Rourklea,BTech,,Campus->Microsoft,www.linkedin.com/in/naina-,,Mid,1
+83,Chandra Shekhar Kumar,2,Microsoft,11.1,Dhirubhai Ambani Institute Of Information and Communication,Technology Information and Communication Technology ·,PayU,PayU->Microsoft,www.linkedin.com/in/chandra-,,Senior,1
+84,Jaswanth Annangi,8,Microsoft,7.1,Manipal Institute of Technology,BE,SmartSoC Solutions Pvt Ltd,SmartSoC Solutions Pvt Ltd->Microsoft,www.linkedin.com/in/jaswanth-,,Senior,1
+85,Hemanth Konamanchili,8,Microsoft,5.7,"National Institute of Technology, Tiruchirappalli",BTech,"VORTEX, CSEA NIT Trichy","VORTEX, CSEA NIT Trichy->Microsoft",www.linkedin.com/in/hemanth-,,Senior,1
+86,Stanford University,8,Microsoft,6.9,Delhi Technological University,Bachelor's degree,Zomato,Zomato->Microsoft,www.linkedin.com/in/sulekhiya,Link: https://github.com/CropAi,Senior,1
+87,Priyank Mungra,8,Google,5.9,Dharmsinh Desai University,BTech,Infra.Market,Infra.Market->Google,www.linkedin.com/in/priyank-,,Senior,1
+88,Ankit Chaudhary,8,Google,6.0,Motilal Nehru National Institute Of Technology,Bachelor's degree,PhonePe,PhonePe->Google,www.linkedin.com/in/ankit-,,Senior,1
+89,LEKHANA RAJA SOMIDI,8,Microsoft,8.8,Page 2 of,BTech,Phenom People,Phenom People->Microsoft,www.linkedin.com/in/lekhana-raja-,,Senior,1
+90,Mansi Gera,2,Microsoft,16.1,IGDTUW,Computer Science ·,Pioneering Web Solutions,Pioneering Web Solutions->Microsoft,www.linkedin.com/in/mansi-,,Senior,1
+91,Priyanshu Kushwah,8,Microsoft,4.3,"Indian Institute of Technology , Varanasi",IDD  ·,SAP Labs India,SAP Labs India->Microsoft,www.linkedin.com/in/priyanshu-,,Mid,1
+92,Anshul Angaria,8,Microsoft,5.2,National Institute of Technology Hamirpur,BTech,SingleStore,SingleStore->Microsoft,www.linkedin.com/in/anshul-,,Senior,1
+93,Dravisha Pokharna,8,Microsoft,3.3,"Indian Institute of Technology , Dhanbad",BTech,,Intern->SDE1->SDE2,www.linkedin.com/in/dravisha-,,Mid,1
+94,Bhanuja A.,8,Microsoft,7.8,"University School of Information, Communication & Technology",BTech,Amazon,Amazon->Microsoft,,,Senior,1
+95,Agniva Goswami,8,Microsoft,6.1,Delhi Technological University,MTech,Amazon,Amazon->Microsoft,www.linkedin.com/in/agniva-,,Senior,1
+96,Smriti Nisha,5,Microsoft,10.7,National Institute of Technology Raipur,Bachelor's Degree,slow network users.,slow network users.->Microsoft,www.linkedin.com/in/smriti-nisha,,Senior,1
+97,Sakshi Aggarwal,2,Microsoft,6.2,National Institute of Technology Kurukshetra,BTech,Flipkart,Flipkart->Microsoft,www.linkedin.com/in/sakshi-,,Senior,1
+98,Continuous Integration and,8,Microsoft,5.4,Page 1 of,Indian Institute of Technology,,Intern->SDE,www.linkedin.com/in/kartik715,,Senior,1
+99,Web Testing,8,Microsoft,9.9,IIIT,MTech,Qualcomm,Qualcomm->Microsoft,www.linkedin.com/in/pranavmodi25,,Senior,1
+100,Abhishek Damarasing,2,Microsoft,3.9,,,Amazon,Amazon->Microsoft,www.linkedin.com/in/abhishek-,,Mid,1
+101,Yukti Handuja,8,Microsoft,6.6,Banasthali Vidyapith,BTech,Expedia Group,Expedia Group->Microsoft,www.linkedin.com/in/yukti-handuja-,,Senior,1
+102,Pooja Biyani,8,Microsoft,13.2,MVSR Engineering College,BE,Salesforce,Salesforce->Microsoft,www.linkedin.com/in/pooja-,,Senior,1
+103,Ayush Kumar,8,Microsoft,6.6,Poornima College of Engineering,BTech,JPMorgan Chase & Co.,JPMorgan Chase & Co.->Microsoft,www.linkedin.com/in/ayush-kumar-,,Senior,1
+104,Lavanya Ravinutala,8,Microsoft,4.5,,,Phenom,Phenom->Microsoft,www.linkedin.com/in/lavanya-,,Mid,1
+105,Analytical Skills,8,Microsoft,9.9,Page 2 of,BTech,PES University,PES University->Microsoft,www.linkedin.com/in/chetanamital,,Senior,1
+106,Ayush Kumar Behera,8,Microsoft,3.2,National Institute of Technology Rourkela,BTech,,Intern->SDE,www.linkedin.com/in/ayush-,,Mid,1
+107,Nitesh Kr Pathak,2,Microsoft,5.8,"BITS Pilani, Hyderabad Campus",Master of Engineering (M.E),Qualcomm,Qualcomm->Microsoft,www.linkedin.com/in/nitesh-kr-,,Senior,1
+108,Gaurav Kumar,8,Microsoft,5.7,"Army Institute of Technology, Pune",BE,Qualcomm,Qualcomm->Microsoft,www.linkedin.com/in/in-gaurav,,Senior,1
+109,Saubhagya Shankar Sinha,8,Microsoft,6.2,Jntu,BTech,Goldman Sachs,Goldman Sachs->Microsoft,www.linkedin.com/in/saubhagya-,,Senior,1
+110,Virender Kumar,8,Microsoft,8.2,Page 1 of,MCA,Amazon,Amazon->Microsoft,www.linkedin.com/in/virender1404,,Senior,1
+111,Cloud Computing,8,Microsoft,12.1,National Institute of Technology Warangal,Master's degree,Joint Secretary,Joint Secretary->Microsoft,www.linkedin.com/in/abhikasera,,Senior,1
+112,Mudimela Chakradhar Reddy,8,Amazon,2.1,"Shanmugha Arts, Science, Technology & Reserch Academy",(SASTRA),Incedo Inc.,Incedo Inc.->Amazon,www.linkedin.com/in/mudimela-,,Mid,1
+113,Lavanya Immaneni,8,Amazon,5.8,"Shri Vishnu Engineering College for Women, Vishnupur, Kovvada",Village,Infosys,Infosys->Amazon,www.linkedin.com/in/lavanya-,,Senior,1
+114,Krishiv Goyal,8,Amazon,6.2,Maharaja Agrasen Institute Of Technology,BTech,,Intern->SDE1->SDE2,www.linkedin.com/in/krishiv-,,Senior,1
+115,Rishik Jasoriya,8,Amazon,4.2,"Malviya National Institute of Technology, Jaipur",BTech,,Intern->SDE1->SDE2,www.linkedin.com/in/rishik-,,Mid,1
+116,Megha Verma,8,Amazon,3.6,ABES Engineering College,BTech,,Campus->Amazon,www.linkedin.com/in/megha-,,Mid,1
+117,Tanuj Joshi,2,Amazon,8.2,"Indian Institute of Technology, Kharagpur",MTech,Flipkart,Flipkart->Amazon,www.linkedin.com/in/tanuj-,,Senior,1
+118,Surbhi G,8,Amazon,7.7,B. M. S. College of Engineering,Bachelor's degree,Akamai Technologies,Akamai Technologies->Amazon,www.linkedin.com/in/surbhi-,,Senior,1
+119,Nikhil Jasaiwal,8,Amazon,7.6,,,Wiley Edge,Wiley Edge->Amazon,www.linkedin.com/in/nikhil-jasaiwal,,Senior,1
+120,Simran Gupta,8,Amazon,5.5,Dayananda Sagar College Of Engineering,BE,Rexzet Solutions,Rexzet Solutions->Amazon,www.linkedin.com/in/simran-gupta-,,Senior,1
+121,Sonal Agrawal,8,Apple,12.8,Malaviya National Institute of Technology Jaipur,BTech,JPMorgan Chase & Co.,JPMorgan Chase & Co.->Apple,www.linkedin.com/in/sonal-,,Senior,2
+122,Rahul Krishna,8,Blinkit,3.0,,,Amazon,Amazon->Blinkit,www.linkedin.com/in/rahul-krishna-,,Mid,1
+123,Data Structure,2,Blinkit,5.7,"Kalinga Institute of Industrial Technology, Bhubaneswar",Bachelor's degree,Scaler,Scaler->Blinkit,www.linkedin.com/in/shivam2608,,Senior,1
+124,Jayesh Rohan Singh,2,Blinkit,5.2,"PSIT COLLEGE OF ENGINEERING, KANPUR",BTech,Shiprocket,Shiprocket->Blinkit,www.linkedin.com/in/jayesh-rohan-,,Senior,1
+125,Yashasav Prajapati,2,Blinkit,3.8,,,Cosedge,Cosedge->Blinkit,www.linkedin.com/in/yashasav-p,,Mid,1
+126,Pranjal Mishra,8,Blinkit,4.2,NSUT,BTech,Chat,Chat->Blinkit,www.linkedin.com/in/pranjal-,,Mid,1
+127,Shalini Reddy Beedupalli,8,Cognizant,3.8,,,National engineering olympiads,National engineering olympiads->Cognizant,www.linkedin.com/in/shalini-,,Mid,3
+128,Rahul Goswami,8,Flipkart,5.2,Malaviya National Institute of Technology Jaipur,BTech,,Campus->Flipkart,www.linkedin.com/in/rahul-,,Senior,2
+129,Java Development,1,Medimaze Solutions Pvt Ltd,2.8,,,Elevizo,Elevizo->Medimaze Solutions Pvt Ltd,www.linkedin.com/in/aryanj2004,,Mid,2
+130,Faiza Tahreen,8,Flipkart,5.0,"Placement Cell , NSITBihta",BTech,Accenture,Accenture->Flipkart,www.linkedin.com/in/faiza-,,Senior,2
+131,Generative AI,8,Arcesium,16.7,Veer Surendra Sai University Of Technology,BTech,Encora Inc.,Encora Inc.->Arcesium,,,Senior,2
+132,Speech Processing,5,NVIDIA,26.7,"Indian Institute of Technology, Madras",MTech,Amdocs,Amdocs->NVIDIA,www.linkedin.com/in/ravirajoshi,,Senior,2
+133,Rohit Prakash Singh,5,Salesforce,8.0,,,Oracle,Oracle->Salesforce,www.linkedin.com/in/rohit-prakash-,,Senior,2
+134,Engineering Management,7,Google,19.8,Udacity,Deep Learning Nanodegree,LetsTransport,LetsTransport->Google,www.linkedin.com/in/parijatrathore,,Senior,1
+135,Saloni Seth,2,Groww,6.9,Indian Institute of Information Technology Ranchi,BTech,Publicis Sapient,Publicis Sapient->Groww,www.linkedin.com/in/saloni-seth,,Senior,2
+136,Panthagani Hari Krishna,8,,3.0,,,,Campus->,www.linkedin.com/in/panthagani-,,Mid,2
+137,Rohit Raj,8,JUSPAY,5.1,Lovely Professional University,BTech,Tata Consultancy Services,Tata Consultancy Services->JUSPAY,www.linkedin.com/in/rohit-raj-lpu,,Senior,2
+138,Villesh Raj Purohith,8,A.P. Moller - Maersk,2.9,,,UBS,UBS->A.P. Moller - Maersk,www.linkedin.com/in/villesh-raj-,,Mid,2
+139,Saksham Sharma,5,Avaamo,4.3,"Indian Institute of Technology , Varanasi",BTech,Cogoport,Cogoport->Avaamo,www.linkedin.com/in/saksham-,,Mid,2
+140,ParMooN-A modernized program,5,Microsoft,14.4,IISc,MTech,Flipkart,Flipkart->Microsoft,www.linkedin.com/in/sam0037,,Senior,1
+141,Harsh Sharma,5,Myntra,4.4,Motilal Nehru National Institute Of Technology,BTech,,Intern->SDE,www.linkedin.com/in/harsh-,,Mid,2
+142,Siya Rana,8,BNY,14.5,,,GirlScript Summer of Code,GirlScript Summer of Code->BNY,www.linkedin.com/in/siya-rana-,,Senior,2
+143,User Interface Design,8,Oracle,4.7,Laxmi Devi Institue of Engineering and Technology,BTech,Amazon,Amazon->Oracle,,,Mid,2
+144,Sabu Balakrishnan,8,Cybermasks software pvt ltd,10.2,CSI College of Engineering,BE,Vxaro technologies pvt ltd,Vxaro technologies pvt ltd->Cybermasks software pvt ltd,www.linkedin.com/in/sabu-,,Senior,2
+145,Navya Madhuri,8,BBI,4.7,Vaagdevi Institute of Technology & Science,BTech,,Campus->BBI,www.linkedin.com/in/navya-,,Mid,2
+146,Sai Bhavya Chalamalasetti,8,Synchrony,5.9,,,HCL Technologies,HCL Technologies->Synchrony,www.linkedin.com/in/sai-bhavya-,,Senior,2
+147,Joel Jacob John,8,SAP,5.2,,,Emirates,Emirates->SAP,www.linkedin.com/in/joel-jacob-,,Senior,2
+148,Srinivas Reddy Masireddy,1,Teachnook,0.2,,,,Intern->SDE,www.linkedin.com/in/srinivas-,,Entry,2
+149,Saif Haque,5,PayPal,6.2,Delhi College of Engineering,BTech,Acko,Acko->PayPal,www.linkedin.com/in/saif-,,Senior,2
+150,Sanjoli Watts,2,PayPal,13.4,Chitkara University,BTech,Crio.Do,Crio.Do->PayPal,www.linkedin.com/in/sanjoli-watts,,Senior,2
+151,Himanshi Kukreja,8,PayPal,2.6,Indian Institute of Technology Jodhpur,BTech,,Campus->PayPal,www.linkedin.com/in/himanshi-,,Mid,2
+152,Sanjay Mahaveer Kona,8,PayPal,7.2,Vasavi College of Engg,BE,Pegasystems,Pegasystems->PayPal,www.linkedin.com/in/sanjay-,,Senior,2
+153,Akarsh Yadav,8,PayPal,10.1,National Institute of Technology Jamshedpur,·,Synechron,Synechron->PayPal,www.linkedin.com/in/akarsh-,,Senior,2
+154,Rakesh Kumar.V,8,PayPal,5.5,Kongu Engineering College,BE,Zoho,Zoho->PayPal,www.linkedin.com/in/rakesh-,,Senior,2
+155,Infosys Certified Programmer,8,PayPal,6.1,SRM University,BTech,Freshworks,Freshworks->PayPal,www.linkedin.com/in/xhubham,,Senior,2
+156,Lakshmikanth D,8,PayPal,5.3,East West Institute Of Technology,BE,Verifone,Verifone->PayPal,www.linkedin.com/in/lakshmikanth-,,Senior,2
+157,Mayur Sawarkar,8,PayPal,5.7,BITS Pilani Work Integrated Learning Programmes,MTech,Secondary users consent management for AU-CDR clients,Secondary users consent management for AU-CDR clients->PayPal,www.linkedin.com/in/mayur-,,Senior,2
+158,Chinmay Gupta,8,PayPal,5.0,"Birla Institute of Technology and Science, Pilani",BE,Tradable,Tradable->PayPal,www.linkedin.com/in/chinmay-,,Senior,2
+159,Azure Cosmos DB,8,PayPal,7.5,Ramaiah Institute Of Technology,BE,udaan.com,udaan.com->PayPal,,,Senior,2
+160,Rakhi Purwar,8,PayPal,4.4,BMS Institute of Technology,BTech,ZEE - Technology & Innovation,ZEE - Technology & Innovation->PayPal,www.linkedin.com/in/rakhi-purwar,github.com/rakhiPurwar (Portfolio),Mid,2
+161,Rachit Salhotra,5,PayPal,7.6,Page 2 of,BE,Software Engineer,Software Engineer->PayPal,www.linkedin.com/in/rachit-,,Senior,2
+162,Shreya Soni,8,PayPal,10.2,Suresh Gyan Vihar University,Master's degree,Adobe,Adobe->PayPal,,,Senior,2
+163,Mayank Harbola,8,PayPal,5.8,Guru Gobind Singh Indraprastha University,BTech,Birdeye,Birdeye->PayPal,www.linkedin.com/in/mayank-,,Senior,2
+164,Shivani Sharma,8,PayPal,6.0,,,BambooBox,BambooBox->PayPal,www.linkedin.com/in/shivani-,,Senior,2
+165,Adarsh Joseph,8,PayPal,11.6,"College of Engineering, Trivandrum",BTech,Zoho Corporation,Zoho Corporation->PayPal,www.linkedin.com/in/adarsh-,,Senior,2
+166,Aravind Malla,8,PayPal,9.7,,,ZoomRx,ZoomRx->PayPal,www.linkedin.com/in/aravind-,,Senior,2
+167,Harsha Vardhan Thakkalapelly,8,PayPal,1.3,,,,Intern->SDE,www.linkedin.com/in/harsha-,,Entry,2
+168,ANUJ AGRAWAL,8,PayPal,6.5,Jaypee Institute Of Information Technology,BTech,Flipkart,Flipkart->PayPal,www.linkedin.com/in/anuj-agrawal-,,Senior,2
+169,Karan Aggarwal,8,PayPal,4.5,Thapar University,BTech,,Intern->SDE1->SDE2,www.linkedin.com/in/karan-,,Mid,2
+170,Tushar Singh,8,PayPal,4.7,VIT Vellore,BTech,Fidelity Investments,Fidelity Investments->PayPal,www.linkedin.com/in/tushar-,,Mid,2
+171,Venkatesh Nukala,8,PayPal,15.8,,,JPMorgan Chase & Co.,JPMorgan Chase & Co.->PayPal,www.linkedin.com/in/venkatesh-,,Senior,2
+172,Problem Solving,8,PayPal,6.3,PES University,BTech,M2P Fintech,M2P Fintech->PayPal,www.linkedin.com/in/ruqaiyanaaz,,Senior,2
+173,Nikkila Prakash,8,PayPal,4.0,SRM University,BTech,The Sparks Foundation,The Sparks Foundation->PayPal,www.linkedin.com/in/nikkila-,,Mid,2
+174,Software Development Engineer at PayPal,8,PayPal,7.9,"Birla Institute of Technology and Science, Pilani",BE,,Campus->PayPal,www.linkedin.com/in/bharathbestha,,Senior,2
+175,Ajanta Kancharla,5,MakeMyTrip,6.1,Page 2 of,BTech,PayPal,PayPal->MakeMyTrip,www.linkedin.com/in/ajanta-,,Senior,2
+176,Shubham Sengar,8,PayPal,8.2,National Institute of Technology Rourkela,BTech,Talentica Software,Talentica Software->PayPal,www.linkedin.com/in/shubham-,,Senior,2
+177,Debangshu Saha,8,PayPal,1.3,,,,Intern->SDE,www.linkedin.com/in/debangshu-,,Entry,2
+178,Abthashree A,8,PayPal,6.8,,,Ford Motor Company,Ford Motor Company->PayPal,www.linkedin.com/in/abthashree-,,Senior,2
+179,RESTful WebServices,8,PayPal,2.8,PSG College of Technology,BE,TVS Motor Company,TVS Motor Company->PayPal,www.linkedin.com/in/suvanbalu,,Mid,2
+180,Ratish Agarwal,8,PayPal,8.2,The 1% Club,Personal Finance Master,disputes against adversely rated merchants worldwide.,disputes against adversely rated merchants worldwide.->PayPal,www.linkedin.com/in/ratish-agarwal,,Senior,2
+181,Manoj Sah,8,PayPal,9.0,"Government College of Engineering and Textile Technology,",BE,Ather Energy,Ather Energy->PayPal,www.linkedin.com/in/manoj-sah-,,Senior,2
+182,Angular CLI,8,PayPal,5.2,INDIRA GANDHI DELHI TECHNICAL UNIVERSITY FOR WOMEN,BTech,Wells Fargo,Wells Fargo->PayPal,www.linkedin.com/in/kavyarora,,Senior,2
+183,Sirisha Tummalapenta,5,Salesforce,10.2,Page 1 of,Andhra University Bachelor’s Degree,FactSet,FactSet->Salesforce,www.linkedin.com/in/sirisha-,,Senior,2
+184,Pankaj Kumar Sharma,8,Urban Company,12.7,International Institute of Information Technology,MTech,business including Native brand,business including Native brand->Urban Company,www.linkedin.com/in/pankaj-kumar-,,Senior,2

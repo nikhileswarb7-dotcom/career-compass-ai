@@ -1,0 +1,156 @@
+pattern_id,pattern_name,frequency,description
+1,NonCSE->SDE,30,Engineers from non-CSE backgrounds transitioning into software engineering
+2,Intern->SDE,8,Observed transition path: Intern->SDE
+3,Amazon->Microsoft,7,Observed transition path: Amazon->Microsoft
+4,Intern->SDE1->SDE2,5,Observed transition path: Intern->SDE1->SDE2
+5,Campus->Amazon,5,Observed transition path: Campus->Amazon
+6,Qualcomm->Microsoft,4,Observed transition path: Qualcomm->Microsoft
+7,Amazon->Blinkit,3,Observed transition path: Amazon->Blinkit
+8,Flipkart->Microsoft,3,Observed transition path: Flipkart->Microsoft
+9,Zomato->Blinkit,2,Observed transition path: Zomato->Blinkit
+10,Accenture->Blinkit,2,Observed transition path: Accenture->Blinkit
+11,Campus->PayPal,2,Observed transition path: Campus->PayPal
+12,FactSet->Amazon,1,Observed transition path: FactSet->Amazon
+13,American Express->Amazon,1,Observed transition path: American Express->Amazon
+14,Campus->Tata Consultancy Services,1,Observed transition path: Campus->Tata Consultancy Services
+15,Swiggy->Software Development Engineer III,1,Observed transition path: Swiggy->Software Development Engineer III
+16,Accenture->Amazon,1,Observed transition path: Accenture->Amazon
+17,MyMedGlobal->Amazon,1,Observed transition path: MyMedGlobal->Amazon
+18,Zoho->Amazon,1,Observed transition path: Zoho->Amazon
+19,Voice Qube->Amazon,1,Observed transition path: Voice Qube->Amazon
+20,30% of development efforts leading to higher throughputs->Amazon,1,Observed transition path: 30% of development efforts leading to higher throughputs->Amazon
+21,Toddle - Your Teaching Partner->Amazon,1,Observed transition path: Toddle - Your Teaching Partner->Amazon
+22,Tata Consultancy Services->Rocket,1,Observed transition path: Tata Consultancy Services->Rocket
+23,EPAM Systems->Amazon,1,Observed transition path: EPAM Systems->Amazon
+24,Jio Platforms->Amazon,1,Observed transition path: Jio Platforms->Amazon
+25,Samsung Electronics->Amazon,1,Observed transition path: Samsung Electronics->Amazon
+26,Rippling->Amazon,1,Observed transition path: Rippling->Amazon
+27,cppsecrets.com->Amazon,1,Observed transition path: cppsecrets.com->Amazon
+28,Cogos Technologies Pvt Ltd->Amazon,1,Observed transition path: Cogos Technologies Pvt Ltd->Amazon
+29,Josh Technology Group->Amazon,1,Observed transition path: Josh Technology Group->Amazon
+30,Deloitte->Tata Consultancy Services,1,Observed transition path: Deloitte->Tata Consultancy Services
+31,FlexTrade->Amazon,1,Observed transition path: FlexTrade->Amazon
+32,Codingal->Tata Consultancy Services,1,Observed transition path: Codingal->Tata Consultancy Services
+33,Zolo->Amazon,1,Observed transition path: Zolo->Amazon
+34,MAQ Software->Amazon,1,Observed transition path: MAQ Software->Amazon
+35,The Sparks Foundation->Amazon,1,Observed transition path: The Sparks Foundation->Amazon
+36,e3NexT Solutions->Blinkit,1,Observed transition path: e3NexT Solutions->Blinkit
+37,Prismforce->Blinkit,1,Observed transition path: Prismforce->Blinkit
+38,NEWME->Blinkit,1,Observed transition path: NEWME->Blinkit
+39,backend changes. Developed the project using ReactJs and ReScript.->Blinkit,1,Observed transition path: backend changes. Developed the project using ReactJs and ReScript.->Blinkit
+40,Bungee Tech->Blinkit,1,Observed transition path: Bungee Tech->Blinkit
+41,Jio Platforms->Blinkit,1,Observed transition path: Jio Platforms->Blinkit
+42,Pocket FM->Blinkit,1,Observed transition path: Pocket FM->Blinkit
+43,Yubi->Blinkit,1,Observed transition path: Yubi->Blinkit
+44,MapOut->Blinkit,1,Observed transition path: MapOut->Blinkit
+45,Crio.Do->Blinkit,1,Observed transition path: Crio.Do->Blinkit
+46,Probo->Blinkit,1,Observed transition path: Probo->Blinkit
+47,Urban Company->Blinkit,1,Observed transition path: Urban Company->Blinkit
+48,significantly.->Blinkit,1,Observed transition path: significantly.->Blinkit
+49,Swayam Infotech->Blinkit,1,Observed transition path: Swayam Infotech->Blinkit
+50,Finrep AI->Blinkit,1,Observed transition path: Finrep AI->Blinkit
+51,Lowe's India->Blinkit,1,Observed transition path: Lowe's India->Blinkit
+52,FRND->Blinkit,1,Observed transition path: FRND->Blinkit
+53,Meesho->Blinkit,1,Observed transition path: Meesho->Blinkit
+54,Vedanta Limited - Aluminium Business->Blinkit,1,Observed transition path: Vedanta Limited - Aluminium Business->Blinkit
+55,Flipkart->Blinkit,1,Observed transition path: Flipkart->Blinkit
+56,Alltius->Blinkit,1,Observed transition path: Alltius->Blinkit
+57,IndusianAssist Private Limited->Blinkit,1,Observed transition path: IndusianAssist Private Limited->Blinkit
+58,Working in the Catalogue Mangement System team->Blinkit,1,Observed transition path: Working in the Catalogue Mangement System team->Blinkit
+59,PhonePe->Blinkit,1,Observed transition path: PhonePe->Blinkit
+60,WheelsEye->Blinkit,1,Observed transition path: WheelsEye->Blinkit
+61,Tokopedia->Blinkit,1,Observed transition path: Tokopedia->Blinkit
+62,Adobe->Blinkit,1,Observed transition path: Adobe->Blinkit
+63,United Techlab->Blinkit,1,Observed transition path: United Techlab->Blinkit
+64,Morgan Stanley->Blinkit,1,Observed transition path: Morgan Stanley->Blinkit
+65,OYO->Blinkit,1,Observed transition path: OYO->Blinkit
+66,Mindtickle->Blinkit,1,Observed transition path: Mindtickle->Blinkit
+67,Yamaha Motor Solutions India Pvt.Ltd.->Blinkit,1,Observed transition path: Yamaha Motor Solutions India Pvt.Ltd.->Blinkit
+68,Spinny->Blinkit,1,Observed transition path: Spinny->Blinkit
+69,IBM->Microsoft,1,Observed transition path: IBM->Microsoft
+70,Airtel Digital->Microsoft,1,Observed transition path: Airtel Digital->Microsoft
+71,American Express->Microsoft,1,Observed transition path: American Express->Microsoft
+72,Zeta->Microsoft,1,Observed transition path: Zeta->Microsoft
+73,FarEye->Microsoft,1,Observed transition path: FarEye->Microsoft
+74,Walmart Global Tech India->Google,1,Observed transition path: Walmart Global Tech India->Google
+75,Campus->Microsoft,1,Observed transition path: Campus->Microsoft
+76,PayU->Microsoft,1,Observed transition path: PayU->Microsoft
+77,SmartSoC Solutions Pvt Ltd->Microsoft,1,Observed transition path: SmartSoC Solutions Pvt Ltd->Microsoft
+78,"VORTEX, CSEA NIT Trichy->Microsoft",1,"Observed transition path: VORTEX, CSEA NIT Trichy->Microsoft"
+79,Zomato->Microsoft,1,Observed transition path: Zomato->Microsoft
+80,Infra.Market->Google,1,Observed transition path: Infra.Market->Google
+81,PhonePe->Google,1,Observed transition path: PhonePe->Google
+82,Phenom People->Microsoft,1,Observed transition path: Phenom People->Microsoft
+83,Pioneering Web Solutions->Microsoft,1,Observed transition path: Pioneering Web Solutions->Microsoft
+84,SAP Labs India->Microsoft,1,Observed transition path: SAP Labs India->Microsoft
+85,SingleStore->Microsoft,1,Observed transition path: SingleStore->Microsoft
+86,slow network users.->Microsoft,1,Observed transition path: slow network users.->Microsoft
+87,Expedia Group->Microsoft,1,Observed transition path: Expedia Group->Microsoft
+88,Salesforce->Microsoft,1,Observed transition path: Salesforce->Microsoft
+89,JPMorgan Chase & Co.->Microsoft,1,Observed transition path: JPMorgan Chase & Co.->Microsoft
+90,Phenom->Microsoft,1,Observed transition path: Phenom->Microsoft
+91,PES University->Microsoft,1,Observed transition path: PES University->Microsoft
+92,Goldman Sachs->Microsoft,1,Observed transition path: Goldman Sachs->Microsoft
+93,Joint Secretary->Microsoft,1,Observed transition path: Joint Secretary->Microsoft
+94,Incedo Inc.->Amazon,1,Observed transition path: Incedo Inc.->Amazon
+95,Infosys->Amazon,1,Observed transition path: Infosys->Amazon
+96,Flipkart->Amazon,1,Observed transition path: Flipkart->Amazon
+97,Akamai Technologies->Amazon,1,Observed transition path: Akamai Technologies->Amazon
+98,Wiley Edge->Amazon,1,Observed transition path: Wiley Edge->Amazon
+99,Rexzet Solutions->Amazon,1,Observed transition path: Rexzet Solutions->Amazon
+100,JPMorgan Chase & Co.->Apple,1,Observed transition path: JPMorgan Chase & Co.->Apple
+101,Scaler->Blinkit,1,Observed transition path: Scaler->Blinkit
+102,Shiprocket->Blinkit,1,Observed transition path: Shiprocket->Blinkit
+103,Cosedge->Blinkit,1,Observed transition path: Cosedge->Blinkit
+104,Chat->Blinkit,1,Observed transition path: Chat->Blinkit
+105,National engineering olympiads->Cognizant,1,Observed transition path: National engineering olympiads->Cognizant
+106,Campus->Flipkart,1,Observed transition path: Campus->Flipkart
+107,Elevizo->Medimaze Solutions Pvt Ltd,1,Observed transition path: Elevizo->Medimaze Solutions Pvt Ltd
+108,Accenture->Flipkart,1,Observed transition path: Accenture->Flipkart
+109,Encora Inc.->Arcesium,1,Observed transition path: Encora Inc.->Arcesium
+110,Amdocs->NVIDIA,1,Observed transition path: Amdocs->NVIDIA
+111,Oracle->Salesforce,1,Observed transition path: Oracle->Salesforce
+112,LetsTransport->Google,1,Observed transition path: LetsTransport->Google
+113,Publicis Sapient->Groww,1,Observed transition path: Publicis Sapient->Groww
+114,Campus->,1,Observed transition path: Campus->
+115,Tata Consultancy Services->JUSPAY,1,Observed transition path: Tata Consultancy Services->JUSPAY
+116,UBS->A.P. Moller - Maersk,1,Observed transition path: UBS->A.P. Moller - Maersk
+117,Cogoport->Avaamo,1,Observed transition path: Cogoport->Avaamo
+118,GirlScript Summer of Code->BNY,1,Observed transition path: GirlScript Summer of Code->BNY
+119,Amazon->Oracle,1,Observed transition path: Amazon->Oracle
+120,Vxaro technologies pvt ltd->Cybermasks software pvt ltd,1,Observed transition path: Vxaro technologies pvt ltd->Cybermasks software pvt ltd
+121,Campus->BBI,1,Observed transition path: Campus->BBI
+122,HCL Technologies->Synchrony,1,Observed transition path: HCL Technologies->Synchrony
+123,Emirates->SAP,1,Observed transition path: Emirates->SAP
+124,Acko->PayPal,1,Observed transition path: Acko->PayPal
+125,Crio.Do->PayPal,1,Observed transition path: Crio.Do->PayPal
+126,Pegasystems->PayPal,1,Observed transition path: Pegasystems->PayPal
+127,Synechron->PayPal,1,Observed transition path: Synechron->PayPal
+128,Zoho->PayPal,1,Observed transition path: Zoho->PayPal
+129,Freshworks->PayPal,1,Observed transition path: Freshworks->PayPal
+130,Verifone->PayPal,1,Observed transition path: Verifone->PayPal
+131,Secondary users consent management for AU-CDR clients->PayPal,1,Observed transition path: Secondary users consent management for AU-CDR clients->PayPal
+132,Tradable->PayPal,1,Observed transition path: Tradable->PayPal
+133,udaan.com->PayPal,1,Observed transition path: udaan.com->PayPal
+134,ZEE - Technology & Innovation->PayPal,1,Observed transition path: ZEE - Technology & Innovation->PayPal
+135,Software Engineer->PayPal,1,Observed transition path: Software Engineer->PayPal
+136,Adobe->PayPal,1,Observed transition path: Adobe->PayPal
+137,Birdeye->PayPal,1,Observed transition path: Birdeye->PayPal
+138,BambooBox->PayPal,1,Observed transition path: BambooBox->PayPal
+139,Zoho Corporation->PayPal,1,Observed transition path: Zoho Corporation->PayPal
+140,ZoomRx->PayPal,1,Observed transition path: ZoomRx->PayPal
+141,Flipkart->PayPal,1,Observed transition path: Flipkart->PayPal
+142,Fidelity Investments->PayPal,1,Observed transition path: Fidelity Investments->PayPal
+143,JPMorgan Chase & Co.->PayPal,1,Observed transition path: JPMorgan Chase & Co.->PayPal
+144,M2P Fintech->PayPal,1,Observed transition path: M2P Fintech->PayPal
+145,The Sparks Foundation->PayPal,1,Observed transition path: The Sparks Foundation->PayPal
+146,PayPal->MakeMyTrip,1,Observed transition path: PayPal->MakeMyTrip
+147,Talentica Software->PayPal,1,Observed transition path: Talentica Software->PayPal
+148,Ford Motor Company->PayPal,1,Observed transition path: Ford Motor Company->PayPal
+149,TVS Motor Company->PayPal,1,Observed transition path: TVS Motor Company->PayPal
+150,disputes against adversely rated merchants worldwide.->PayPal,1,Observed transition path: disputes against adversely rated merchants worldwide.->PayPal
+151,Ather Energy->PayPal,1,Observed transition path: Ather Energy->PayPal
+152,Wells Fargo->PayPal,1,Observed transition path: Wells Fargo->PayPal
+153,FactSet->Salesforce,1,Observed transition path: FactSet->Salesforce
+154,business including Native brand->Urban Company,1,Observed transition path: business including Native brand->Urban Company
+155,IIIT->Microsoft,1,IIIT graduates joining Microsoft

@@ -1,0 +1,564 @@
+.dashboard-wrapper {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.welcome-banner-row {
+  text-align: left;
+}
+
+.welcome-banner-row h1 {
+  font-family: var(--font-title);
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-banner-row p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* Metrics row */
+.dashboard-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.metric-item {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-lbl {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric-val {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  font-weight: 750;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metric-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.role-text-fit {
+  font-size: 1.4rem;
+  line-height: 1.3;
+  padding: 0.15rem 0;
+}
+
+/* Split grids */
+.dashboard-row-split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* Readiness Score Radial Dial */
+.score-dial-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.25rem;
+}
+
+.dial-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.dial-svg-box {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.dial-bg-circle {
+  fill: none;
+  stroke: var(--card-sub-bg);
+  stroke-width: 10;
+}
+
+.dial-active-circle {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+.dial-value-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-title);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.dial-info-text {
+  text-align: left;
+}
+
+.dial-info-text h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  margin-bottom: 0.25rem;
+}
+
+.dial-info-text p {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+/* AI Coach Summary Card */
+.ai-coach-summary-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ai-summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ai-summary-header h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+}
+
+.ai-icon {
+  color: var(--primary);
+}
+
+.ai-summary-text {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+/* Career Twin Card */
+.career-twin-card {
+  text-align: left;
+}
+
+.card-heading-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.career-twin-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.twin-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.twin-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--emerald), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.twin-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.twin-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.twin-role {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.twin-match-percentage {
+  color: var(--emerald);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.twin-career-path-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flow-title {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.flow-nodes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.flow-node-badge {
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.flow-arrow {
+  color: var(--primary);
+  font-size: 0.75rem;
+}
+
+/* Skill Gaps Card */
+.skill-gaps-card {
+  text-align: left;
+}
+
+.card-desc-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+}
+
+.gaps-badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dashboard-gap-badge {
+  background: rgba(244, 63, 94, 0.08);
+  color: var(--rose);
+  border: 1px solid rgba(244, 63, 94, 0.15);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 30px;
+}
+
+.dashboard-gap-badge.success {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--emerald);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+/* Company target metrics */
+.company-readiness-card {
+  text-align: left;
+}
+
+.readiness-metrics-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.readiness-metrics-table .metric-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+}
+
+.readiness-metrics-table .lbl {
+  color: var(--text-muted);
+}
+
+.readiness-metrics-table .val {
+  font-weight: 600;
+}
+
+.highlight-rose {
+  color: var(--rose);
+}
+
+/* Similar matches list */
+.similar-matches-card {
+  text-align: left;
+}
+
+.peers-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.peer-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+}
+
+.peer-name-col {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.15rem;
+}
+
+.peer-name-col strong {
+  font-size: 0.88rem;
+}
+
+.peer-name-col span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.peer-match-col {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.08);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* Supply and demand stats */
+.stats-card {
+  text-align: left;
+  padding: 2rem;
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 0.75rem;
+}
+
+.stats-header h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+}
+
+.source-db-badge {
+  font-size: 0.68rem;
+  background: var(--card-sub-bg);
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-glass);
+}
+
+.colleges-ranks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.college-rank-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--card-sub-bg);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+}
+
+.college-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rank-number {
+  font-weight: 700;
+  color: var(--primary);
+  width: 20px;
+  font-size: 0.9rem;
+}
+
+.college-name-text {
+  font-weight: 550;
+  font-size: 0.88rem;
+}
+
+.hires-count-tag {
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--primary);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.skills-bar-chart-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.skill-frequency-bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skill-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.skill-bar-name {
+  font-weight: 550;
+}
+
+.skill-bar-count {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.skill-bar-bg {
+  height: 8px;
+  background: var(--card-sub-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 4px;
+  transition: width 1s ease-out;
+}
+
+@media (max-width: 900px) {
+  .dashboard-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-row-split-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Navigation CTA banner */
+.dashboard-cta-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(255, 161, 22, 0.07) 0%, rgba(59, 130, 246, 0.05) 100%);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-top: 1rem;
+  gap: 1.5rem;
+  text-align: left;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-cta-banner h3 {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-main);
+}
+
+.dashboard-cta-banner p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.cta-nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--warning) 100%);
+  color: var(--text-on-accent);
+  border: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 8px;
+  font-family: var(--font-title);
+  font-weight: 650;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 15px rgba(255, 161, 22, 0.3);
+  flex-shrink: 0;
+}
+
+.cta-nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 161, 22, 0.4);
+}
+
+.cta-nav-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .dashboard-cta-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+  
+  .cta-nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

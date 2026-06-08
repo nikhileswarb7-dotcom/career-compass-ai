@@ -1,0 +1,91 @@
+{
+  "company_name": "Blinkit",
+  "industry": "Quick Commerce",
+  "founded_year": 2013,
+  "formerly_known_as": "Grofers",
+  "headquarters": "Gurugram, Haryana, India",
+  "parent_company": "Zomato",
+  "description": "Blinkit is India's leading instant delivery platform that delivers groceries, essentials, and everyday items in under 10 minutes using a dark-store model.",
+  "mission": "To deliver everything in minutes.",
+  "work_culture": [
+    "Fast-paced product engineering culture",
+    "Data-driven decision making",
+    "Ownership and accountability mindset",
+    "Engineers design scalable systems under high traffic",
+    "Flat hierarchy with direct access to leadership",
+    "On-call responsibilities expected"
+  ],
+  "tech_stack": {
+    "languages": ["Java", "Python", "Go"],
+    "frameworks": ["Spring Boot", "FastAPI"],
+    "databases": ["MySQL", "PostgreSQL", "Redis", "Elasticsearch"],
+    "messaging": ["Apache Kafka"],
+    "cloud": ["AWS (EC2, S3, RDS, Lambda)"],
+    "devops": ["Docker", "Kubernetes", "Jenkins"],
+    "monitoring": ["Grafana", "Prometheus", "DataDog"]
+  },
+  "interview_process": [
+    {
+      "round": 1,
+      "name": "Online Assessment",
+      "focus": "DSA",
+      "duration_minutes": 90,
+      "platform": "HackerRank / Unstop",
+      "description": "2-3 DSA problems. Array, String, Graph, DP level questions."
+    },
+    {
+      "round": 2,
+      "name": "DSA Technical Interview",
+      "focus": "Data Structures & Algorithms",
+      "duration_minutes": 60,
+      "description": "Live coding round. Medium to Hard LeetCode level. Interviewer checks approach, edge cases, complexity."
+    },
+    {
+      "round": 3,
+      "name": "Low Level Design (LLD)",
+      "focus": "Object Oriented Design",
+      "duration_minutes": 60,
+      "description": "Design classes, relationships, and UML. Examples: Parking Lot, Library System, Ride Sharing."
+    },
+    {
+      "round": 4,
+      "name": "High Level Design (HLD)",
+      "focus": "System Design",
+      "duration_minutes": 60,
+      "description": "Design scalable systems. Examples: Design Blinkit delivery system, URL shortener at scale, notification system."
+    },
+    {
+      "round": 5,
+      "name": "HR Round",
+      "focus": "Behavioral",
+      "duration_minutes": 30,
+      "description": "Culture fit, career goals, situational questions."
+    }
+  ],
+  "salary_range": {
+    "intern": "20,000 – 50,000 INR/month",
+    "sde_1": "10 – 18 LPA",
+    "sde_2": "18 – 30 LPA",
+    "senior_sde": "30 – 50 LPA",
+    "tech_lead": "50 – 80 LPA"
+  },
+  "career_growth_path": [
+    "Intern",
+    "SDE-1",
+    "SDE-2",
+    "Senior SDE",
+    "Tech Lead",
+    "Engineering Manager",
+    "Director of Engineering"
+  ],
+  "engineering_blogs": [
+    "https://tech.blinkit.com"
+  ],
+  "key_engineering_challenges": [
+    "Real-time inventory management across 500+ dark stores",
+    "Order routing and delivery partner assignment at scale",
+    "10-minute delivery SLA under high concurrency",
+    "Demand forecasting using ML at hyper-local level",
+    "Fraud detection in real-time payments"
+  ]
+}

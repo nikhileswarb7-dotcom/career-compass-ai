@@ -1,0 +1,121 @@
+student_id,name,email,qualification_id,branch,cgpa,college
+1,Srilekha Solanki,srilekha.solanki1@gmail.com,1,Computer Science,7.14,NIT Calicut
+2,Satyam Singh,satyam.singh2@gmail.com,4,Computer Science,7.14,IIT Delhi
+3,Akhil Saxena,akhil.saxena3@gmail.com,1,Computer Science,8.53,College of Engineering Pune
+4,Nishitha Solanki,nishitha.solanki4@gmail.com,2,Computer Science,9.37,IIIT Allahabad
+5,Paidipala Rao,paidipala.rao5@gmail.com,4,Electronics,7.89,NIT Kurukshetra
+6,Krishna Mehta,krishna.mehta6@gmail.com,4,Computer Science,8.52,Techno India University
+7,Nizam Pandey,nizam.pandey7@gmail.com,2,Electronics,9.07,IIIT Allahabad
+8,Amit Joshi,amit.joshi8@gmail.com,2,Electronics,6.0,IIIT Guwahati
+9,Aditya Ranjan,aditya.ranjan9@gmail.com,4,Information Technology,8.12,IIIT Allahabad
+10,Vineela Shah,vineela.shah10@gmail.com,1,Electronics,7.34,IIT Bombay
+11,Megha Saxena,megha.saxena11@gmail.com,3,Computer Science,8.87,IIT Bombay
+12,Akhil Rathore,akhil.rathore12@gmail.com,1,Electronics,7.01,IIIT Allahabad
+13,Srilekha Bose,srilekha.bose13@gmail.com,4,Electronics,6.56,IIIT Gwalior
+14,Rohan Pandey,rohan.pandey14@gmail.com,3,Computer Science,8.49,IIIT Dharwad
+15,Pranav Ranjan,pranav.ranjan15@gmail.com,1,Electronics,8.02,NIT Kurukshetra
+16,Satyam Sinha,satyam.sinha16@gmail.com,2,Information Technology,7.12,IIIT Allahabad
+17,Ram Rathore,ram.rathore17@gmail.com,1,Computer Science,6.54,NIT Calicut
+18,Abhishek Mohammed,abhishek.mohammed18@gmail.com,1,Computer Science,9.11,Amity School of Engineering
+19,Apoorv Rathore,apoorv.rathore19@gmail.com,4,Computer Science,6.08,NIT Rourkela
+20,Abhishek Gill,abhishek.gill20@gmail.com,3,Electronics,9.42,Amity School of Engineering
+21,Rohan Mishra,rohan.mishra21@gmail.com,4,Information Technology,6.18,NIT Trichy
+22,Sathish Goel,sathish.goel22@gmail.com,4,Information Technology,7.7,NIT Warangal
+23,Taitiksh Mohammed,taitiksh.mohammed23@gmail.com,1,Electronics,6.81,IIT Bombay
+24,Siddharth Bose,siddharth.bose24@gmail.com,4,Electronics,8.8,IIT BHU
+25,Neha Kumar,neha.kumar25@gmail.com,3,Computer Science,9.28,PES University
+26,Abhishek Goel,abhishek.goel26@gmail.com,1,Information Technology,6.21,BMS Institute of Technology
+27,Utkarsh Deshmukh,utkarsh.deshmukh27@gmail.com,3,Computer Science,8.5,Delhi Technological University
+28,Sneha Verma,sneha.verma28@gmail.com,2,Computer Science,6.3,IIT Bombay
+29,Karan Mohammed,karan.mohammed29@gmail.com,1,Computer Science,7.76,NIT Calicut
+30,Kavya Dubey,kavya.dubey30@gmail.com,3,Electronics,7.4,IIIT Allahabad
+31,Srishti Tiwari,srishti.tiwari31@gmail.com,1,Computer Science,7.94,IIIT Gwalior
+32,Aayush Shetty,aayush.shetty32@gmail.com,3,Computer Science,8.27,NIT Trichy
+33,Paidipala Mehta,paidipala.mehta33@gmail.com,1,Electronics,8.96,IIT Kharagpur
+34,Sai Mehta,sai.mehta34@gmail.com,1,Information Technology,9.56,Netaji Subhash Engineering College
+35,Deepak Dwivedi,deepak.dwivedi35@gmail.com,2,Information Technology,6.95,IIIT Kota
+36,Satyam Jadhav,satyam.jadhav36@gmail.com,1,Information Technology,6.27,IIIT Sri City
+37,Revant Prasad,revant.prasad37@gmail.com,4,Computer Science,8.17,KIET Group of Institutions
+38,Ashok Jain,ashok.jain38@gmail.com,4,Computer Science,8.4,Amity School of Engineering
+39,Sai Patel,sai.patel39@gmail.com,4,Information Technology,7.6,IIT Delhi
+40,Priyank Sinha,priyank.sinha40@gmail.com,1,Computer Science,8.28,IIIT Sri City
+41,Tanvi Sinha,tanvi.sinha41@gmail.com,3,Computer Science,9.7,College of Engineering Pune
+42,Divya Zaidi,divya.zaidi42@gmail.com,3,Computer Science,7.39,IIIT Delhi
+43,Revant Rao,revant.rao43@gmail.com,2,Computer Science,9.79,IIT Bombay
+44,Ishita Sharma,ishita.sharma44@gmail.com,3,Computer Science,8.7,NIT Warangal
+45,Revant Singh,revant.singh45@gmail.com,4,Computer Science,6.62,IIT Ropar
+46,Vikram Mehta,vikram.mehta46@gmail.com,3,Computer Science,9.29,IIT Ropar
+47,Venkatesh Mehta,venkatesh.mehta47@gmail.com,3,Information Technology,9.75,IIIT Sri City
+48,Karan Singh,karan.singh48@gmail.com,1,Computer Science,6.25,Delhi Technological University
+49,Vikram Mehta,vikram.mehta49@gmail.com,1,Electronics,6.96,NIT Trichy
+50,Aditya Bhat,aditya.bhat50@gmail.com,1,Computer Science,7.99,IIT Ropar
+51,Gaurav Pillai,gaurav.pillai51@gmail.com,3,Information Technology,9.73,IIT Kharagpur
+52,Paidipala Nair,paidipala.nair52@gmail.com,1,Computer Science,9.46,NIT Rourkela
+53,Divya Deshmukh,divya.deshmukh53@gmail.com,2,Computer Science,6.21,IIIT Gwalior
+54,Rahul Agarwal,rahul.agarwal54@gmail.com,4,Electronics,9.14,IIT Ropar
+55,Revant Reddy,revant.reddy55@gmail.com,4,Electronics,7.0,IIIT Guwahati
+56,Utkarsh Jadhav,utkarsh.jadhav56@gmail.com,4,Electronics,9.72,NIT Rourkela
+57,Nizam Iyer,nizam.iyer57@gmail.com,4,Computer Science,7.83,IIT Roorkee
+58,Tanvi Bose,tanvi.bose58@gmail.com,4,Computer Science,7.69,NIT Trichy
+59,Krishna Bijjam,krishna.bijjam59@gmail.com,1,Electronics,7.51,IIT BHU
+60,Apoorv Rao,apoorv.rao60@gmail.com,1,Computer Science,9.16,IIIT Guwahati
+61,Arjun Das,arjun.das61@gmail.com,1,Computer Science,8.14,Delhi Technological University
+62,Aayush Sinha,aayush.sinha62@gmail.com,3,Computer Science,8.84,IIIT Kota
+63,Srilekha Iyer,srilekha.iyer63@gmail.com,4,Electronics,7.02,IIIT Sri City
+64,Utkarsh Supraja,utkarsh.supraja64@gmail.com,1,Computer Science,6.85,Techno India University
+65,Harsha Dubey,harsha.dubey65@gmail.com,4,Computer Science,7.93,BMS Institute of Technology
+66,Gaurav Reddy,gaurav.reddy66@gmail.com,2,Electronics,9.7,SRM University
+67,Harsha Prasad,harsha.prasad67@gmail.com,4,Electronics,7.53,IIT Ropar
+68,Rohan Verma,rohan.verma68@gmail.com,2,Information Technology,7.6,IIT Delhi
+69,Ram Agarwal,ram.agarwal69@gmail.com,4,Computer Science,7.41,College of Engineering Pune
+70,Neha Choudhury,neha.choudhury70@gmail.com,3,Computer Science,7.37,IIIT Dharwad
+71,Nishitha Pillai,nishitha.pillai71@gmail.com,1,Electronics,7.81,Techno India University
+72,Sita Deshmukh,sita.deshmukh72@gmail.com,4,Computer Science,8.19,College of Engineering Pune
+73,Gaurav Gupta,gaurav.gupta73@gmail.com,1,Information Technology,6.24,IIIT Allahabad
+74,Aayush Kulkarni,aayush.kulkarni74@gmail.com,3,Information Technology,9.47,IIIT Sri City
+75,Harsha Choudhury,harsha.choudhury75@gmail.com,4,Electronics,6.2,BMS Institute of Technology
+76,Shubham Nair,shubham.nair76@gmail.com,4,Electronics,7.49,Delhi Technological University
+77,Kunal Bijjam,kunal.bijjam77@gmail.com,3,Electronics,6.29,Amity School of Engineering
+78,Pranav Mundhra,pranav.mundhra78@gmail.com,3,Information Technology,7.02,BITS Pilani
+79,Siddharth Mundhra,siddharth.mundhra79@gmail.com,1,Electronics,8.39,NIT Surathkal
+80,Manish Dwivedi,manish.dwivedi80@gmail.com,1,Information Technology,9.62,Netaji Subhash Engineering College
+81,Aayush Kulkarni,aayush.kulkarni81@gmail.com,3,Information Technology,8.36,KIET Group of Institutions
+82,Karan Sinha,karan.sinha82@gmail.com,1,Information Technology,7.97,NIT Trichy
+83,Kavya Jain,kavya.jain83@gmail.com,2,Electronics,8.2,IIIT Guwahati
+84,Aditya Mohammed,aditya.mohammed84@gmail.com,4,Computer Science,6.56,NIT Trichy
+85,Paidipala Mohammed,paidipala.mohammed85@gmail.com,2,Information Technology,9.2,IIT BHU
+86,Abhishek Mundhra,abhishek.mundhra86@gmail.com,4,Information Technology,9.12,PES University
+87,Venkatesh Kulkarni,venkatesh.kulkarni87@gmail.com,1,Computer Science,7.86,PES University
+88,Priyank Zaidi,priyank.zaidi88@gmail.com,3,Computer Science,6.63,KIET Group of Institutions
+89,Tanvi Shah,tanvi.shah89@gmail.com,3,Information Technology,6.72,IIIT Sri City
+90,Divya Kaur,divya.kaur90@gmail.com,4,Electronics,6.67,BMS Institute of Technology
+91,Kavya Bijjam,kavya.bijjam91@gmail.com,3,Information Technology,7.88,IIT Ropar
+92,Anjali Patel,anjali.patel92@gmail.com,2,Information Technology,6.83,VIT Vellore
+93,Taitiksh Shah,taitiksh.shah93@gmail.com,2,Computer Science,7.77,Delhi Technological University
+94,Arjun Joshi,arjun.joshi94@gmail.com,1,Computer Science,9.43,BITS Pilani
+95,Akhil Choudhury,akhil.choudhury95@gmail.com,2,Information Technology,7.33,VIT Vellore
+96,Ashok Supraja,ashok.supraja96@gmail.com,4,Electronics,6.24,NIT Warangal
+97,Swati Choudhury,swati.choudhury97@gmail.com,3,Computer Science,6.09,Techno India University
+98,Shubham Verma,shubham.verma98@gmail.com,2,Information Technology,7.37,Amity School of Engineering
+99,Rohan Solanki,rohan.solanki99@gmail.com,3,Electronics,7.21,IIIT Sri City
+100,Ram Kumar,ram.kumar100@gmail.com,2,Information Technology,9.24,NIT Rourkela
+101,Kavya Supraja,kavya.supraja101@gmail.com,4,Information Technology,6.56,NIT Trichy
+102,Srilekha Supraja,srilekha.supraja102@gmail.com,2,Computer Science,7.01,IIIT Delhi
+103,Sai Patel,sai.patel103@gmail.com,1,Computer Science,8.73,NIT Kurukshetra
+104,Vineela Jain,vineela.jain104@gmail.com,4,Information Technology,8.88,IIIT Kota
+105,Kavya Dubey,kavya.dubey105@gmail.com,3,Information Technology,7.37,IIIT Delhi
+106,Rajat Yadav,rajat.yadav106@gmail.com,4,Information Technology,9.66,BITS Pilani
+107,Kunal Pillai,kunal.pillai107@gmail.com,2,Information Technology,8.14,BITS Pilani
+108,Apoorv Kaur,apoorv.kaur108@gmail.com,4,Information Technology,9.16,IIT BHU
+109,Kavya Joshi,kavya.joshi109@gmail.com,3,Electronics,7.52,BITS Pilani
+110,Kavya Rathore,kavya.rathore110@gmail.com,4,Electronics,8.91,IIT Bhilai
+111,Teja Sinha,teja.sinha111@gmail.com,1,Electronics,8.21,IIIT Allahabad
+112,Deepak Sen,deepak.sen112@gmail.com,4,Electronics,8.63,BMS Institute of Technology
+113,Utkarsh Mundhra,utkarsh.mundhra113@gmail.com,2,Electronics,7.47,NIT Kurukshetra
+114,Syed Gupta,syed.gupta114@gmail.com,1,Computer Science,7.03,IIIT Kota
+115,Shubham Verma,shubham.verma115@gmail.com,1,Electronics,6.2,NIT Kurukshetra
+116,Venkatesh Saxena,venkatesh.saxena116@gmail.com,3,Electronics,7.44,IIT Delhi
+117,Amit Goel,amit.goel117@gmail.com,3,Information Technology,6.39,NIT Warangal
+118,Ishita Rathore,ishita.rathore118@gmail.com,1,Information Technology,9.32,College of Engineering Pune
+119,Neha Bhat,neha.bhat119@gmail.com,3,Information Technology,9.67,College of Engineering Pune
+120,Siddharth Solanki,siddharth.solanki120@gmail.com,1,Computer Science,8.74,NIT Surathkal

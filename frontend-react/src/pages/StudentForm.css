@@ -1,0 +1,252 @@
+.form-card-container {
+  padding: 1rem 0;
+}
+
+.form-title-section {
+  text-align: left;
+  margin-bottom: 2.5rem;
+}
+
+.form-title-section h1 {
+  font-family: var(--font-title);
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.student-intake-form {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Checkbox alignment */
+.form-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.5rem 0 1rem 0;
+  text-align: left;
+}
+
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--checkbox-border);
+  border-radius: 4px;
+  background: var(--card-sub-bg);
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom-checkbox:checked {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.custom-checkbox:checked::after {
+  content: '✓';
+  color: var(--text-on-accent);
+  font-size: 12px;
+  font-weight: 900;
+  position: absolute;
+}
+
+.checkbox-label {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* File Drop Zone */
+.file-drop-zone {
+  border: 2px dashed var(--border-glass);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  background: var(--card-sub-bg);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.file-drop-zone:hover,
+.file-drop-zone.dragover {
+  border-color: var(--primary);
+  background: var(--card-sub-bg-hover);
+}
+
+.drop-zone-label-trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.upload-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.trigger-text {
+  color: var(--primary);
+}
+
+.drop-zone-hint {
+  font-size: 0.72rem;
+}
+
+.drop-zone-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.loader-circle {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--border-glass);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+}
+
+.drop-zone-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.file-icon.success {
+  color: var(--emerald);
+  width: 24px;
+  height: 24px;
+}
+
+.file-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.file-size {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.remove-file-btn {
+  background: transparent;
+  border: 1px solid var(--rose);
+  color: var(--rose);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-file-btn:hover {
+  background: var(--rose-glow);
+  border-color: var(--rose-border);
+}
+
+.upload-status-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-weight: 550;
+}
+
+.status-info { color: var(--primary); }
+.status-success { color: var(--emerald); }
+.status-error { color: var(--rose); }
+
+/* Textarea customization */
+.custom-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Skills tags selector */
+.skills-tags-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.skill-tag-badge {
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  font-family: inherit;
+}
+
+.skill-tag-badge:hover {
+  background: var(--card-sub-bg-hover);
+  border-color: var(--border-glass-hover);
+}
+
+.skill-tag-badge.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--text-on-accent);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.form-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 600px) {
+  .student-intake-form {
+    padding: 1.5rem;
+  }
+}

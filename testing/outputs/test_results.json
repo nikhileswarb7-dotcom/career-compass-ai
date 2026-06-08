@@ -1,0 +1,340 @@
+[
+  {
+    "test_id": "TC001",
+    "type": "Recommendation",
+    "description": "1st Year Student \u00e2\u20ac\u201d No skills at all",
+    "status": "PASS",
+    "readiness_score": 0,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 0,
+      "urgency": "Low",
+      "months_to_ready": 48,
+      "top_missing": [
+        "Java",
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "SQL",
+        "Object Oriented Programming",
+        "REST APIs",
+        "MySQL",
+        "Git & GitHub",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 48 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC002",
+    "type": "Recommendation",
+    "description": "1st Year \u00e2\u20ac\u201d Knows C and Python",
+    "status": "PASS",
+    "readiness_score": 0,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 0,
+      "urgency": "Low",
+      "months_to_ready": 48,
+      "top_missing": [
+        "Java",
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "SQL",
+        "Object Oriented Programming",
+        "REST APIs",
+        "MySQL",
+        "Git & GitHub",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 48 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC003",
+    "type": "Recommendation",
+    "description": "2nd Year \u00e2\u20ac\u201d Knows Java and Git",
+    "status": "PASS",
+    "readiness_score": 13,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 13,
+      "urgency": "Low",
+      "months_to_ready": 36,
+      "top_missing": [
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "SQL",
+        "Object Oriented Programming",
+        "REST APIs",
+        "MySQL",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 13% readiness. You have time \u2014 build systematically. Don't rush. Estimated 36 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC004",
+    "type": "Recommendation",
+    "description": "3rd Year \u00e2\u20ac\u201d Java + Git (typical placement candidate starting prep)",
+    "status": "PASS",
+    "readiness_score": 18,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 18,
+      "urgency": "High",
+      "months_to_ready": 18,
+      "top_missing": [
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "SQL",
+        "REST APIs",
+        "MySQL",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 18% readiness. You have time \u2014 build systematically. Don't rush. Estimated 18 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC005",
+    "type": "Recommendation",
+    "description": "3rd Year \u00e2\u20ac\u201d Strong candidate (Java, DSA, DBMS, OS)",
+    "status": "PASS",
+    "readiness_score": 49,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 49,
+      "urgency": "High",
+      "months_to_ready": 18,
+      "top_missing": [
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "REST APIs",
+        "MySQL",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're 49% ready. Follow the roadmap consistently. Estimated 18 month(s) needed."
+    }
+  },
+  {
+    "test_id": "TC006",
+    "type": "Recommendation",
+    "description": "4th Year \u00e2\u20ac\u201d Almost ready (missing only System Design)",
+    "status": "PASS",
+    "readiness_score": 81,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 81,
+      "urgency": "Critical",
+      "months_to_ready": 6,
+      "top_missing": [
+        "System Design",
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
+      ],
+      "message": "You're nearly interview-ready for Blinkit Software Development Engineer! Focus on mock interviews and system design polish. Estimated 6 month(s) to be fully ready."
+    }
+  },
+  {
+    "test_id": "TC007",
+    "type": "Recommendation",
+    "description": "4th Year \u00e2\u20ac\u201d No prep done at all",
+    "status": "PASS",
+    "readiness_score": 0,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 0,
+      "urgency": "Critical",
+      "months_to_ready": 6,
+      "top_missing": [
+        "Java",
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "Spring Boot",
+        "System Design",
+        "SQL",
+        "Object Oriented Programming",
+        "REST APIs",
+        "MySQL",
+        "Git & GitHub",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 6 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC008",
+    "type": "Recommendation",
+    "description": "Fresh Graduate \u00e2\u20ac\u201d Good foundation, missing advanced topics",
+    "status": "PASS",
+    "readiness_score": 49,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 49,
+      "urgency": "Critical",
+      "months_to_ready": 6,
+      "top_missing": [
+        "Operating Systems",
+        "Computer Networks",
+        "System Design",
+        "SQL",
+        "Object Oriented Programming",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're 49% ready. Follow the roadmap consistently. Estimated 6 month(s) needed."
+    }
+  },
+  {
+    "test_id": "TC009",
+    "type": "Recommendation",
+    "description": "Trainee Engineer \u00e2\u20ac\u201d Already working, has backend experience",
+    "status": "PASS",
+    "readiness_score": 36,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 36,
+      "urgency": "High",
+      "months_to_ready": 9,
+      "top_missing": [
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "System Design",
+        "SQL",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're at 36% readiness. You have time \u2014 build systematically. Don't rush. Estimated 9 months on your roadmap."
+    }
+  },
+  {
+    "test_id": "TC010",
+    "type": "Recommendation",
+    "description": "Junior Engineer \u00e2\u20ac\u201d Strong backend, weak on DS/System Design",
+    "status": "PASS",
+    "readiness_score": 41,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 41,
+      "urgency": "Medium",
+      "months_to_ready": 12,
+      "top_missing": [
+        "DSA (Combined)",
+        "DBMS",
+        "Operating Systems",
+        "Computer Networks",
+        "System Design",
+        "SQL",
+        "Low Level Design",
+        "High Level Design"
+      ],
+      "message": "You're 41% ready. Follow the roadmap consistently. Estimated 12 month(s) needed."
+    }
+  },
+  {
+    "test_id": "TC011",
+    "type": "Recommendation",
+    "description": "Junior Engineer \u00e2\u20ac\u201d Near complete",
+    "status": "PASS",
+    "readiness_score": 81,
+    "errors": [],
+    "output_summary": {
+      "readiness_score": 81,
+      "urgency": "Medium",
+      "months_to_ready": 12,
+      "top_missing": [
+        "Operating Systems",
+        "Computer Networks"
+      ],
+      "message": "You're nearly interview-ready for Blinkit Software Development Engineer! Focus on mock interviews and system design polish. Estimated 12 month(s) to be fully ready."
+    }
+  },
+  {
+    "test_id": "TC012",
+    "type": "NLP",
+    "description": "NLP Test \u00e2\u20ac\u201d 3rd year text input",
+    "status": "PASS",
+    "errors": [],
+    "parsed_output": {
+      "qualification": "3rd Year Student",
+      "known_skills": [
+        "Git & GitHub",
+        "Java"
+      ],
+      "target_company": "Blinkit",
+      "target_role": "Software Development Engineer",
+      "missing_entities": [],
+      "raw_input": "I'm a third year student. I know Java and Git. I want to become SDE at Blinkit."
+    }
+  },
+  {
+    "test_id": "TC013",
+    "type": "NLP",
+    "description": "NLP Test \u00e2\u20ac\u201d Fresh grad with abbreviations",
+    "status": "PASS",
+    "errors": [],
+    "parsed_output": {
+      "qualification": "Fresh Graduate",
+      "known_skills": [
+        "DBMS",
+        "DSA (Combined)",
+        "Java",
+        "Operating Systems",
+        "Spring Boot"
+      ],
+      "target_company": "Blinkit",
+      "target_role": "Software Development Engineer",
+      "missing_entities": [],
+      "raw_input": "Just graduated. Know Java, Spring Boot, DSA, DBMS, OS. Want SDE at Blinkit."
+    }
+  },
+  {
+    "test_id": "TC014",
+    "type": "NLP",
+    "description": "NLP Test \u00e2\u20ac\u201d Trainee with no explicit company",
+    "status": "PASS",
+    "errors": [],
+    "parsed_output": {
+      "qualification": "Trainee Engineer",
+      "known_skills": [
+        "Java",
+        "REST APIs"
+      ],
+      "target_company": "Blinkit",
+      "target_role": "Software Development Engineer",
+      "missing_entities": [
+        "target_company",
+        "target_role"
+      ],
+      "raw_input": "I am a trainee engineer. I know Java and REST APIs."
+    }
+  }
+]

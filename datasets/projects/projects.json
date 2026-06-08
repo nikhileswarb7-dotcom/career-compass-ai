@@ -1,0 +1,860 @@
+[
+    {
+        "project_name": "Distributed Message Queue",
+        "description": "Build a high-throughput message broker that supports publish-subscribe patterns and partition offsets.",
+        "difficulty": "Advanced",
+        "estimated_days": 30,
+        "skills_covered": [
+            "Go",
+            "Kafka",
+            "PostgreSQL",
+            "Distributed Systems"
+        ],
+        "outcome": "Demonstrates distributed message routing, thread-safe queuing, and custom TCP protocols."
+    },
+    {
+        "project_name": "Distributed Key-Value Store",
+        "description": "Create a partitioned, replicated key-value storage engine using Raft consensus protocol.",
+        "difficulty": "Advanced",
+        "estimated_days": 40,
+        "skills_covered": [
+            "Go",
+            "Redis",
+            "Distributed Systems",
+            "System Design"
+        ],
+        "outcome": "Demonstrates consensus protocols, socket connections, and disk storage management."
+    },
+    {
+        "project_name": "API Gateway with Dynamic Rate Limiting",
+        "description": "Implement a reverse proxy engine that routes requests and throttles requests using token bucket algorithm in Redis.",
+        "difficulty": "Intermediate",
+        "estimated_days": 15,
+        "skills_covered": [
+            "Go",
+            "Redis",
+            "Docker",
+            "System Design"
+        ],
+        "outcome": "Demonstrates middleware development, rate limiting, and reverse proxy routing."
+    },
+    {
+        "project_name": "Distributed Transaction Orchestrator (Saga)",
+        "description": "Write a coordinator service that manages multi-service updates using Saga pattern (compensating transactions).",
+        "difficulty": "Advanced",
+        "estimated_days": 25,
+        "skills_covered": [
+            "Java",
+            "Spring Boot",
+            "Kafka",
+            "Microservices"
+        ],
+        "outcome": "Demonstrates event-driven transactional consistency, error boundaries, and state machines."
+    },
+    {
+        "project_name": "SaaS Multi-Tenant Database Router",
+        "description": "Create a Java service that dynamically switches data sources based on tenant request headers using Hibernate/Postgres.",
+        "difficulty": "Intermediate",
+        "estimated_days": 20,
+        "skills_covered": [
+            "Java",
+            "Spring Boot",
+            "PostgreSQL",
+            "MySQL"
+        ],
+        "outcome": "Demonstrates tenant isolation patterns, pool pooling, and reflection configurations."
+    },
+    {
+        "project_name": "Log Aggregation & Search Pipeline",
+        "description": "Create a high-speed log ingestion shipper that indexes system events into Elasticsearch database.",
+        "difficulty": "Advanced",
+        "estimated_days": 21,
+        "skills_covered": [
+            "Python",
+            "ElasticSearch",
+            "Kafka",
+            "Docker"
+        ],
+        "outcome": "Demonstrates search query parsing, real-time log ingestion, and database indexing."
+    },
+    {
+        "project_name": "Websocket Chat Server at Scale",
+        "description": "Implement a server that handles 50,000 active websocket connections, broadcasts messages via Redis pub-sub.",
+        "difficulty": "Advanced",
+        "estimated_days": 18,
+        "skills_covered": [
+            "NodeJS",
+            "TypeScript",
+            "Redis",
+            "Websocket"
+        ],
+        "outcome": "Demonstrates async connection management, channels, and low-latency network I/O."
+    },
+    {
+        "project_name": "Job Scheduler Cron Engine",
+        "description": "Build an offline task scheduler that queues tasks in PostgreSQL and executes them using worker threads.",
+        "difficulty": "Intermediate",
+        "estimated_days": 14,
+        "skills_covered": [
+            "Go",
+            "PostgreSQL",
+            "MySQL",
+            "Docker"
+        ],
+        "outcome": "Demonstrates concurrent worker patterns, transactional locking, and task queues."
+    },
+    {
+        "project_name": "E-Commerce Inventory Lock Manager",
+        "description": "Build an inventory checkout blocker service using Redis Distributed Locks (Redlock) to prevent overselling.",
+        "difficulty": "Intermediate",
+        "estimated_days": 12,
+        "skills_covered": [
+            "Java",
+            "Spring Boot",
+            "Redis",
+            "Microservices"
+        ],
+        "outcome": "Demonstrates concurrency control, lock lease handling, and caching."
+    },
+    {
+        "project_name": "Ride-Sharing Driver Matching Service",
+        "description": "Implement a driver selection backend using spatial indexes (Uber H3 Geo-hashing) and WebSocket communication.",
+        "difficulty": "Advanced",
+        "estimated_days": 28,
+        "skills_covered": [
+            "Go",
+            "Redis",
+            "PostgreSQL",
+            "System Design"
+        ],
+        "outcome": "Demonstrates geospatial queries, real-time telemetry pipelines, and fast matching loops."
+    },
+    {
+        "project_name": "Video Streaming CDN Cache",
+        "description": "Design and run a cache server that stores video segments and serves them via HTTP Range requests with LRU eviction.",
+        "difficulty": "Advanced",
+        "estimated_days": 30,
+        "skills_covered": [
+            "Go",
+            "Docker",
+            "AWS",
+            "System Design"
+        ],
+        "outcome": "Demonstrates storage design, network chunking, and memory eviction caching."
+    },
+    {
+        "project_name": "Ad-Click Analytics Dashboard",
+        "description": "Build a stream processor that aggregates ad-click events per minute and displays metrics on a frontend chart.",
+        "difficulty": "Intermediate",
+        "estimated_days": 16,
+        "skills_covered": [
+            "React",
+            "NodeJS",
+            "Kafka",
+            "ElasticSearch"
+        ],
+        "outcome": "Demonstrates stream joins, time-series data aggregation, and real-time frontend charts."
+    },
+    {
+        "project_name": "Distributed Web Crawler",
+        "description": "Build a multithreaded link indexer that respects robots.txt and crawls sites concurrently using BFS.",
+        "difficulty": "Intermediate",
+        "estimated_days": 15,
+        "skills_covered": [
+            "Python",
+            "PostgreSQL",
+            "Redis",
+            "Distributed Systems"
+        ],
+        "outcome": "Demonstrates crawler state management, duplicate filtering, and rate limiting."
+    },
+    {
+        "project_name": "Search Auto-complete System",
+        "description": "Create a prefix-matching auto-complete service using Trie data structures and high-speed memory caching.",
+        "difficulty": "Intermediate",
+        "estimated_days": 14,
+        "skills_covered": [
+            "NodeJS",
+            "TypeScript",
+            "Redis",
+            "React"
+        ],
+        "outcome": "Demonstrates prefix trees, input debouncing, and search indexing."
+    },
+    {
+        "project_name": "Real-Time Leaderboard System",
+        "description": "Build a high-performance gaming scoreboard using Redis Sorted Sets (ZSET) updating 10,000 ranks per second.",
+        "difficulty": "Easy",
+        "estimated_days": 10,
+        "skills_covered": [
+            "Python",
+            "Redis",
+            "Docker"
+        ],
+        "outcome": "Demonstrates Redis data structures, sorted set updates, and score scoring logic."
+    },
+    {
+        "project_name": "Offline-first Note Syncing App",
+        "description": "Develop an Android notes app that caches edits in SQLite and syncs with backend via background workers.",
+        "difficulty": "Intermediate",
+        "estimated_days": 20,
+        "skills_covered": [
+            "Kotlin",
+            "Android",
+            "PostgreSQL",
+            "Mobile"
+        ],
+        "outcome": "Demonstrates offline database synchronization, network change listeners, and background sync."
+    },
+    {
+        "project_name": "Personal Finance Tracker Dashboard",
+        "description": "Build a dashboard showing income, expenses, monthly budgets, and chart visualizations using Django and React.",
+        "difficulty": "Easy",
+        "estimated_days": 12,
+        "skills_covered": [
+            "Python",
+            "Django",
+            "React",
+            "MySQL"
+        ],
+        "outcome": "Demonstrates basic full-stack APIs, database CRUD operations, and graphing charts."
+    },
+    {
+        "project_name": "Production SDE Project #18: Go Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Go and PostgreSQL integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 15,
+        "skills_covered": [
+            "Go",
+            "PostgreSQL"
+        ],
+        "outcome": "Demonstrates robust implementation of Go features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #19: Java Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Java and Docker integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 16,
+        "skills_covered": [
+            "Java",
+            "Docker"
+        ],
+        "outcome": "Demonstrates robust implementation of Java features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #20: Python Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Python and Kubernetes integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 17,
+        "skills_covered": [
+            "Python",
+            "Kubernetes"
+        ],
+        "outcome": "Demonstrates robust implementation of Python features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #21: Kafka Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kafka and gRPC integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 18,
+        "skills_covered": [
+            "Kafka",
+            "gRPC"
+        ],
+        "outcome": "Demonstrates robust implementation of Kafka features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #22: Redis Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Redis and Microservices integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 19,
+        "skills_covered": [
+            "Redis",
+            "Microservices"
+        ],
+        "outcome": "Demonstrates robust implementation of Redis features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #23: PostgreSQL Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in PostgreSQL and Spring Boot integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 20,
+        "skills_covered": [
+            "PostgreSQL",
+            "Spring Boot"
+        ],
+        "outcome": "Demonstrates robust implementation of PostgreSQL features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #24: Docker Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Docker and NodeJS integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 21,
+        "skills_covered": [
+            "Docker",
+            "NodeJS"
+        ],
+        "outcome": "Demonstrates robust implementation of Docker features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #25: Kubernetes Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kubernetes and AWS integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 22,
+        "skills_covered": [
+            "Kubernetes",
+            "AWS"
+        ],
+        "outcome": "Demonstrates robust implementation of Kubernetes features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #26: gRPC Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in gRPC and GCP integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 23,
+        "skills_covered": [
+            "gRPC",
+            "GCP"
+        ],
+        "outcome": "Demonstrates robust implementation of gRPC features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #27: Microservices Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Microservices and DynamoDB integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 24,
+        "skills_covered": [
+            "Microservices",
+            "DynamoDB"
+        ],
+        "outcome": "Demonstrates robust implementation of Microservices features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #28: Spring Boot Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Spring Boot and MySQL integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 25,
+        "skills_covered": [
+            "Spring Boot",
+            "MySQL"
+        ],
+        "outcome": "Demonstrates robust implementation of Spring Boot features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #29: NodeJS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in NodeJS and ElasticSearch integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 26,
+        "skills_covered": [
+            "NodeJS",
+            "ElasticSearch"
+        ],
+        "outcome": "Demonstrates robust implementation of NodeJS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #30: AWS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in AWS and Django integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 27,
+        "skills_covered": [
+            "AWS",
+            "Django"
+        ],
+        "outcome": "Demonstrates robust implementation of AWS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #31: GCP Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in GCP and React integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 28,
+        "skills_covered": [
+            "GCP",
+            "React"
+        ],
+        "outcome": "Demonstrates robust implementation of GCP features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #32: DynamoDB Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in DynamoDB and TypeScript integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 29,
+        "skills_covered": [
+            "DynamoDB",
+            "TypeScript"
+        ],
+        "outcome": "Demonstrates robust implementation of DynamoDB features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #33: MySQL Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in MySQL and NextJS integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 30,
+        "skills_covered": [
+            "MySQL",
+            "NextJS"
+        ],
+        "outcome": "Demonstrates robust implementation of MySQL features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #34: ElasticSearch Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in ElasticSearch and Kotlin integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 31,
+        "skills_covered": [
+            "ElasticSearch",
+            "Kotlin"
+        ],
+        "outcome": "Demonstrates robust implementation of ElasticSearch features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #35: Django Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Django and Android integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 32,
+        "skills_covered": [
+            "Django",
+            "Android"
+        ],
+        "outcome": "Demonstrates robust implementation of Django features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #36: React Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in React and SRE integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 33,
+        "skills_covered": [
+            "React",
+            "SRE"
+        ],
+        "outcome": "Demonstrates robust implementation of React features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #37: TypeScript Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in TypeScript and System Design integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 34,
+        "skills_covered": [
+            "TypeScript",
+            "System Design"
+        ],
+        "outcome": "Demonstrates robust implementation of TypeScript features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #38: NextJS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in NextJS and Distributed Systems integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 15,
+        "skills_covered": [
+            "NextJS",
+            "Distributed Systems"
+        ],
+        "outcome": "Demonstrates robust implementation of NextJS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #39: Kotlin Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kotlin and Go integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 16,
+        "skills_covered": [
+            "Kotlin",
+            "Go"
+        ],
+        "outcome": "Demonstrates robust implementation of Kotlin features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #40: Android Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Android and Java integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 17,
+        "skills_covered": [
+            "Android",
+            "Java"
+        ],
+        "outcome": "Demonstrates robust implementation of Android features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #41: SRE Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in SRE and Python integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 18,
+        "skills_covered": [
+            "SRE",
+            "Python"
+        ],
+        "outcome": "Demonstrates robust implementation of SRE features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #42: System Design Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in System Design and Kafka integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 19,
+        "skills_covered": [
+            "System Design",
+            "Kafka"
+        ],
+        "outcome": "Demonstrates robust implementation of System Design features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #43: Distributed Systems Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Distributed Systems and Redis integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 20,
+        "skills_covered": [
+            "Distributed Systems",
+            "Redis"
+        ],
+        "outcome": "Demonstrates robust implementation of Distributed Systems features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #44: Go Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Go and PostgreSQL integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 21,
+        "skills_covered": [
+            "Go",
+            "PostgreSQL"
+        ],
+        "outcome": "Demonstrates robust implementation of Go features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #45: Java Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Java and Docker integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 22,
+        "skills_covered": [
+            "Java",
+            "Docker"
+        ],
+        "outcome": "Demonstrates robust implementation of Java features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #46: Python Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Python and Kubernetes integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 23,
+        "skills_covered": [
+            "Python",
+            "Kubernetes"
+        ],
+        "outcome": "Demonstrates robust implementation of Python features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #47: Kafka Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kafka and gRPC integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 24,
+        "skills_covered": [
+            "Kafka",
+            "gRPC"
+        ],
+        "outcome": "Demonstrates robust implementation of Kafka features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #48: Redis Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Redis and Microservices integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 25,
+        "skills_covered": [
+            "Redis",
+            "Microservices"
+        ],
+        "outcome": "Demonstrates robust implementation of Redis features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #49: PostgreSQL Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in PostgreSQL and Spring Boot integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 26,
+        "skills_covered": [
+            "PostgreSQL",
+            "Spring Boot"
+        ],
+        "outcome": "Demonstrates robust implementation of PostgreSQL features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #50: Docker Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Docker and NodeJS integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 27,
+        "skills_covered": [
+            "Docker",
+            "NodeJS"
+        ],
+        "outcome": "Demonstrates robust implementation of Docker features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #51: Kubernetes Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kubernetes and AWS integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 28,
+        "skills_covered": [
+            "Kubernetes",
+            "AWS"
+        ],
+        "outcome": "Demonstrates robust implementation of Kubernetes features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #52: gRPC Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in gRPC and GCP integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 29,
+        "skills_covered": [
+            "gRPC",
+            "GCP"
+        ],
+        "outcome": "Demonstrates robust implementation of gRPC features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #53: Microservices Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Microservices and DynamoDB integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 30,
+        "skills_covered": [
+            "Microservices",
+            "DynamoDB"
+        ],
+        "outcome": "Demonstrates robust implementation of Microservices features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #54: Spring Boot Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Spring Boot and MySQL integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 31,
+        "skills_covered": [
+            "Spring Boot",
+            "MySQL"
+        ],
+        "outcome": "Demonstrates robust implementation of Spring Boot features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #55: NodeJS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in NodeJS and ElasticSearch integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 32,
+        "skills_covered": [
+            "NodeJS",
+            "ElasticSearch"
+        ],
+        "outcome": "Demonstrates robust implementation of NodeJS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #56: AWS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in AWS and Django integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 33,
+        "skills_covered": [
+            "AWS",
+            "Django"
+        ],
+        "outcome": "Demonstrates robust implementation of AWS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #57: GCP Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in GCP and React integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 34,
+        "skills_covered": [
+            "GCP",
+            "React"
+        ],
+        "outcome": "Demonstrates robust implementation of GCP features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #58: DynamoDB Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in DynamoDB and TypeScript integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 15,
+        "skills_covered": [
+            "DynamoDB",
+            "TypeScript"
+        ],
+        "outcome": "Demonstrates robust implementation of DynamoDB features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #59: MySQL Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in MySQL and NextJS integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 16,
+        "skills_covered": [
+            "MySQL",
+            "NextJS"
+        ],
+        "outcome": "Demonstrates robust implementation of MySQL features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #60: ElasticSearch Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in ElasticSearch and Kotlin integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 17,
+        "skills_covered": [
+            "ElasticSearch",
+            "Kotlin"
+        ],
+        "outcome": "Demonstrates robust implementation of ElasticSearch features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #61: Django Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Django and Android integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 18,
+        "skills_covered": [
+            "Django",
+            "Android"
+        ],
+        "outcome": "Demonstrates robust implementation of Django features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #62: React Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in React and SRE integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 19,
+        "skills_covered": [
+            "React",
+            "SRE"
+        ],
+        "outcome": "Demonstrates robust implementation of React features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #63: TypeScript Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in TypeScript and System Design integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 20,
+        "skills_covered": [
+            "TypeScript",
+            "System Design"
+        ],
+        "outcome": "Demonstrates robust implementation of TypeScript features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #64: NextJS Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in NextJS and Distributed Systems integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 21,
+        "skills_covered": [
+            "NextJS",
+            "Distributed Systems"
+        ],
+        "outcome": "Demonstrates robust implementation of NextJS features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #65: Kotlin Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kotlin and Go integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 22,
+        "skills_covered": [
+            "Kotlin",
+            "Go"
+        ],
+        "outcome": "Demonstrates robust implementation of Kotlin features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #66: Android Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Android and Java integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 23,
+        "skills_covered": [
+            "Android",
+            "Java"
+        ],
+        "outcome": "Demonstrates robust implementation of Android features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #67: SRE Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in SRE and Python integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 24,
+        "skills_covered": [
+            "SRE",
+            "Python"
+        ],
+        "outcome": "Demonstrates robust implementation of SRE features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #68: System Design Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in System Design and Kafka integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 25,
+        "skills_covered": [
+            "System Design",
+            "Kafka"
+        ],
+        "outcome": "Demonstrates robust implementation of System Design features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #69: Distributed Systems Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Distributed Systems and Redis integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 26,
+        "skills_covered": [
+            "Distributed Systems",
+            "Redis"
+        ],
+        "outcome": "Demonstrates robust implementation of Distributed Systems features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #70: Go Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Go and PostgreSQL integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 27,
+        "skills_covered": [
+            "Go",
+            "PostgreSQL"
+        ],
+        "outcome": "Demonstrates robust implementation of Go features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #71: Java Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Java and Docker integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 28,
+        "skills_covered": [
+            "Java",
+            "Docker"
+        ],
+        "outcome": "Demonstrates robust implementation of Java features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #72: Python Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Python and Kubernetes integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 29,
+        "skills_covered": [
+            "Python",
+            "Kubernetes"
+        ],
+        "outcome": "Demonstrates robust implementation of Python features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #73: Kafka Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Kafka and gRPC integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 30,
+        "skills_covered": [
+            "Kafka",
+            "gRPC"
+        ],
+        "outcome": "Demonstrates robust implementation of Kafka features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #74: Redis Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in Redis and Microservices integration.",
+        "difficulty": "Intermediate",
+        "estimated_days": 31,
+        "skills_covered": [
+            "Redis",
+            "Microservices"
+        ],
+        "outcome": "Demonstrates robust implementation of Redis features, environment setup, and deployment configurations."
+    },
+    {
+        "project_name": "Production SDE Project #75: PostgreSQL Application",
+        "description": "Build a production-ready application demonstrating advanced patterns in PostgreSQL and Spring Boot integration.",
+        "difficulty": "Advanced",
+        "estimated_days": 32,
+        "skills_covered": [
+            "PostgreSQL",
+            "Spring Boot"
+        ],
+        "outcome": "Demonstrates robust implementation of PostgreSQL features, environment setup, and deployment configurations."
+    }
+]

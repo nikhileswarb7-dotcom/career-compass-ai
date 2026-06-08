@@ -1,0 +1,29 @@
+skill_id,skill_name,frequency,importance_score
+1,C Programming,12,4
+2,C++,18,5
+3,Java,30,8
+4,Python,21,6
+5,SQL,10,4
+6,Data Structures,10,4
+7,Algorithms,3,4
+8,DSA (Combined),0,4
+9,DBMS,0,4
+10,Operating Systems,1,4
+11,Computer Networks,0,4
+12,Object Oriented Programming,0,4
+13,Spring Boot,8,4
+14,REST APIs,4,4
+15,Microservices,10,4
+16,Message Queues (Kafka),0,4
+17,MySQL,2,4
+18,PostgreSQL,3,4
+19,Redis,7,4
+20,Git & GitHub,5,4
+21,Docker,5,4
+22,AWS Basics,0,4
+23,Linux Basics,1,4
+24,Low Level Design,1,4
+25,High Level Design,1,4
+26,System Design,0,4
+27,Go,34,10
+28,Kubernetes,8,4

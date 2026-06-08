@@ -1,0 +1,163 @@
+{
+  "linkedin_guidance": [
+    {
+      "qualification": "1st Year Student",
+      "headline_examples": [
+        "B.Tech CSE Student | Aspiring Software Developer | Java | Python",
+        "1st Year B.Tech (CSE) | Learning Java & DSA | Future SDE"
+      ],
+      "about_example": "Hi! I'm a first-year B.Tech Computer Science student passionate about software development. Currently building strong programming fundamentals in Java and Python. Working on small projects to apply what I learn. Goal: Become a Software Development Engineer at a product company. Let's connect!",
+      "skills_to_list": ["Java", "Python", "C Programming", "Git", "Problem Solving"],
+      "profile_checklist": [
+        "Professional photo (not selfie)",
+        "Headline clearly mentions CSE + target role",
+        "About section filled",
+        "Education added with correct dates",
+        "At least 1 project added",
+        "GitHub link in featured section",
+        "Connect with seniors and alumni at product companies"
+      ],
+      "networking_tips": [
+        "Connect with seniors from your college at Blinkit/Zomato",
+        "Follow Blinkit Tech Page",
+        "Follow Gaurav Sen, Striver, Neetcode for content",
+        "Join student tech communities on LinkedIn"
+      ]
+    },
+    {
+      "qualification": "2nd Year Student",
+      "headline_examples": [
+        "B.Tech CSE '26 | Java | DSA | Spring Boot | Building Backend Projects",
+        "Aspiring SDE | Java Developer | 100+ LeetCode | Backend Development",
+        "2nd Year CSE Student | Java | Python | MySQL | DSA Enthusiast"
+      ],
+      "about_example": "Second-year B.Tech CSE student with a strong focus on backend development and data structures. Currently solving 100+ LeetCode problems and building projects using Java and Spring Boot. Aim to join a product company like Blinkit as a Software Development Engineer. Open to internship opportunities.",
+      "skills_to_list": ["Java", "Python", "Data Structures", "Algorithms", "MySQL", "Spring Boot", "Git", "DBMS", "REST APIs"],
+      "profile_checklist": [
+        "120+ connections",
+        "Headline includes key tech skills",
+        "2-3 projects in Experience/Projects section",
+        "GitHub link prominently featured",
+        "Education section complete",
+        "Following Blinkit, Google, Amazon pages"
+      ],
+      "networking_tips": [
+        "Connect with Blinkit engineers — send personalized note",
+        "Engage with posts from product companies",
+        "Comment thoughtfully on tech posts to build visibility",
+        "Share your project on LinkedIn — 'I built X with Java + Spring Boot'"
+      ]
+    },
+    {
+      "qualification": "3rd Year Student",
+      "headline_examples": [
+        "Aspiring SDE @ Blinkit | Java | Spring Boot | DSA | 150+ LeetCode | Available for Internship",
+        "3rd Year B.Tech CSE | Backend Developer | Java | MySQL | Redis | Open to SDE Roles",
+        "Software Engineer Aspirant | Java | DSA | System Design | Food Delivery Backend Project"
+      ],
+      "about_example": "Third-year B.Tech CSE student aggressively preparing for SDE placements. Currently focused on DSA (150+ LeetCode), DBMS, OS, CN, and backend development with Spring Boot + MySQL + Redis. Built a Food Delivery Backend and Inventory Management System. Targeting product companies like Blinkit. Available for internship from [Month Year].",
+      "skills_to_list": ["Java", "Spring Boot", "MySQL", "Redis", "REST APIs", "Data Structures", "Algorithms", "DBMS", "Operating Systems", "Computer Networks", "Git"],
+      "profile_checklist": [
+        "300+ connections",
+        "3 projects with tech descriptions and GitHub links",
+        "Open to Work badge enabled if seeking internship",
+        "Headline is specific to Blinkit SDE target",
+        "LeetCode/coding profile linked in contact info",
+        "Engaged in tech community — posts and comments"
+      ],
+      "networking_tips": [
+        "Reach out to Blinkit SDEs directly — LinkedIn DM with specific question",
+        "Ask for informational interviews: 'Can I have 15 min to ask about your journey?'",
+        "Share project updates: 'Just pushed v1 of my Food Delivery Backend — link below'",
+        "Join placements groups specific to your college"
+      ]
+    },
+    {
+      "qualification": "4th Year Student",
+      "headline_examples": [
+        "Final Year CSE | SDE Aspirant | Java | System Design | 300+ LeetCode | Available June 2025",
+        "B.Tech CSE 2025 | Backend Engineer | Java | Spring Boot | Actively Seeking SDE Roles"
+      ],
+      "about_example": "Final-year B.Tech CSE student seeking SDE role at product companies. Strong in DSA (300+ LeetCode), System Design (LLD + HLD), and backend development (Java, Spring Boot, MySQL, Redis). Completed internship at [Company]. Actively applying for full-time SDE positions. Available from [Month Year].",
+      "skills_to_list": ["Java", "Spring Boot", "MySQL", "Redis", "Docker", "System Design", "Low Level Design", "High Level Design", "DSA", "DBMS", "OS", "CN"],
+      "networking_tips": [
+        "Request referrals from Blinkit connections",
+        "Post about your interview preparation journey — attracts attention",
+        "Tag companies you're targeting in posts",
+        "Message recruiters at Blinkit directly"
+      ]
+    },
+    {
+      "qualification": "Fresh Graduate",
+      "headline_examples": [
+        "B.Tech CSE Graduate | Software Developer | Java | Spring Boot | Open to SDE Roles",
+        "Java Backend Developer | DSA | System Design | 300+ LeetCode | Seeking SDE Opportunities"
+      ],
+      "about_example": "Recent B.Tech CSE graduate with strong backend development and DSA skills. Proficient in Java, Spring Boot, MySQL, and Redis. 300+ LeetCode problems solved. Built production-quality projects including a Food Delivery Backend. Actively seeking SDE roles at product companies like Blinkit.",
+      "skills_to_list": ["Java", "Spring Boot", "MySQL", "Redis", "System Design", "DSA", "REST APIs"],
+      "networking_tips": [
+        "Apply via LinkedIn Easy Apply + direct company portal",
+        "Ask college alumni for referrals",
+        "Post about your prep journey — it builds credibility"
+      ]
+    },
+    {
+      "qualification": "Trainee Engineer",
+      "headline_examples": [
+        "Software Trainee @ [Company] | Java | Spring Boot | System Design | Open to SDE Opportunities",
+        "Backend Developer | Java | Spring Boot | Microservices | Targeting Product Companies"
+      ],
+      "about_example": "Software trainee with hands-on experience in Java and Spring Boot backend development. Currently building skills in system design and distributed systems. Working on side projects to target SDE roles at product companies like Blinkit. 100+ LeetCode problems solved.",
+      "skills_to_list": ["Java", "Spring Boot", "MySQL", "REST APIs", "System Design", "DSA"],
+      "networking_tips": [
+        "Mention current company — it adds credibility",
+        "Highlight work impact without violating NDA",
+        "Connect with engineers at target companies"
+      ]
+    }
+  ],
+  "github_guidance": [
+    {
+      "qualification": "1st Year Student",
+      "profile_readme_tips": "Simple README with: name, learning Java and Python, current projects, contact links",
+      "required_repos": [
+        "calculator",
+        "student-management-system",
+        "number-guessing-game"
+      ],
+      "repo_naming_standards": "Use kebab-case: food-delivery-backend NOT FoodDeliveryBackend or food_delivery",
+      "commit_standards": "Write meaningful commits: 'Add user authentication module' not 'changes' or 'update'",
+      "readme_template": "# Project Name\n\n## About\nBrief description\n\n## Tech Stack\n- Language: Java\n- Tools: IntelliJ, Git\n\n## How to Run\n```bash\njava Main.java\n```\n\n## Features\n- Feature 1\n- Feature 2",
+      "profile_checklist": [
+        "Profile photo set",
+        "Bio mentions B.Tech CSE + learning Java",
+        "3+ public repositories",
+        "Each repo has a README",
+        "LinkedIn link in profile"
+      ]
+    },
+    {
+      "qualification": "3rd Year Student",
+      "profile_readme_tips": "Professional README: name, current status, tech stack badges, GitHub stats, top projects pinned",
+      "required_repos": [
+        "food-delivery-backend",
+        "inventory-management-system",
+        "url-shortener",
+        "library-management-api",
+        "dsa-solutions"
+      ],
+      "repo_naming_standards": "kebab-case, descriptive, no 'project1' or 'myapp'",
+      "commit_standards": "Conventional commits: 'feat: add Redis caching for product catalog', 'fix: resolve NPE in order service', 'docs: update API documentation'",
+      "readme_template": "# Food Delivery Backend\n\n[![Java](https://img.shields.io/badge/Java-17-orange)]()\n[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.0-green)]()\n\n## Architecture\n[architecture diagram image]\n\n## Tech Stack\n- **Backend**: Java 17, Spring Boot 3.0\n- **Database**: MySQL, Redis\n- **Auth**: JWT\n- **API Docs**: Swagger\n\n## Features\n- User registration and login (JWT)\n- Restaurant and product catalog\n- Cart management\n- Order placement and tracking\n- Redis caching for catalog\n\n## API Documentation\nSwagger UI: http://localhost:8080/swagger-ui.html\n\n## Setup\n```bash\ngit clone <url>\ncd food-delivery-backend\nmvn spring-boot:run\n```",
+      "contribution_strategy": "Green contribution graph matters. Commit code daily — even small changes. Make repositories public. Star popular repos in your domain.",
+      "profile_checklist": [
+        "Profile README with tech badges and project summary",
+        "2-3 pinned repositories (best projects)",
+        "Green contribution graph (commit regularly)",
+        "Each project has architecture diagram in README",
+        "No empty repositories",
+        "Consistent commit history across all repos"
+      ]
+    }
+  ]
+}

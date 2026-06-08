@@ -1,0 +1,177 @@
+[
+  {
+    "test_id": "TC001",
+    "description": "1st Year Student — No skills at all",
+    "input": {
+      "qualification": "1st Year Student",
+      "known_skills": []
+    },
+    "expected": {
+      "readiness_score_range": [0, 5],
+      "high_priority_skills_should_include": ["Java", "DSA (Combined)", "DBMS"],
+      "urgency": "Low",
+      "months_to_ready_range": [36, 48]
+    }
+  },
+  {
+    "test_id": "TC002",
+    "description": "1st Year — Knows C and Python",
+    "input": {
+      "qualification": "1st Year Student",
+      "known_skills": ["C Programming", "Python"]
+    },
+    "expected": {
+      "readiness_score_range": [0, 10],
+      "high_priority_skills_should_include": ["Java", "DSA (Combined)"],
+      "urgency": "Low"
+    }
+  },
+  {
+    "test_id": "TC003",
+    "description": "2nd Year — Knows Java and Git",
+    "input": {
+      "qualification": "2nd Year Student",
+      "known_skills": ["Java", "Git & GitHub"]
+    },
+    "expected": {
+      "readiness_score_range": [10, 20],
+      "high_priority_skills_should_include": ["DSA (Combined)", "DBMS"],
+      "urgency": "Low"
+    }
+  },
+  {
+    "test_id": "TC004",
+    "description": "3rd Year — Java + Git (typical placement candidate starting prep)",
+    "input": {
+      "qualification": "3rd Year Student",
+      "known_skills": ["Java", "Git & GitHub", "Object Oriented Programming"]
+    },
+    "expected": {
+      "readiness_score_range": [15, 25],
+      "high_priority_skills_should_include": ["DSA (Combined)", "DBMS", "Operating Systems"],
+      "urgency": "High",
+      "months_to_ready_range": [12, 18]
+    }
+  },
+  {
+    "test_id": "TC005",
+    "description": "3rd Year — Strong candidate (Java, DSA, DBMS, OS)",
+    "input": {
+      "qualification": "3rd Year Student",
+      "known_skills": ["Java", "DSA (Combined)", "DBMS", "Operating Systems", "Git & GitHub", "Object Oriented Programming", "SQL"]
+    },
+    "expected": {
+      "readiness_score_range": [45, 60],
+      "high_priority_skills_should_include": ["Computer Networks", "Spring Boot", "System Design"],
+      "urgency": "High"
+    }
+  },
+  {
+    "test_id": "TC006",
+    "description": "4th Year — Almost ready (missing only System Design)",
+    "input": {
+      "qualification": "4th Year Student",
+      "known_skills": ["Java", "DSA (Combined)", "DBMS", "Operating Systems", "Computer Networks", "Spring Boot", "SQL", "MySQL", "Git & GitHub", "Object Oriented Programming", "REST APIs", "Low Level Design"]
+    },
+    "expected": {
+      "readiness_score_range": [75, 90],
+      "high_priority_skills_should_include": ["System Design", "High Level Design"],
+      "urgency": "Critical"
+    }
+  },
+  {
+    "test_id": "TC007",
+    "description": "4th Year — No prep done at all",
+    "input": {
+      "qualification": "4th Year Student",
+      "known_skills": []
+    },
+    "expected": {
+      "readiness_score_range": [0, 5],
+      "urgency": "Critical",
+      "months_to_ready_range": [4, 6]
+    }
+  },
+  {
+    "test_id": "TC008",
+    "description": "Fresh Graduate — Good foundation, missing advanced topics",
+    "input": {
+      "qualification": "Fresh Graduate",
+      "known_skills": ["Java", "Spring Boot", "MySQL", "Git & GitHub", "REST APIs", "DBMS", "DSA (Combined)"]
+    },
+    "expected": {
+      "readiness_score_range": [45, 60],
+      "high_priority_skills_should_include": ["Operating Systems", "Computer Networks", "System Design"],
+      "urgency": "Critical"
+    }
+  },
+  {
+    "test_id": "TC009",
+    "description": "Trainee Engineer — Already working, has backend experience",
+    "input": {
+      "qualification": "Trainee Engineer",
+      "known_skills": ["Java", "Spring Boot", "REST APIs", "MySQL", "Git & GitHub", "Object Oriented Programming"]
+    },
+    "expected": {
+      "readiness_score_range": [30, 45],
+      "high_priority_skills_should_include": ["DSA (Combined)", "DBMS", "Operating Systems"],
+      "urgency": "High"
+    }
+  },
+  {
+    "test_id": "TC010",
+    "description": "Junior Engineer — Strong backend, weak on DS/System Design",
+    "input": {
+      "qualification": "Junior Software Engineer",
+      "known_skills": ["Java", "Spring Boot", "REST APIs", "MySQL", "Redis", "Docker", "Git & GitHub", "Object Oriented Programming", "Microservices"]
+    },
+    "expected": {
+      "readiness_score_range": [40, 60],
+      "high_priority_skills_should_include": ["DSA (Combined)", "System Design"],
+      "urgency": "Medium"
+    }
+  },
+  {
+    "test_id": "TC011",
+    "description": "Junior Engineer — Near complete",
+    "input": {
+      "qualification": "Junior Software Engineer",
+      "known_skills": ["Java", "Spring Boot", "REST APIs", "MySQL", "Redis", "Docker", "Git & GitHub", "Object Oriented Programming", "Microservices", "DSA (Combined)", "DBMS", "System Design", "High Level Design", "Low Level Design", "SQL"]
+    },
+    "expected": {
+      "readiness_score_range": [75, 95],
+      "urgency": "Medium"
+    }
+  },
+  {
+    "test_id": "TC012",
+    "description": "NLP Test — 3rd year text input",
+    "nlp_input": "I'm a third year student. I know Java and Git. I want to become SDE at Blinkit.",
+    "expected_parse": {
+      "qualification": "3rd Year Student",
+      "known_skills_should_include": ["Java", "Git & GitHub"],
+      "target_company": "Blinkit",
+      "target_role": "Software Development Engineer"
+    }
+  },
+  {
+    "test_id": "TC013",
+    "description": "NLP Test — Fresh grad with abbreviations",
+    "nlp_input": "Just graduated. Know Java, Spring Boot, DSA, DBMS, OS. Want SDE at Blinkit.",
+    "expected_parse": {
+      "qualification": "Fresh Graduate",
+      "known_skills_should_include": ["Java", "Spring Boot", "DSA (Combined)", "DBMS", "Operating Systems"],
+      "target_company": "Blinkit"
+    }
+  },
+  {
+    "test_id": "TC014",
+    "description": "NLP Test — Trainee with no explicit company",
+    "nlp_input": "I am a trainee engineer. I know Java and REST APIs.",
+    "expected_parse": {
+      "qualification": "Trainee Engineer",
+      "known_skills_should_include": ["Java", "REST APIs"],
+      "target_company": "Blinkit"
+    }
+  }
+]

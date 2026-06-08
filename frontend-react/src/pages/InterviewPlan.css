@@ -1,0 +1,206 @@
+.interview-plan-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem 0;
+}
+
+.welcome-banner-row {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.welcome-banner-row h1 {
+  font-family: var(--font-title);
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-banner-row p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.source-db-badge {
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.question-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.5rem;
+}
+
+.question-card:hover {
+  border-color: rgba(var(--primary-rgb), 0.25);
+  box-shadow: 0 10px 25px var(--card-shadow);
+}
+
+.question-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.question-title {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-align: left;
+  line-height: 1.4;
+}
+
+.badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge.category {
+  background: var(--primary-glow);
+  color: var(--primary);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
+}
+
+.badge.difficulty-easy {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--emerald);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge.difficulty-medium {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amber);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.badge.difficulty-hard {
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--rose);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.badge.frequency {
+  background: var(--card-sub-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border-glass);
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.accordion-trigger:hover {
+  background: var(--card-sub-bg-hover);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.light-theme .accordion-trigger:hover {
+  border-color: rgba(15, 23, 42, 0.15);
+}
+
+.accordion-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.question-card.open .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-top 0.3s ease;
+  opacity: 0;
+  text-align: left;
+}
+
+.question-card.open .accordion-content {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+.solution-description {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.01);
+  padding: 1.25rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+}
+
+.complexity-box {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--card-sub-bg);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.complexity-box strong {
+  color: var(--text-main);
+}

@@ -1,0 +1,238 @@
+education_id,profile_id,college,degree,field
+1,1,JNTU Vizianagaram,BTech,Computer Science
+2,2,VIT Vellore,BTech,Computer Science
+3,6,PES University,BE,Computer Science
+4,6,"Children Senior Secondary school, Kota",SSLC  ·,
+5,6,Page 2 of,St. Mary's School,Najibabad High School
+6,7,Raghu Engineering College,BTech,Computer Science
+7,7,Sri Chaitanya Junior College,Intermediate,MPC
+8,8,"Faculty of Engineering and Technology, Jamia Millia Islamia, Central",University,"New Delhi, India Bachelor of Technology - BTech, Computer Engineering"
+9,10,Jaypee Institute Of Information Technology,BTech,Computer Science
+10,10,St. Don Bosco Senior Secondary School,·,
+11,11,Gayatri Vidya Parishad College of Engineering,BTech,CSE
+12,11,Sri Chaitanya Junior College,intermediate,mpc
+13,13,"GALGOTIA S COLLEGE OF ENGINEERING AND TECHNOLOGY,",BTech,Computer Science
+14,14,"Indian Institute of Information Technology, SriCity",Bachelor's degree,Computer Science
+15,17,International Institute of Information Technology Hyderabad,BTech,Computer Science
+16,17,"Shiksha Niketan higher Secondary School Jeevan nagal,jammu,J&K",Secondary School  ·,
+17,17,"St. paul's convent high school,Gangyal Jammu",High School,
+18,18,SRM University,Bachelor's degree,Computer Science
+19,18,Nand Vidya Niketan,High School,
+20,18,Air Force School Jamnagar,High School,
+21,19,West Bengal University of Technology,BTech,Computer Science & Engineering
+22,20,VNR Vignanajyothi Institute of Engineering & Technology,BTech,Information Technology
+23,20,Narayana Junior College - India,Intermediate,MPC
+24,21,PSG College of Technology,MSc,Software Systems
+25,22,Bhagwan Parshuram Institute Of Technology,BTech,Information Technology
+26,24,Pune Institute of Computer Technology,BE,Computer Engineering
+27,25,"College of Engineering, Guindy",BTech,Information Technology
+28,26,Harcourt Butler Technological Institute,BTech,Computer Science
+29,27,"The National Institute Of Engineering, Mysore",BE,Information Technology
+30,31,The Coding School,Certificate,Quantum Computing
+31,31,"Indian Institute of Information Technology, Design and",Manufacturing,"Jabalpur Bachelor of Technology - BTech, Computer Science"
+32,31,Deogiri College Aurangabad,Hsc  ·,
+33,32,Netaji Subhash Engineering College,MCA,"Computer Programming, Specific Applications"
+34,32,Netaji Subhash Engineering College,Bachelor of Computer Application(H),"Computer Programming, Specific Applications"
+35,32,Naktala High School,High School,"Business/Commerce, General"
+36,32,Naktala High School,10th,General Studies
+37,33,"Indian Institute of Technology, Bhilai",Page 2 of 3 Bachelor's degree,Computer Engineering
+38,33,RBK School,·,
+39,34,INDIRA GANDHI DELHI TECHNICAL UNIVERSITY FOR WOMEN,BTech,Computer Science
+40,34,Apeejay School Pitampura,·,
+41,35,College of Engineering Pune,MTech,
+42,35,SRM University,BTech,
+43,35,"DAV Public School, Airoli",Higher Secondary,CBSE
+44,36,BMS Institute of Technology,BE,Computer Science
+45,36,Sri Chaitanya College of Education,Senior secondary education   ·,
+46,37,Indian Institute of Information Technology Dharwad,BTech,Computer Science and Engineering
+47,38,"Indraprastha Institute of Information Technology, Delhi",BTech,Computer Science
+48,40,VIT Vellore,BTech,Computer Science
+49,40,Arwachin Bharti Bhawan Sr. Sec. School,Higher Secondary School Certificate,PCM
+50,40,Arwachin Bharti Bhawan Sr. Sec. School,Page 1 of 2 Secondary School Certificate  ·,
+51,41,"Indian Institute of Technology, Kharagpur",Minor in Mathematics & Computing + Micro in Entrepreneurship and Innovation   ·,
+52,41,"Lord's International School, Alwar",Senior Secondary,"(Physics, Chemistry, Maths)"
+53,42,VIT Vellore,BTech,Computer Science
+54,42,Page 1 of,High School,
+55,42,Ann Mary School,10th,
+56,43,Malaviya National Institute of Technology Jaipur,BTech,Computer Science
+57,44,"Indraprastha Institute of Information Technology, Delhi",MTech,Computer Science
+58,45,"Indian Institute of Technology, Ropar",BTech,Electrical Engineering
+59,45,A.V.M.D. Institute Agra,Intermediate  ·,
+60,45,St. George's College Agra,High School,
+61,46,PES University,BTech,Computer Science
+62,47,VIT Vellore,Bachelor's degree,Information Technology
+63,47,Page 1 of,Shakti Higher Secondary,Science
+64,47,TGES,Secondary  ·,
+65,48,"Indian Institute of Technology, Roorkee",BTech,Mechanical Engineering
+66,49,KIET Group of Institutions,BTech,Computer science and information technology
+67,51,Indian Institute of Information Technology Kota,BTech,Computer Engineering
+68,51,Kids Paradise Sen Sec School,10+2  ·,
+69,52,Indian Institute Of Information Technology Allahabad,BTech,Electronics and communication Engineering  (May 2019 - July 2023) Hansraj Smarak Sr. Sec. School
+70,53,Page 1 of,BTech,Mechanical Engineering
+71,55,"Indian Institute of Technology , Varanasi",Dual Degree,
+72,57,Thapar Institute of Engineering & Technology,BTech,Electronics and Computer Engineering
+73,57,"Amity International School, Sector 43, Gurgaon",Class 12,PCM
+74,60,Page 1 of,Indian Institute of Engineering Science and Technology (IIEST),"Shibpur Bachelor of Technology - BTech, Information Technology"
+75,62,"Indian Institute of Technology, Bombay",BTech,Computer Science
+76,64,Page 1 of,Indian Institute of Technology Jodhpur Computer Science and Engineering,Computer Science
+77,66,Netaji Subhas Institute of Technology,BE,Information Technology
+78,67,Indian Institute of Information Technology Guwahati,BTech,Computer Science and Engineering
+79,67,Shiv Jyoti Convent School,Page 2 of 3 Class 12 Kendriya Vidyalaya No.1 Salt Lake Class 10  ·,
+80,68,"Kurukshetra University, Kurukshetra",BTech,Computer Science
+81,68,Page 1 of,High School,Non-Medical
+82,68,Central Board of Secondary Education,10th,General Studies
+83,69,freeCodeCamp,Full Stack Web Development Certification,Computer Software Engineering
+84,69,Maharaja Surajmal Institute Of Technology,BTech,Electronics and Communications Engineering
+85,70,"Birla Institute of Technology and Science, Pilani",BE,Chemical Engineering
+86,71,"Indian Institute of Technology, Guwahati",MTech,Computer Science
+87,72,National Institute of Technology Jamshedpur,BTech,computer science and engineering
+88,73,Sreenidhi Institute of Science and Technology,Engineer’s Degree,CSE
+89,73,Govt. Polytechnic College,Page 3 of 4 Diploma in Computer engineering  ·,
+90,73,Gowtham model school,SSC  ·,
+91,74,Netaji Subhas Institute of Technology,BTech,"Electrical, Electronics and Communications Engineering"
+92,76,National Institute of Technology Rourkela,Minor in Computer Science and Engineering,"Computer Science  (August 2019 - May 2022) National Institute of Technology Rourkela Page 2 of 3 Bachelor of Technology - BTech, Electronics and Instrumentation  (July 2018 - May 2022) Malda Zilla School"
+93,77,Institute of Engineering and Technology,BTech,Computer Science Engineering
+94,77,Shree Sanatan Dharm Education Centre,VII - XII,Science
+95,78,International Institute of Information Technology Bangalore,MTech,Computer Science
+96,78,"College Of Technology,Pantnagar.",BTech,Computer Engineering
+97,78,Summer Valley School,Page 1 of 2 ·,
+98,81,Thiagarajar College of Engineering,BTech,Information Technology
+99,82,NIT -Rourklea,BTech,Computer Science
+100,82,"Central Academy Senior Secondary School, Kota",·,
+101,82,"The Dronacharya School, Kendupada",·,
+102,83,Dhirubhai Ambani Institute Of Information and Communication,Technology Information and Communication Technology ·,
+103,84,Manipal Academy of Higher Education,b. tech,Electronics and Communications Engineering
+104,84,Manipal Institute of Technology,BE,Electronics and Communications Engineering
+105,85,"National Institute of Technology, Tiruchirappalli",BTech,Computer Science
+106,86,Delhi Technological University,Bachelor's degree,Mathematics and Computing Engineering
+107,86,Modern Vidya Niketan School,High School,"CBSE, Science"
+108,86,Ashok Memorial Public School,10th,CBSE
+109,87,Dharmsinh Desai University,BTech,Computer Engineering
+110,88,Motilal Nehru National Institute Of Technology,Bachelor's degree,Computer Science
+111,89,Page 2 of,BTech,Computer Science
+112,90,IGDTUW,Computer Science ·,
+113,91,"Indian Institute of Technology , Varanasi",IDD  ·,
+114,92,National Institute of Technology Hamirpur,BTech,Computer Science
+115,93,"Indian Institute of Technology , Dhanbad",BTech,Electrical Engineering Technologies/ Technicians
+116,93,Resonance Eduventures Limited,·,
+117,93,St Anthony's Sr. Sec. School,·,
+118,94,"University School of Information, Communication & Technology",BTech,Computer Science
+119,94,Delhi Public School Faridabad,High School,
+120,95,Delhi Technological University,MTech,Information system
+121,95,Jalpaiguri Government  Engineering College,BTech,Information Technology
+122,96,National Institute of Technology Raipur,Bachelor's Degree,Electronics and Telecommunication
+123,96,"JNV Gachibowli,Hyderabad Andhra Pradesh",High School,PCM
+124,96,"JNV Koderma, Jharkhand",High School,10th
+125,97,National Institute of Technology Kurukshetra,BTech,Information Technology
+126,98,Page 1 of,Indian Institute of Technology,"Guwahati Bachelor's degree, Computer Science"
+127,99,IIIT,MTech,"Computer Science  (August 2020 - May 2022) Jaipur Engineering College and Research Centre (JECRC) Bachelor of Technology (B.Tech.), Computer Science And Engineering"
+128,99,BNS DAV Public School,High School,Science
+129,99,Carmel School,Senior Secondary,English Hindi History Geography Science Computer Applications
+130,101,Banasthali Vidyapith,BTech,Computer Science
+131,102,MVSR Engineering College,BE,Computer Science
+132,103,Poornima College of Engineering,BTech,Computer Engineering
+133,103,Universal Public school,·,
+134,105,Page 2 of,BTech,Computer Science
+135,106,National Institute of Technology Rourkela,BTech,Computer Science
+136,107,"BITS Pilani, Hyderabad Campus",Master of Engineering (M.E),"Computer Science  (August 2021 - August 2023) Jorhat Engineering College Page 1 of 2 Bachelor of Engineering - BE, Computer science and engineering"
+137,108,"Army Institute of Technology, Pune",BE,Computer Engineering
+138,109,Jntu,BTech,Computer Science
+139,110,Page 1 of,MCA,"Faridabad Bachelor of Technology (B.Tech.), Information Technology"
+140,111,National Institute of Technology Warangal,Master's degree,"Computer Programming, Specific Applications"
+141,112,"Shanmugha Arts, Science, Technology & Reserch Academy",(SASTRA),"Thanjavur Bachelor of Technology - BTech, Computer Science and Engineering"
+142,112,Sri Chaitanya Educational Institutions,Intermediate,MPC
+143,112,Keshava Reddy Educational Institutions,10th,
+144,113,"Shri Vishnu Engineering College for Women, Vishnupur, Kovvada",Village,"Bhimavaram, PIN-534202(CC-B0) Page 1 of 2 Bachelor of Technology - BTech, Computer Science"
+145,114,Maharaja Agrasen Institute Of Technology,BTech,Computer Science
+146,114,Venkateshwar Global School,·,
+147,115,"Malviya National Institute of Technology, Jaipur",BTech,Electronics and Communication Engineering
+148,115,Podar International School,·,
+149,116,ABES Engineering College,BTech,Computer Science
+150,117,"Indian Institute of Technology, Kharagpur",MTech,Computer Science and Engineering
+151,117,"VISHWAKARMA GOVERNMENT ENGINEERING COLLEGE,",CHANDKHEDA,"GANDHINAGAR 017 Bachelor of Engineering (B.E.), Computer Engineering"
+152,117,Sheth C.N. Vidhyalaya,·,
+153,118,B. M. S. College of Engineering,Bachelor's degree,Computer Science
+154,118,Modern Vidya Niketan,·,
+155,120,Dayananda Sagar College Of Engineering,BE,Information Science/Studies
+156,121,Malaviya National Institute of Technology Jaipur,BTech,Computer Science
+157,123,"Kalinga Institute of Industrial Technology, Bhubaneswar",Bachelor's degree,Computer Software Engineering
+158,123,"Delhi Public School, Ruby Park",Page 3 of 4 ·,
+159,124,"PSIT COLLEGE OF ENGINEERING, KANPUR",BTech,Computer Science
+160,126,NSUT,BTech,Information Technology
+161,128,Malaviya National Institute of Technology Jaipur,BTech,Computer Science
+162,128,Aklank public school,High School,PCM
+163,130,"Placement Cell , NSITBihta",BTech,CSE branch student
+164,130,B. D. COLLEGE,Intermediate,PCM
+165,131,Veer Surendra Sai University Of Technology,BTech,Computer Science Engg.
+166,132,"Indian Institute of Technology, Madras",MTech,Computer Science
+167,132,Pune Institute of Computer Technology,BE,
+168,134,Udacity,Deep Learning Nanodegree,Computer Science
+169,134,"Indian Institute of Technology, Delhi",Page 5 of 6 B. Tech,Electrical Engg.
+170,134,St. Anselm's Pink City School,Higher Secondary,Science
+171,134,St. Anselm's School,Higher Secondary,Science
+172,135,Indian Institute of Information Technology Ranchi,BTech,Electronics and Communications Engineering
+173,137,Lovely Professional University,BTech,Computer Science
+174,137,"Loyola High School, Patna",Intermediate,PCM
+175,137,"Kendriya Vidyalaya, Siwan",10th,
+176,139,"Indian Institute of Technology , Varanasi",BTech,Chemical Engineering
+177,139,"Bright Model H.S. School, Ashoknagar, M.P.",High School,
+178,139,Tara Sadan Sr. Sec. School,Middle School  ·,
+179,140,IISc,MTech,Computational Science
+180,140,Jadavpur University,BE,Mechanical Engineering
+181,140,Kendriya Vidyalaya,Senior Secondary,Science
+182,140,Holy Child English Academy,ICSE,Secondary Level
+183,141,Motilal Nehru National Institute Of Technology,BTech,Information Technology
+184,143,Laxmi Devi Institue of Engineering and Technology,BTech,Computer Science and Engineering
+185,143,"Raj English School, Varanasi",Class XII (CBSE)  ·,
+186,143,"St. Joesph's Convent School, Varanasi",Class X (ICSE)  ·,
+187,144,CSI College of Engineering,BE,"Computer Science  (March 2012 - May 2015) Karpagam polytechnic college High School Diploma, Computer Science"
+188,145,Vaagdevi Institute of Technology & Science,BTech,Computer Science
+189,149,Delhi College of Engineering,BTech,Information Technology
+190,149,Delhi Public School - R. K. Puram,High School,PCM with Computer Science
+191,149,Delhi Public School  Patna,10th,
+192,150,Chitkara University,BTech,Computer science engineering
+193,151,Indian Institute of Technology Jodhpur,BTech,Artificial Intelligence and Data Science
+194,152,Vasavi College of Engg,BE,Information Technology
+195,153,National Institute of Technology Jamshedpur,·,
+196,154,Kongu Engineering College,BE,Electronics and Instrumentation Engineering
+197,154,Little Angels Higher Secondary school,HSC  ·,
+198,154,Bharathi Vidhyalaya Matric Hr.Sec School,SSLC  ·,
+199,155,SRM University,BTech,Information Technology
+200,156,East West Institute Of Technology,BE,Electronics and Communications Engineering
+201,157,BITS Pilani Work Integrated Learning Programmes,MTech,"Software Engineering  (July 2022 - August 2024) Prof. Ram Meghe Institute of Technology & Research Badnera Rly. Bachelor of Engineering - BE, Information Technology"
+202,157,Amravati University,BE,Information Technology
+203,158,"Birla Institute of Technology and Science, Pilani",BE,
+204,159,Ramaiah Institute Of Technology,BE,Computer Science
+205,159,"Vikas Vidyaniketan, Vishakhapatnam",·,
+206,159,"Delhi Public School, Durg",·,
+207,160,BMS Institute of Technology,BTech,Computer science engineering
+208,161,Page 2 of,BE,Mechanical Engineering
+209,162,Suresh Gyan Vihar University,Master's degree,Software Engineering
+210,162,Suresh Gyan Vihar University,Bachelor's degree,Computer Science
+211,163,Guru Gobind Singh Indraprastha University,BTech,Computer Science
+212,165,"College of Engineering, Trivandrum",BTech,Computer Science and Engineering
+213,165,St Antony's Public School,Class 12,Computer Science
+214,165,Navajeevan Bethany Vidyalaya,Class 10  ·,
+215,168,Jaypee Institute Of Information Technology,BTech,Computer Science
+216,169,Thapar University,BTech,Computer Science
+217,170,VIT Vellore,BTech,Computer Science
+218,170,Page 1 of,Seth Anandram Jaipuria School,"Kanpur Senior Secondary, ISC"
+219,170,"Seth Anandram Jaipuria School, Kanpur",Secondary School,CISCE
+220,172,PES University,BTech,Computer science and engineering
+221,172,Govt. Pre University College Belgaum,PUC  ·,
+222,173,SRM University,BTech,Computer Science
+223,174,"Birla Institute of Technology and Science, Pilani",BE,"Computer Science  (June 2014 - July 2018) Birla Institute of Technology and Science, Pilani"
+224,175,Page 2 of,BTech,Computer Science
+225,175,Urbane Junior College,Senior Secondary Education,Engineering Science
+226,175,Delhi Public School Bhilai,High School,CBSE
+227,176,National Institute of Technology Rourkela,BTech,
+228,179,PSG College of Technology,BE,Computer Science
+229,180,The 1% Club,Personal Finance Master,"Personal Finance Mastery  (October 2023 - January 2024) PES University Bachelor of Engineering, Computer Engineering"
+230,180,Tashi Namgyal Academy,ISC,science
+231,181,"Government College of Engineering and Textile Technology,",BE,Computer Science & Engineering
+232,182,INDIRA GANDHI DELHI TECHNICAL UNIVERSITY FOR WOMEN,BTech,Information Technology
+233,183,Page 1 of,Andhra University Bachelor’s Degree,Computer Science and Systems Engineering
+234,183,Rama Krishna Mission High School,High School,
+235,184,International Institute of Information Technology,MTech,Computer Science
+236,184,SKIT Jaipur,BTech,Computer Science
+237,184,"Birla School ,Pilani",SSCE,Computer Science

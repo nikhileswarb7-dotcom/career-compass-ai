@@ -1,0 +1,2 @@
+criteria_id,company_role_id,min_experience_years,cgpa_cutoff,backlogs_allowed,notes
+1,1,0.0,6.5,False,"For freshers, solid DSA, OS, DBMS and Java/Go skills. No backlogs allowed."

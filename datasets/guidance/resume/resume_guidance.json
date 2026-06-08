@@ -1,0 +1,186 @@
+[
+  {
+    "qualification": "1st Year Student",
+    "word_limit": "1 page max",
+    "required_sections": ["Education", "Technical Skills", "Projects", "Courses / Certifications"],
+    "optional_sections": ["Achievements", "Extra-Curricular"],
+    "ats_tips": [
+      "Use simple fonts: Times New Roman, Calibri, Arial",
+      "No tables, graphics, or columns — ATS can't read them",
+      "Use keywords: Java, Python, Git, DSA",
+      "File format: PDF always"
+    ],
+    "common_mistakes": [
+      "Including hobbies like cricket, music — irrelevant to SDE",
+      "Using photos on resume",
+      "Using fancy templates with graphics",
+      "Listing skills you barely touched",
+      "Missing GitHub link"
+    ],
+    "example_summary": "First-year B.Tech (CSE) student building programming fundamentals. Proficient in Java and Python. Active GitHub profile with 3+ projects.",
+    "linkedin_sync_note": "Keep skills section consistent with LinkedIn profile"
+  },
+  {
+    "qualification": "2nd Year Student",
+    "word_limit": "1 page max",
+    "required_sections": ["Education", "Technical Skills", "Projects (2-3)", "Internships / Volunteer (if any)"],
+    "optional_sections": ["Certifications", "Achievements", "Open Source Contributions"],
+    "ats_tips": [
+      "Quantify projects: 'Built REST API handling 500 req/sec'",
+      "Add GitHub repo links to each project",
+      "Skills section: Programming Languages, Frameworks, Databases, Tools",
+      "Action verbs: Designed, Developed, Implemented, Optimized"
+    ],
+    "common_mistakes": [
+      "No project descriptions — just project names",
+      "Listing every online course certificate",
+      "CGPA below 6.0 prominently displayed — put it but don't highlight",
+      "No mention of tech stack used in each project"
+    ],
+    "example_summary": "2nd-year B.Tech CSE student. Proficient in Java, Spring Boot, MySQL. Built 3 backend projects. 120+ LeetCode problems solved.",
+    "resume_checklist": [
+      "GitHub link present and profile is populated",
+      "LinkedIn URL present",
+      "Email address is professional (firstname.lastname@gmail.com)",
+      "No photo",
+      "All projects have: description, tech stack, GitHub link",
+      "1 page exactly"
+    ]
+  },
+  {
+    "qualification": "3rd Year Student",
+    "word_limit": "1 page max",
+    "required_sections": ["Education", "Technical Skills", "Projects (3-4)", "Internships / Training (if any)", "Achievements"],
+    "optional_sections": ["Certifications", "Open Source", "Publications"],
+    "ats_tips": [
+      "Include Blinkit-relevant keywords: Java, Spring Boot, MySQL, Redis, DSA, System Design",
+      "Quantify everything: 'Reduced API latency by 30% using Redis caching'",
+      "Use job description keywords",
+      "Projects should show scale: 'Handled 1000 concurrent users'"
+    ],
+    "common_mistakes": [
+      "Weak project descriptions like 'Made a website'",
+      "Not having GitHub links",
+      "Missing LeetCode/coding profile",
+      "3+ pages — always keep to 1 page",
+      "Inconsistent date formats"
+    ],
+    "strong_resume_example": {
+      "projects": [
+        {
+          "name": "Food Delivery Backend",
+          "description": "Built scalable RESTful API using Spring Boot + MySQL with Redis caching. Supports 1000+ concurrent orders. JWT authentication implemented.",
+          "tech": "Java, Spring Boot, MySQL, Redis, REST API"
+        },
+        {
+          "name": "Inventory Management System",
+          "description": "Developed inventory management REST API with low-stock alert system. 15+ API endpoints with role-based access control.",
+          "tech": "Java, Spring Boot, MySQL, Spring Security"
+        }
+      ]
+    },
+    "resume_checklist": [
+      "3 strong backend projects with tech stack and GitHub links",
+      "LeetCode profile link or mention (150+ solved)",
+      "CGPA above 7.0 prominently displayed",
+      "Internship if available",
+      "Relevant coursework: DBMS, OS, CN, DSA",
+      "Skills: Java, Spring Boot, MySQL, Git, DSA, DBMS"
+    ]
+  },
+  {
+    "qualification": "4th Year Student",
+    "word_limit": "1 page max",
+    "required_sections": ["Education", "Experience / Internship", "Technical Skills", "Projects (3-4)", "Achievements"],
+    "optional_sections": ["Certifications", "Open Source"],
+    "ats_tips": [
+      "Mirror Blinkit JD: 'Backend development', 'Microservices', 'System Design', 'Java'",
+      "Highlight internship impact — business metrics if possible",
+      "ATS reads PDF better than DOCX — always send PDF",
+      "Tailor resume for each company (5 min change per company)"
+    ],
+    "common_mistakes": [
+      "Generic objective statements",
+      "Listing tools without context of how you used them",
+      "Weak project descriptions",
+      "Missing soft achievement like 'Top 5 in college hackathon'"
+    ],
+    "resume_checklist": [
+      "Internship experience present",
+      "3-4 strong projects",
+      "300+ LeetCode problems mentioned",
+      "System Design exposure mentioned",
+      "CGPA and relevant coursework",
+      "LinkedIn + GitHub links"
+    ]
+  },
+  {
+    "qualification": "Fresh Graduate",
+    "word_limit": "1 page max",
+    "required_sections": ["Education", "Technical Skills", "Projects (3-4)", "Internships / Experience (if any)", "Achievements"],
+    "optional_sections": ["Certifications"],
+    "ats_tips": [
+      "Compensate for no experience with strong projects",
+      "Open source contributions boost credibility",
+      "Mention competitive programming rankings if strong",
+      "Apply ATS-safe format — no tables, no graphics"
+    ],
+    "common_mistakes": [
+      "Showing graduation year prominently (hiring bias) — keep subtle",
+      "No projects after graduation — keep building",
+      "Generic resume for every company — tailor it"
+    ],
+    "resume_checklist": [
+      "Strong projects that show production-level thinking",
+      "300+ LeetCode mentioned or profile linked",
+      "Any internship or freelance project",
+      "Active GitHub profile with contributions"
+    ]
+  },
+  {
+    "qualification": "Trainee Engineer",
+    "word_limit": "1 page max",
+    "required_sections": ["Experience", "Technical Skills", "Projects (personal + work)", "Education"],
+    "optional_sections": ["Certifications", "Open Source"],
+    "ats_tips": [
+      "Lead with experience section, not education",
+      "Highlight impact at current company",
+      "Show progression: Trainee → contributed to X feature",
+      "Mention production code, team size, scale"
+    ],
+    "common_mistakes": [
+      "Hiding current company on resume",
+      "Only listing work projects without personal side projects",
+      "Not quantifying impact at work"
+    ],
+    "resume_checklist": [
+      "Current company experience described with impact",
+      "Side project (Food Delivery Backend or similar) for Blinkit keywords",
+      "Tech stack clearly listed",
+      "LinkedIn and GitHub links"
+    ]
+  },
+  {
+    "qualification": "Junior Software Engineer",
+    "word_limit": "1-2 pages",
+    "required_sections": ["Experience (prominent)", "Technical Skills", "Projects", "Education"],
+    "optional_sections": ["Certifications", "Publications", "Open Source"],
+    "ats_tips": [
+      "Experience section should dominate the resume",
+      "Quantify impact: 'Reduced query time from 2s to 200ms'",
+      "Mention system scale: 'Service handling 10M+ requests/day'",
+      "Include architectural decisions made"
+    ],
+    "common_mistakes": [
+      "Education-first resume after 1+ year experience",
+      "Vague job descriptions without impact",
+      "No system design or architecture mentions"
+    ],
+    "resume_checklist": [
+      "2+ years experience with impact metrics",
+      "At least one system design case on resume",
+      "Tech stack matches Blinkit: Java/Spring Boot/MySQL/Redis",
+      "Active GitHub with code samples"
+    ]
+  }
+]

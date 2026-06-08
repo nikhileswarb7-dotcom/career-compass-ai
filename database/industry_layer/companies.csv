@@ -1,0 +1,412 @@
+company_id,company_name,industry,company_type
+1,Blinkit,E-Commerce,Product
+2,Zomato,FoodTech,Product
+3,Swiggy,FoodTech,Product
+4,Paytm,FinTech,Product
+5,PhonePe,FinTech,Product
+6,Flipkart,E-Commerce,Product
+7,Amazon,E-Commerce,MNC
+8,Google,Technology,MNC
+9,Microsoft,Technology,MNC
+10,Meta,SocialMedia,MNC
+11,Pocket FM,MediaTech,Startup
+12,Probo,GamingTech,Startup
+13,e3NexT Solutions,IT Services,Startup
+14,Rippling,HRTech,Startup
+15,Alltius,AI/ML,Startup
+16,FRND,SocialTech,Startup
+105,Finrep AI,Technology,Startup
+18,Toddle,EdTech,Startup
+19,TCS,IT Services,MNC
+20,Wipro,IT Services,MNC
+21,Accenture,IT Services,MNC
+22,Cognizant,IT Services,MNC
+23,Infosys,IT Services,MNC
+24,FactSet,Technology,Startup
+25,American Express,Technology,Startup
+26,Tata Consultancy Services,Technology,Startup
+27,HashedIn,Technology,Startup
+28,GoScale Technologies,Technology,Startup
+29,Software Development Engineer III,Technology,Startup
+30,University of Oklahoma,Technology,Academic
+31,MyMedGlobal,Technology,Startup
+32,Zoho,Technology,Startup
+33,V-REAP Foundation,Technology,Startup
+34,Lead4u,Technology,Startup
+35,Voice Qube,Technology,Startup
+36,Pucho Technology Information Private Limited,Technology,Startup
+37,Mate Labs,Technology,Startup
+38,KocharTech,Technology,Startup
+39,Offshore Software Solutions,Technology,Startup
+40,Mad Street Den,Technology,Startup
+41,30% of development efforts leading to higher throughputs,Technology,Startup
+42,Shopconnect.live,Technology,Startup
+43,Toddle - Your Teaching Partner,Technology,Startup
+44,Rocket,Technology,Startup
+45,Virtusa,Technology,Startup
+46,Edyst,Technology,Startup
+47,EPAM Systems,Technology,Startup
+48,Jio Platforms,Technology,Product
+49,Web Development Intern,Technology,Startup
+50,Samsung Electronics,Technology,Startup
+51,Wipro Digital,Technology,Startup
+52,Manhattan Associates,Technology,Startup
+53,based on user inputs.,Technology,Startup
+54,PayPal,Technology,Startup
+55,LinkedIn,Technology,Startup
+56,cppsecrets.com,Technology,Startup
+57,Cogos Technologies Pvt Ltd,Technology,Startup
+58,Predigle,Technology,Startup
+59,Josh Technology Group,Technology,Startup
+60,Deloitte,Technology,Startup
+61,NICE Ltd,Technology,Startup
+62,FlexTrade,Technology,Startup
+63,Codingal,Technology,Startup
+64,BillFree Labs,Technology,Startup
+65,Zolo,Technology,Startup
+66,MAQ Software,Technology,Startup
+67,Kaggle,Technology,Startup
+68,The Sparks Foundation,Technology,Startup
+69,Falistro,Technology,Startup
+70,Codepro Management Private Limited,Technology,Startup
+71,TOMIA,Technology,Startup
+72,ATONARP,Technology,Startup
+73,Prismforce,Technology,Startup
+74,Lean In @IGDTUW,Technology,Startup
+75,Markytics,Technology,Startup
+76,Project Intern,Technology,Startup
+77,HELLA,Technology,Startup
+78,NEWME,Technology,Startup
+79,backend changes. Developed the project using ReactJs and ReScript.,Technology,Startup
+80,NOGOZO,Technology,Startup
+81,Chegg Inc.,Technology,Startup
+82,Ecowiser,Technology,Startup
+83,Bungee Tech,Technology,Startup
+84,MIRROR SCORE,Technology,Startup
+85,DataToBiz,Technology,Startup
+86,reducing significant efforts to query multiple services,Technology,Startup
+87,Yubi,Technology,Startup
+88,Bennett University,Technology,Academic
+89,MapOut,Technology,Startup
+90,Crio.Do,Technology,Startup
+91,JPMorgan Chase & Co.,Technology,Startup
+92,ixigo,Technology,Startup
+93,Engineering IIT Ropar,Technology,Startup
+94,E-CELL IIT ROPAR,Technology,Startup
+95,ASEAN-INDIA Hackathon,Technology,Startup
+96,Urban Company,Technology,Startup
+97,Red Hat,Technology,Startup
+98,significantly.,Technology,Startup
+99,Swayam Infotech,Technology,Startup
+100,IIT Roorkee Motorsports,Technology,Startup
+101,Project Leader,Technology,Startup
+102,"Information Management Group, IIT Roorkee",Technology,Startup
+103,ITC Limited,Technology,Startup
+104,Stormlight Synergies,Technology,Startup
+106,CodeChef KIET Chapter,Technology,Startup
+107,Software Developer Engineer,Technology,Startup
+108,Lowe's India,Technology,Startup
+109,Ambitree Technologies,Technology,Startup
+110,Ripetech Business Pvt Limited,Technology,Startup
+111,eLDA Lab,Technology,Startup
+112,Purple Tutor,Technology,Startup
+113,Gap Inc.,Technology,Startup
+114,and player analytics pipelines.,Technology,Startup
+115,Gameskraft,Technology,Startup
+116,nurture.farm,Technology,Startup
+117,Meesho,Technology,Product
+118,Vedanta Limited - Aluminium Business,Technology,Startup
+119,Codechef IIIT Kota Chapter,Technology,Startup
+120,Viga Entertainment Technology,Technology,Startup
+121,Dübverse,Technology,Startup
+122,MatchPoint Solutions,Technology,Startup
+123,IndusianAssist Private Limited,Technology,Startup
+124,organization,Technology,Startup
+125,Owasp_tiet,Technology,Startup
+126,Ikarus 3D,Technology,Startup
+127,Ioncure Tech Pvt. Ltd.,Technology,Startup
+128,Working in the Catalogue Mangement System team,Technology,Startup
+129,TechCurators,Technology,Startup
+130,documentation and maintenance for the pricing micro-service.,Technology,Startup
+131,Porter,Technology,Startup
+132,Zscaler,Technology,Startup
+133,Tata 1mg,Technology,Startup
+134,Keychain,Technology,Startup
+135,WheelsEye,Technology,Startup
+136,Bentley Systems,Technology,Startup
+137,Tokopedia,Technology,Startup
+138,"MATRIX, Student Body, Department of Mathematics, IIT Guwahati",Technology,Startup
+139,Mastercard,Technology,Startup
+140,vCreaTek Consulting Services Pvt Ltd,Technology,Startup
+141,Franklin Templeton,Technology,Startup
+142,Adobe,Technology,Startup
+143,Hewlett Packard Enterprise,Technology,Startup
+144,Team Syndicate,Technology,Startup
+145,AfterNow,Technology,Startup
+146,Prometeo IIT Jodhpur,Technology,Startup
+147,Youth Conclave,Technology,Startup
+148,United Techlab,Technology,Startup
+149,Hashtag Systems Inc,Technology,Startup
+150,Newton School,Technology,Academic
+151,Fin Risk Prog and Prod Eng Tech - Tax Technology,Technology,Startup
+152,Morgan Stanley,Technology,Startup
+153,Coding Ninjas,Technology,Startup
+154,OYO,Technology,Startup
+155,Team Zona,Technology,Startup
+156,duties. Improved team knowledge sharing and onboarding.,Technology,Startup
+157,Mindtickle,Technology,Startup
+158,Yamaha Motor Solutions India Pvt.Ltd.,Technology,Startup
+159,eCell MSIT,Technology,Startup
+160,IEEE MSIT,Technology,Startup
+161,EMTECH FOUNDATION,Technology,Startup
+162,TEDxMSIT,Technology,Startup
+163,Leverage Edu,Technology,Startup
+164,Goa,Technology,Startup
+165,Department of Backstage & Infrastructure Management,Technology,Startup
+166,UltraTech Cement,Technology,Startup
+167,Zebra Technologies,Technology,Startup
+168,Spinny,Technology,Startup
+169,IBM,Technology,Startup
+170,National Institute of Technology Jamshedpur,Technology,Academic
+171,VerSe Innovation,Technology,Startup
+172,research center imarat,Technology,Startup
+173,Airtel Digital,Technology,Startup
+174,Bharat Heavy Electricals Limited,Technology,Startup
+175,Oracle,Technology,MNC
+176,C-DAC,Technology,Startup
+177,and provide consistent error responses across the API Endpoints.,Technology,Startup
+178,CodeSpeedy Technology Private Limited,Technology,Startup
+179,Oceanblaze Private Limited,Technology,Startup
+180,MathWorks,Technology,Startup
+181,Zeta,Technology,Startup
+182,LearnMaxPro,Technology,Startup
+183,Manurbhava Ventures Pvt.Ltd,Technology,Startup
+184,Oye Rickshaw: The First & Last Mile Ride co.,Technology,Startup
+185,Affinidi,Technology,Startup
+186,Qualcomm,Technology,Startup
+187,ShopClues,Technology,Startup
+188,FarEye,Technology,Startup
+189,Intel Labs,Technology,Startup
+190,Zoho Corporation,Technology,Startup
+191,Software Engineer,Technology,Startup
+192,Walmart Global Tech India,Technology,Startup
+193,Nagarro,Technology,Startup
+194,PayU,Technology,Startup
+195,L&T Technology Services Limited,Technology,Startup
+196,SmartSoC Solutions Pvt Ltd,Technology,Startup
+197,"VORTEX, CSEA NIT Trichy",Technology,Startup
+198,Engifest DTU,Technology,Startup
+199,GirlScript Summer of Code,Technology,Startup
+200,and Roster management.,Technology,Startup
+201,Codechef DDU Chapter,Technology,Startup
+202,Sakhatech Information Systems Pvt. Ltd,Technology,Startup
+203,Infra.Market,Technology,Startup
+204,Vassar Labs,Technology,Startup
+205,Phenom People,Technology,Startup
+206,Project Trainee,Technology,Startup
+207,Grasped some key concepts of IBM Worklight as well.,Technology,Startup
+208,Dimension Data,Technology,Startup
+209,Cadence,Technology,Startup
+210,Synopsys Inc,Technology,Startup
+211,preventing quality issues,Technology,Startup
+212,Cadence Design Systems,Technology,Startup
+213,Taarangana,Technology,Startup
+214,Innerve,Technology,Startup
+215,Makerspace Cisco thinqbator IGDTUW,Technology,Startup
+216,Techsters -Coding society,Technology,Startup
+217,Enactus IGDTUW,Technology,Startup
+218,TEDxIGDTU,Technology,Startup
+219,Pioneering Web Solutions,Technology,Startup
+220,Cisco,Technology,Startup
+221,Newzera,Technology,Startup
+222,Pune District,Technology,Startup
+223,SAP Labs India,Technology,Startup
+224,Avalara,Technology,Startup
+225,SingleStore,Technology,Startup
+226,Women Techmakers Engineering Fellows Program,Technology,Startup
+227,Digital Product School by UnternehmerTUM,Technology,Academic
+228,Dakshana Foundation,Technology,Startup
+229,Syntel,Technology,Startup
+230,slow network users.,Technology,Startup
+231,Royal Paints & Hardware,Technology,Startup
+232,Chromium,Technology,Startup
+233,HSBC,Technology,Startup
+234,Expedia Group,Technology,Startup
+235,ZeMoSo Technologies,Technology,Startup
+236,Smart Interviews,Technology,Startup
+237,Sureify,Technology,Startup
+238,Salesforce,Technology,MNC
+239,Celebal Technologies,Technology,Startup
+240,knowledge,Technology,Startup
+241,and integration of diverse functionalities.,Technology,Startup
+242,Phenom,Technology,Startup
+243,Rotaract Club of PES University,Technology,Academic
+244,PES University,Technology,Academic
+245,IEEE Computer Society PES University,Technology,Academic
+246,Minerva PESU,Technology,Startup
+247,Centre for Innovation and Entrepreneurship - PES University,Technology,Academic
+248,Propheus,Technology,Startup
+249,Wipro Limited,Technology,Startup
+250,Solytics Partners,Technology,Startup
+251,identified and managed.,Technology,Startup
+252,White Wular Online Offline Stores,Technology,Startup
+253,FedEx ACC,Technology,Startup
+254,Goldman Sachs,Technology,Startup
+255,Samsung R&D Institute Noida,Technology,Academic
+256,National Institute of Technology Warangal,Technology,Academic
+257,KLA-Tencor,Technology,Startup
+258,Joint Secretary,Technology,Startup
+259,Incedo Inc.,Technology,Startup
+260,TalentSprint,Technology,Startup
+261,Fiserv,Technology,Startup
+262,Akamai Technologies,Technology,Startup
+263,Team Conatus,Technology,Startup
+264,OyeBusy Technologies Pvt. Ltd.,Technology,Startup
+265,Wiley Edge,Technology,Startup
+266,Couchbase,Technology,Startup
+267,Rexzet Solutions,Technology,Startup
+268,National Service Scheme,Technology,Startup
+269,INCANUS TECHNOLOGIES PRIVATE LIMITED,Technology,Startup
+270,ACM Student Chapter,Technology,Startup
+271,Apple,Technology,MNC
+272,HighRadius,Technology,Startup
+273,Onsitego,Technology,Startup
+274,Scaler,Technology,Startup
+275,Primenumbers Technologies,Technology,Startup
+276,Shiprocket,Technology,Startup
+277,GDSC IIT Ropar,Technology,Startup
+278,blinkX,Technology,Startup
+279,Cosedge,Technology,Startup
+280,Azurite Project Training and Consulting,Technology,Startup
+281,Kiya.ai,Technology,Startup
+282,Chat,Technology,Startup
+283,National engineering olympiads,Technology,Startup
+284,Bosch,Technology,Startup
+285,Labmentix,Technology,Startup
+286,Elevizo,Technology,Startup
+287,Medimaze Solutions Pvt Ltd,Technology,Startup
+288,Summer Intern,Technology,Startup
+289,Mindfire Solutions,Technology,Startup
+290,Impelsys,Technology,Startup
+291,Quikr,Technology,Startup
+292,Encora Inc.,Technology,Startup
+293,Arcesium,Technology,Startup
+294,Amdocs,Technology,Startup
+295,NVIDIA,Technology,Startup
+296,L3Cube Labs,Technology,Startup
+297,Liv.ai,Technology,Startup
+298,upGrad,Technology,Startup
+299,Full Stack Developer,Technology,Startup
+300,D Cube Analytics,Technology,Startup
+301,Qwest Software Services,Technology,Startup
+302,Exponential,Technology,Startup
+303,Unicommerce,Technology,Startup
+304,Shopsity,Technology,Startup
+305,RIVIGO,Technology,Startup
+306,LetsTransport,Technology,Startup
+307,Publicis Sapient,Technology,Startup
+308,Groww,Technology,Startup
+309,JUSPAY,Technology,Startup
+310,UBS,Technology,Startup
+311,A.P. Moller - Maersk,Technology,Startup
+312,Shiryam Technologies,Technology,Startup
+313,Cogoport,Technology,Startup
+314,Avaamo,Technology,Startup
+315,The MathWorks,Technology,Startup
+316,Myntra,Technology,Startup
+317,Hult Prize Foundation,Technology,Startup
+318,ISTE NITH,Technology,Startup
+319,Codess.Cafe,Technology,Startup
+320,Harvard WECode: Women Engineers Code Conference,Technology,Startup
+321,BNY,Technology,Startup
+322,Zemoso Technologies,Technology,Startup
+323,Junior Software Engineer,Technology,Startup
+324,Self-employed,Technology,Startup
+325,Index Information Technology Services LLC,Technology,Startup
+326,Imperium Software Technologies,Technology,Startup
+327,Vxaro technologies pvt ltd,Technology,Startup
+328,Cybermasks software pvt ltd,Technology,Startup
+329,BBI,Technology,Startup
+330,HCL Technologies,Technology,Startup
+331,Synchrony,Technology,Startup
+332,CODEHUB_,Technology,Startup
+333,Opencode NIT Rourkela,Technology,Startup
+334,Scifor Technologies,Technology,Startup
+335,Curvelogics Advanced Technology Solutions Pvt Ltd,Technology,Startup
+336,Emirates,Technology,Startup
+337,SAP,Technology,Startup
+338,Teachnook,Technology,Startup
+339,Times Internet,Technology,Startup
+340,Movoto,Technology,Startup
+341,Acko,Technology,Startup
+342,MedPlus Health Services Pvt. Ltd.,Technology,Startup
+343,Pegasystems,Technology,Startup
+344,SapientNitro,Technology,Startup
+345,recruber,Technology,Startup
+346,Synechron,Technology,Startup
+347,Nokia,Technology,Startup
+348,Infosys Ltd,Technology,Startup
+349,Freshworks,Technology,Startup
+350,Bharat Electronics Limited,Technology,Startup
+351,Verifone,Technology,Startup
+352,Internship studio,Technology,Startup
+353,Secondary users consent management for AU-CDR clients,Technology,Startup
+354,Z1 Media,Technology,Startup
+355,Airmeet,Technology,Startup
+356,LTIMindtree,Technology,Startup
+357,Tradable,Technology,Startup
+358,Debugging and providing solutions promptly,Technology,Startup
+359,udaan.com,Technology,Startup
+360,ZEE - Technology & Innovation,Technology,Startup
+361,Hero Cycles Ltd,Technology,Startup
+362,Shriram Pistons & Ring Ltd,Technology,Startup
+363,functional collaboration and clear system understanding.,Technology,Startup
+364,OSI Consulting,Technology,Startup
+365,Ivy Comptech,Technology,Startup
+366,IMImobile,Technology,Startup
+367,Walmart Global Tech,Technology,Startup
+368,Sierre Technologies LLc,Technology,Startup
+369,ORISERVE,Technology,Startup
+370,ZETWERK,Technology,Startup
+371,Birdeye,Technology,Startup
+372,Webtek Labs Pvt. Ltd.,Technology,Startup
+373,Sarvadaksh Event Solutions Pvt Ltd,Technology,Startup
+374,Mindtree,Technology,Startup
+375,plans by 80\%.,Technology,Startup
+376,Quantiphi,Technology,Startup
+377,BambooBox,Technology,Startup
+378,FACT Kochi,Technology,Startup
+379,CETALKS,Technology,Startup
+380,helping them to achieve easiness in usage of the same.,Technology,Startup
+381,International Centre for Free and Open Source Software,Technology,Startup
+382,AdroitMinds Software Labs,Technology,Startup
+383,Symantec,Technology,Startup
+384,ZoomRx,Technology,Startup
+385,Camp K,Technology,Startup
+386,Vyorius,Technology,Startup
+387,Software Engineer Intern,Technology,Startup
+388,Thales,Technology,Startup
+389,MIR Digital Solutions,Technology,Startup
+390,Fidelity Investments,Technology,Startup
+391,CrimsonLogic Pte Ltd,Technology,Startup
+392,CGI,Technology,Startup
+393,Ayotta Technologies,Technology,Startup
+394,Ushur,Technology,Startup
+395,deployment strategies based on the test results.,Technology,Startup
+396,Rakuten India,Technology,Startup
+397,M2P Fintech,Technology,Startup
+398,F13 Technologies,Technology,Startup
+399,ADP,Technology,Startup
+400,Telstra,Technology,Startup
+401,MakeMyTrip,Technology,Startup
+402,Talentica Software,Technology,Startup
+403,Ford Motor Company,Technology,Startup
+404,TVS Motor Company,Technology,Startup
+405,Temenos,Technology,Startup
+406,disputes against adversely rated merchants worldwide.,Technology,Startup
+407,Invest on Health,Technology,Startup
+408,Piktorlabs Inc.,Technology,Startup
+409,Ather Energy,Technology,Startup
+410,continuous performance and quality improvements.,Technology,Startup
+411,Wells Fargo,Technology,Startup
+412,business including Native brand,Technology,Startup

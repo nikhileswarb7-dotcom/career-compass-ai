@@ -1,0 +1,13 @@
+role_id,role_name,career_level
+1,SDE Intern,Intern
+2,SDE I,Entry
+3,SDE II,Mid
+4,SDE III,Senior
+5,Senior Software Engineer,Senior
+6,Tech Lead,Lead
+7,Engineering Manager,Management
+8,Backend Engineer,Mid
+9,Frontend Engineer,Mid
+10,SRE / DevOps Engineer,Mid
+11,Mobile Engineer,Mid
+12,AI / ML Engineer,Mid

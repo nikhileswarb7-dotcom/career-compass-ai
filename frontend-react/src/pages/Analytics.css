@@ -1,0 +1,137 @@
+.analytics-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem 0;
+}
+
+.analytics-header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.analytics-header h1 {
+  font-family: var(--font-title);
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.analytics-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.signals-card {
+  padding: 1.75rem;
+  text-align: left;
+}
+
+.signals-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.signals-table th {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border-glass);
+}
+
+.signals-table td {
+  padding: 0.85rem 0.5rem;
+  border-bottom: 1px solid var(--border-glass);
+  font-size: 0.88rem;
+}
+
+.signals-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badge classes mapping types */
+.badge-sig {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.badge-sig.skill { background: var(--primary-glow); color: var(--primary); }
+.badge-sig.education { background: rgba(16, 185, 129, 0.15); color: var(--emerald); }
+.badge-sig.career { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+
+.signal-weight-tag {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Transitions list layout */
+.transitions-card {
+  padding: 1.75rem;
+  text-align: left;
+}
+
+.transition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.transition-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.transition-item:hover {
+  background: var(--card-sub-bg-hover);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  transform: translateY(-2px);
+}
+
+.path-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.path-arrow {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.path-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}

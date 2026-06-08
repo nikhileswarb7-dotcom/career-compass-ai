@@ -1,0 +1,172 @@
+.welcome-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+.theme-toggle-welcome {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  color: var(--text-main);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 1.15rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+.theme-toggle-welcome:hover {
+  background: var(--card-sub-bg-hover);
+  border-color: var(--border-glass-hover);
+  transform: scale(1.05);
+}
+
+.logout-welcome-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 5rem;
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  color: var(--rose);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.logout-welcome-btn:hover {
+  background: var(--rose-glow);
+  border-color: var(--rose-border);
+}
+
+.welcome-card {
+  padding: 3.5rem;
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+.welcome-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-family: var(--font-title);
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.welcome-logo-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--primary);
+}
+
+.welcome-tagline {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.welcome-btn-card {
+  background: var(--card-sub-bg);
+  border: 1px solid var(--border-glass);
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
+  color: var(--text-main);
+  text-align: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+
+.welcome-btn-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.welcome-btn-card:hover {
+  background: var(--card-sub-bg-hover);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 35px var(--card-shadow);
+}
+
+.welcome-btn-card:hover::before {
+  opacity: 1;
+}
+
+.welcome-btn-title {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 750;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-main);
+}
+
+.welcome-btn-title.start-new svg { color: var(--secondary); }
+.welcome-btn-title.continue svg { color: var(--primary); }
+.welcome-btn-title.analytics svg { color: var(--emerald); }
+
+.welcome-btn-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+@media (max-width: 768px) {
+  .welcome-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .welcome-card {
+    padding: 2rem;
+  }
+  
+  .welcome-brand {
+    font-size: 2.2rem;
+  }
+}
