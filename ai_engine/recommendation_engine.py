@@ -24,11 +24,33 @@ def generate_recommendation(
     github_username: str = "",
     resume_text: str = "",
     cgpa: float = 8.0,
-    experience_years: float = 0.0
+    experience_years: float = 0.0,
+    candidate_profile: dict = None
 ) -> dict:
     """
     Combines all modules to build the complete career plan with AI Coaching intelligence.
     """
+    if not candidate_profile:
+        from profile_analyzer.linkedin_parser import LinkedInParser
+        from profile_analyzer.github_analyzer import GitHubAnalyzer
+        from profile_analyzer.resume_parser import ResumeParser
+        from ai_engine.profile.candidate_builder import CandidateBuilder
+        
+        parsed_li = {}
+        parsed_gh = {}
+        parsed_res = {}
+        if linkedin_url:
+            try: parsed_li = LinkedInParser.parse_profile(linkedin_url)
+            except Exception: parsed_li = {}
+        if github_username:
+            try: parsed_gh = GitHubAnalyzer.analyze_profile(github_username)
+            except Exception: parsed_gh = {}
+        if resume_text:
+            try: parsed_res = ResumeParser.parse_resume(resume_text)
+            except Exception: parsed_res = {}
+            
+        candidate_profile = CandidateBuilder.build_profile(known_skills, parsed_res, parsed_gh, parsed_li)
+
     # 1. Run Assessment Engine
     from ai_engine.assessment.readiness_engine import evaluate_career_readiness
     assessment_scores = evaluate_career_readiness(
@@ -39,7 +61,8 @@ def generate_recommendation(
         company_name=dream_company,
         role_name=target_role,
         qualification=qualification,
-        experience_years=experience_years
+        experience_years=experience_years,
+        candidate_profile=candidate_profile
     )
     # Use the readiness score from assessment engine
     readiness_score = int(assessment_scores["overall_readiness"])
@@ -80,7 +103,8 @@ def generate_recommendation(
         fresh_passout=fresh_passout, 
         target_role=target_role,
         similar_engineers=similar_engineers,
-        assessment_scores=assessment_scores
+        assessment_scores=assessment_scores,
+        candidate_profile=candidate_profile
     )
     
     # 6. Recommend Questions

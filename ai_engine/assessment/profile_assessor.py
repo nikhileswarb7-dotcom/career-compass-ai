@@ -7,17 +7,28 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from github_assessor import assess_github_profile
 
-def assess_profile(linkedin_url: str, github_username: str, resume_text: str) -> dict:
+def assess_profile(linkedin_url: str, github_username: str, resume_text: str, candidate_metadata: dict = None, github_details: dict = None) -> dict:
     """
     Computes a score (0 to 100) representing Profile Maturity, 
     and returns a breakdown of LinkedIn, GitHub, and Resume scores.
+    Uses candidate_metadata and github_details when available.
     """
     linkedin_score = 0.0
     github_score = 0.0
     resume_score = 0.0
 
     # 1. LinkedIn URL Assessment
-    if linkedin_url and linkedin_url.strip():
+    if candidate_metadata and candidate_metadata.get("linkedin_source") != "N/A":
+        # Score based on LinkedIn metadata completeness
+        score = 50.0  # base score for link present
+        if candidate_metadata.get("experience"):
+            score += 25.0
+        if candidate_metadata.get("education"):
+            score += 15.0
+        if candidate_metadata.get("certifications"):
+            score += 10.0
+        linkedin_score = min(score, 100.0)
+    elif linkedin_url and linkedin_url.strip():
         li_lower = linkedin_url.lower().strip()
         if "linkedin.com" in li_lower and ("in/" in li_lower or "profile" in li_lower):
             linkedin_score = 100.0  # Fully complete link
@@ -27,11 +38,23 @@ def assess_profile(linkedin_url: str, github_username: str, resume_text: str) ->
             linkedin_score = 40.0   # Simple text entered
             
     # 2. GitHub Username Assessment (using github_assessor module)
-    github_data = assess_github_profile(github_username)
+    github_data = assess_github_profile(github_username, github_details)
     github_score = github_data["github_score"]
             
     # 3. Resume Text Assessment
-    if resume_text and resume_text.strip():
+    if candidate_metadata and candidate_metadata.get("resume_source") != "N/A":
+        # Score based on resume metadata completeness
+        score = 50.0  # base
+        if candidate_metadata.get("education"):
+            score += 15.0
+        if candidate_metadata.get("experience"):
+            score += 15.0
+        if candidate_metadata.get("certifications"):
+            score += 10.0
+        if len(candidate_metadata.get("experience", [])) >= 2:
+            score += 10.0
+        resume_score = min(score, 100.0)
+    elif resume_text and resume_text.strip():
         words_count = len(resume_text.split())
         if words_count > 150:
             resume_score = 100.0  # Fully written resume text

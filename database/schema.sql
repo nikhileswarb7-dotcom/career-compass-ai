@@ -250,6 +250,10 @@ CREATE TABLE students (
     linkedin_url            VARCHAR(500),
     github_username         VARCHAR(100),
     resume_text             TEXT,
+    candidate_profile_vector JSONB,
+    candidate_projects      JSONB,
+    candidate_skill_confidence JSONB,
+    candidate_metadata      JSONB,
     created_at              TIMESTAMP DEFAULT NOW()
 );
 
@@ -492,5 +496,86 @@ FROM career_transitions ct
 JOIN employee_profiles p ON ct.profile_id = p.profile_id
 JOIN companies c_src ON ct.source_company_id = c_src.company_id
 JOIN companies c_tgt ON ct.target_company_id = c_tgt.company_id;
+
+
+-- ============================================================
+-- LAYER 16: PHASE 3 DYNAMIC ROADMAPS & MAPPINGS
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS resource_skill_mapping (
+    id SERIAL PRIMARY KEY,
+    resource_id INT REFERENCES resources(resource_id) ON DELETE CASCADE,
+    skill_id INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(resource_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_stage_skill_mapping (
+    id SERIAL PRIMARY KEY,
+    stage_id INT REFERENCES roadmap_stages(stage_id) ON DELETE CASCADE,
+    skill_id INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(stage_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS skill_clusters (
+    cluster_id          SERIAL PRIMARY KEY,
+    cluster_name        VARCHAR(100) UNIQUE NOT NULL,
+    default_milestone   TEXT,
+    display_order       INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS skill_cluster_skills (
+    id                  SERIAL PRIMARY KEY,
+    cluster_id          INT REFERENCES skill_clusters(cluster_id) ON DELETE CASCADE,
+    skill_id            INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(cluster_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS project_skill_mapping (
+    id                  SERIAL PRIMARY KEY,
+    project_id          INT REFERENCES projects(project_id) ON DELETE CASCADE,
+    skill_id            INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(project_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS interview_question_skill_mapping (
+    id                  SERIAL PRIMARY KEY,
+    question_id         INT REFERENCES interview_questions(question_id) ON DELETE CASCADE,
+    skill_id            INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(question_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS mcqs (
+    mcq_id              SERIAL PRIMARY KEY,
+    question            TEXT NOT NULL,
+    options             JSONB NOT NULL,
+    correct_option      INT NOT NULL,
+    explanation         TEXT
+);
+
+CREATE TABLE IF NOT EXISTS mcq_skill_mapping (
+    id                  SERIAL PRIMARY KEY,
+    mcq_id              INT REFERENCES mcqs(mcq_id) ON DELETE CASCADE,
+    skill_id            INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    UNIQUE(mcq_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS candidate_skill_gaps (
+    id                  SERIAL PRIMARY KEY,
+    student_id          INT REFERENCES students(student_id) ON DELETE CASCADE,
+    skill_id            INT REFERENCES skills(skill_id) ON DELETE CASCADE,
+    priority            VARCHAR(20),
+    status              VARCHAR(50) DEFAULT 'Missing',
+    UNIQUE(student_id, skill_id)
+);
+
+CREATE TABLE IF NOT EXISTS student_dynamic_progress (
+    id                  SERIAL PRIMARY KEY,
+    student_id          INT REFERENCES students(student_id) ON DELETE CASCADE,
+    stage_title         VARCHAR(200) NOT NULL,
+    status              VARCHAR(50) DEFAULT 'Not Started',
+    completion_pct      INT DEFAULT 0,
+    UNIQUE(student_id, stage_title)
+);
+
 
 

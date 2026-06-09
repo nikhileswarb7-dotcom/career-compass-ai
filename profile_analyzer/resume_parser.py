@@ -1,4 +1,5 @@
 # Resume Parser - CareerCompass AI
+# Dynamically queries PostgreSQL skills, extracts projects, experience, and certifications, and applies tech inference.
 
 import re
 import psycopg2
@@ -21,22 +22,18 @@ except ImportError:
 class ResumeParser:
     """
     Parses resume text transcripts to extract name, education,
-    experiences, projects list, and raw skill lists for mapping.
+    experiences, projects list, certifications, and dynamically mapped skills.
     """
     
     @staticmethod
     def get_all_db_skills() -> list:
-        fallback_skills = [
-            "C Programming", "C++", "Java", "Python", "SQL", "Data Structures", 
-            "Algorithms", "DSA (Combined)", "DBMS", "Operating Systems", "Computer Networks", 
-            "Object Oriented Programming", "Spring Boot", "REST APIs", "Microservices", 
-            "Message Queues (Kafka)", "MySQL", "PostgreSQL", "Redis", "Git & GitHub", 
-            "Docker", "AWS Basics", "Linux Basics", "Low Level Design", "High Level Design", 
-            "System Design", "Go", "Kubernetes"
-        ]
+        """
+        Dynamically queries all skills from PostgreSQL.
+        Throws RuntimeError if DB is unreachable to comply with 'no fallback arrays' rule.
+        """
         conn = get_db_connection()
         if not conn:
-            return fallback_skills
+            raise RuntimeError("Database connection unavailable for dynamic skill loading.")
         try:
             cur = conn.cursor()
             cur.execute("SET search_path TO career_compass_ai, public;")
@@ -44,11 +41,12 @@ class ResumeParser:
             skills = [r[0] for r in cur.fetchall()]
             cur.close()
             conn.close()
-            return skills if skills else fallback_skills
+            if not skills:
+                raise ValueError("PostgreSQL skills table is empty.")
+            return skills
         except Exception as e:
-            print("Error loading skills from database in ResumeParser:", e)
             if conn: conn.close()
-            return fallback_skills
+            raise RuntimeError(f"Failed to query database skills: {str(e)}")
 
     @staticmethod
     def match_skill_in_text(skill_name: str, text: str) -> bool:
@@ -66,10 +64,11 @@ class ResumeParser:
         if not text:
             return {}
             
-        # Standard cleaning
-        text_clean = re.sub(r'\s+', ' ', text)
-        
-        # Name detection
+        # 1. Load dynamic skills from Database
+        db_skills = ResumeParser.get_all_db_skills()
+        db_skills_lower = {s.lower().strip(): s for s in db_skills}
+
+        # 2. Extract Name & Email
         name = "SDE Candidate"
         email = None
         email_match = re.search(r'[\w\.-]+@[\w\.-]+\.\w+', text)
@@ -82,25 +81,7 @@ class ResumeParser:
             if re.match(r'^[A-Z][a-z]+\s[A-Z][a-z]+$', potential_name):
                 name = potential_name
                 
-        # Experience section extraction
-        experience_section = ""
-        exp_match = re.search(r'(?:experience|employment|work history)(.*?)(?:education|projects|skills|certificates|certifications|$)', text, re.IGNORECASE)
-        if exp_match:
-            experience_section = exp_match.group(1).strip()
-            
-        # Projects section extraction
-        projects_section = ""
-        proj_match = re.search(r'(?:projects|personal projects|academic projects)(.*?)(?:education|experience|skills|certificates|certifications|$)', text, re.IGNORECASE)
-        if proj_match:
-            projects_section = proj_match.group(1).strip()
-            
-        # Skills section extraction
-        skills_section = ""
-        skills_match = re.search(r'(?:skills|technical skills|key skills|expertise)(.*?)(?:education|experience|projects|certificates|certifications|$)', text, re.IGNORECASE)
-        if skills_match:
-            skills_section = skills_match.group(1).strip()
-            
-        # Education extraction
+        # 3. Extract Education & CGPA
         education = "B.Tech Computer Science"
         cgpa = 8.0
         
@@ -111,103 +92,130 @@ class ResumeParser:
             except ValueError:
                 pass
                 
-        if "mtech" in text.lower() or "m.tech" in text.lower():
+        text_lower = text.lower()
+        if "mtech" in text_lower or "m.tech" in text_lower:
             education = "M.Tech Computer Science"
-        elif "mca" in text.lower():
+        elif "mca" in text_lower:
             education = "MCA Master of Computer Applications"
-        elif "bca" in text.lower():
+        elif "bca" in text_lower:
             education = "BCA Bachelor of Computer Applications"
+
+        # 4. Extract Experience Section
+        experience_section = ""
+        exp_match = re.search(r'(?:experience|employment|work history)(.*?)(?:projects|education|skills|certificates|certifications|$)', text, re.DOTALL | re.IGNORECASE)
+        if exp_match:
+            experience_section = exp_match.group(1).strip()
             
-        # Load skills from DB dynamically
-        db_skills = ResumeParser.get_all_db_skills()
-        skills_raw = []
-        
-        # 1. Direct Skill Mentions Check
-        search_space = text
-        for skill in db_skills:
-            if ResumeParser.match_skill_in_text(skill, search_space):
-                skills_raw.append(skill)
+        # 5. Extract Certifications
+        certifications = []
+        cert_section_match = re.search(r'(?:certificates|certifications|credentials)(.*?)(?:experience|projects|education|skills|$)', text, re.DOTALL | re.IGNORECASE)
+        if cert_section_match:
+            lines = cert_section_match.group(1).strip().split('\n')
+            for line in lines:
+                line_clean = line.strip().strip('•-*· ').strip()
+                if line_clean and len(line_clean) > 5 and len(line_clean) < 100:
+                    certifications.append(line_clean)
+        # If no specific block, search lines matching common certified keywords
+        if not certifications:
+            for line in text.split('\n'):
+                if any(k in line.lower() for k in ["certified", "certification", "credential"]):
+                    line_clean = line.strip().strip('•-*· ').strip()
+                    if line_clean and len(line_clean) > 5 and len(line_clean) < 120:
+                        certifications.append(line_clean)
+
+        # 6. Parse Project Blocks and Project Tech
+        projects = []
+        projects_section = ""
+        proj_match = re.search(r'(?:projects|personal projects|academic projects)(.*?)(?:experience|education|skills|certificates|certifications|$)', text, re.DOTALL | re.IGNORECASE)
+        if proj_match:
+            projects_section = proj_match.group(1).strip()
+            
+        if projects_section:
+            # Split by line breaks followed by typical project separators (e.g. bolded line, bullet points, numbers)
+            project_blocks = []
+            current_block = []
+            for line in projects_section.split('\n'):
+                line_strip = line.strip()
+                if not line_strip:
+                    continue
+                # If a line looks like a title (e.g. starts with bullet or number, or short title line)
+                if line_strip.startswith(('•', '-', '*', '1.', '2.', '3.', '4.', '5.')) or (len(line_strip) < 60 and any(k in line_strip.lower() for k in ["system", "application", "app", "website", "engine", "platform", "pipeline", "tool"])):
+                    if current_block:
+                        project_blocks.append("\n".join(current_block))
+                        current_block = []
+                current_block.append(line_strip)
+            if current_block:
+                project_blocks.append("\n".join(current_block))
+
+            for block in project_blocks:
+                lines = block.split('\n')
+                title = lines[0].strip().strip('•-*· 123456789. ')
+                description = " ".join(lines[1:]).strip() if len(lines) > 1 else lines[0].strip()
                 
-        # 2. Tech Inference Rules
+                # Match technologies in this project block
+                proj_tech = []
+                for skill in db_skills:
+                    if ResumeParser.match_skill_in_text(skill, block):
+                        proj_tech.append(skill)
+                
+                if len(title) > 3 and len(title) < 100:
+                    projects.append({
+                        "title": title,
+                        "description": description,
+                        "technologies": sorted(list(set(proj_tech)))
+                    })
+
+        # 7. Extract Explicit Skills
+        skills_raw = []
+        for skill in db_skills:
+            if ResumeParser.match_skill_in_text(skill, text):
+                skills_raw.append(skill)
+
+        # 8. Technology Inference Rules
+        # Associative rules mapping keywords to DB skill canonical names (lowercase for safe matching)
         inference_rules = {
-            r'\b(kafka|apache kafka|rabbitmq|message queue[s]?)\b': [
-                "Message Queues (Kafka)", 
-                "Microservices"
-            ],
-            r'\b(spring boot|springboot|spring)\b': [
-                "Spring Boot", 
-                "Java", 
-                "REST APIs", 
-                "Microservices"
-            ],
-            r'\b(rest|rest api[s]?|restful)\b': [
-                "REST APIs"
-            ],
-            r'\b(microservice[s]?)\b': [
-                "Microservices", 
-                "REST APIs"
-            ],
-            r'\b(docker|container[s]?)\b': [
-                "Docker"
-            ],
-            r'\b(kubernetes|k8s)\b': [
-                "Kubernetes", 
-                "Docker"
-            ],
-            r'\b(aws|amazon web services|s3|ec2)\b': [
-                "AWS Basics"
-            ],
-            r'\b(linux|unix|bash|shell)\b': [
-                "Linux Basics"
-            ],
-            r'\b(mysql)\b': [
-                "MySQL",
-                "SQL",
-                "DBMS"
-            ],
-            r'\b(postgresql|postgres)\b': [
-                "PostgreSQL",
-                "SQL",
-                "DBMS"
-            ],
-            r'\b(sql)\b': [
-                "SQL",
-                "DBMS"
-            ],
-            r'\b(system design|distributed system[s]?|hld|high level design)\b': [
-                "System Design",
-                "High Level Design"
-            ],
-            r'\b(lld|low level design|design patterns?)\b': [
-                "Low Level Design",
-                "Object Oriented Programming"
-            ],
-            r'\b(oop[s]?|object oriented)\b': [
-                "Object Oriented Programming"
-            ],
-            r'\b(dsa|data structures?|algorithms?|leetcode)\b': [
-                "DSA (Combined)",
-                "Data Structures",
-                "Algorithms"
-            ],
-            r'\b(git|github)\b': [
-                "Git & GitHub"
-            ]
+            "spring boot": ["java", "rest apis", "microservices"],
+            "springboot": ["java", "rest apis", "microservices"],
+            "spring": ["java", "rest apis", "microservices"],
+            "kafka": ["message queues (kafka)", "microservices", "system design"],
+            "apache kafka": ["message queues (kafka)", "microservices", "system design"],
+            "postgresql": ["sql", "dbms"],
+            "postgres": ["sql", "dbms"],
+            "mysql": ["sql", "dbms"],
+            "kubernetes": ["docker"],
+            "docker": ["git & github"],
+            "low level design": ["object oriented programming"],
+            "lld": ["object oriented programming"],
+            "high level design": ["system design"],
+            "hld": ["system design"],
+            "system design": ["microservices"],
+            "go": ["rest apis"],
+            "golang": ["rest apis"],
+            "microservices": ["rest apis"],
+            "django": ["python"],
+            "flask": ["python"]
         }
-        
-        for pattern, inferred_skills in inference_rules.items():
-            if re.search(pattern, search_space, re.IGNORECASE):
-                for inf_skill in inferred_skills:
-                    if inf_skill in db_skills:
-                        skills_raw.append(inf_skill)
-                        
+
+        # Apply inference
+        inferred = set()
+        for term, inf_list in inference_rules.items():
+            if re.search(r'\b' + re.escape(term) + r'\b', text_lower):
+                for inf_skill in inf_list:
+                    # Match back to dynamic DB skills lower mapping
+                    if inf_skill in db_skills_lower:
+                        inferred.add(db_skills_lower[inf_skill])
+
+        # Combine explicit and inferred skills
+        final_skills = sorted(list(set(skills_raw + list(inferred))))
+
         return {
             "name": name,
             "email": email,
             "education": education,
             "cgpa": cgpa,
-            "experience_extracted": experience_section[:400] + "..." if len(experience_section) > 400 else experience_section,
-            "projects_extracted": projects_section[:400] + "..." if len(projects_section) > 400 else projects_section,
-            "skills_raw": sorted(list(set(skills_raw))),
-            "source": "Resume Parser"
+            "experience": experience_section,
+            "certifications": certifications,
+            "projects": projects,
+            "skills_raw": final_skills,
+            "source": "Resume PDF Parser"
         }

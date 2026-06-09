@@ -161,6 +161,78 @@ COMPANIES_DATA = [
         "hiring_process": ["Infosys Certification / InfyTQ", "Technical Interview (Java/OOP/SQL)", "HR Round"],
         "salary_range": {"intern": "10k-25k/mo", "sde1": "3.6-8 LPA", "sde2": "8-13 LPA"},
         "career_growth": "Systems Engineer -> Technology Analyst -> Technology Lead -> Project Manager"
+    },
+    {
+        "name": "Uber",
+        "industry": "Transportation / Tech",
+        "founded_year": 2009,
+        "description": "Uber is a global mobility-as-a-service provider, connecting riders with drivers.",
+        "mission": "We ignite opportunity by setting the world in motion.",
+        "work_culture": "Highly analytical SDE culture. Heavy focus on system design, low-latency concurrent processing, and microservices architecture.",
+        "tech_stack": ["Golang", "Java", "Python", "Redis", "Kafka", "MySQL", "Docker", "Kubernetes", "AWS"],
+        "hiring_process": ["OA", "DSA Round 1", "DSA Round 2", "System Design HLD/LLD", "Behavioral Loop"],
+        "salary_range": {"intern": "50k-90k/mo", "sde1": "18-28 LPA", "sde2": "28-48 LPA"},
+        "career_growth": "SDE-1 -> SDE-2 -> Senior -> Staff -> Principal"
+    },
+    {
+        "name": "Atlassian",
+        "industry": "Software / Collaboration",
+        "founded_year": 2002,
+        "description": "Atlassian builds tools like Jira, Confluence, and Trello to help teams organize and collaborate.",
+        "mission": "To help unleash the potential of every team.",
+        "work_culture": "Open, value-driven culture. Strong focus on code quality, testing, clean architectures, and collaboration values.",
+        "tech_stack": ["Java", "Spring Boot", "Kotlin", "React", "AWS", "Docker", "PostgreSQL"],
+        "hiring_process": ["Resume Screen", "OA", "Technical Interview (DSA)", "System Design (LLD)", "Values / Fit Round"],
+        "salary_range": {"intern": "45k-80k/mo", "sde1": "16-25 LPA", "sde2": "25-45 LPA"},
+        "career_growth": "P3 (Associate) -> P4 (SDE) -> P5 (Senior SDE) -> P6 (Principal)"
+    },
+    {
+        "name": "Razorpay",
+        "industry": "FinTech",
+        "founded_year": 2014,
+        "description": "Razorpay is a leading payments solution in India, allowing businesses to accept, process, and disburse payments.",
+        "mission": "To power the financial infrastructure for businesses in India.",
+        "work_culture": "Fast-growing startup culture. High ownership, product-driven engineering, and focus on security compliance.",
+        "tech_stack": ["Golang", "PHP", "React", "Redis", "MySQL", "Docker", "AWS", "Kafka"],
+        "hiring_process": ["OA", "DSA Round", "Machine Coding Round", "System Design (LLD/HLD)", "HR Round"],
+        "salary_range": {"intern": "30k-50k/mo", "sde1": "14-22 LPA", "sde2": "22-38 LPA"},
+        "career_growth": "SDE-1 -> SDE-2 -> SDE-3 -> Architect"
+    },
+    {
+        "name": "Adobe",
+        "industry": "Software / Creative Tech",
+        "founded_year": 1982,
+        "description": "Adobe is a global leader in digital media and digital marketing solutions.",
+        "mission": "To change the world through digital experiences.",
+        "work_culture": "Stable, innovation-focused corporate SDE culture. Focus on desktop applications, web platforms, and creative cloud solutions.",
+        "tech_stack": ["C++", "Java", "Python", "React", "AWS", "Azure", "Docker"],
+        "hiring_process": ["OA", "Technical Interview 1 (DSA)", "Technical Interview 2 (Core CS)", "System Design (LLD)", "HR Round"],
+        "salary_range": {"intern": "40k-75k/mo", "sde1": "15-24 LPA", "sde2": "24-42 LPA"},
+        "career_growth": "SDE-1 -> SDE-2 -> Member of Technical Staff (MTS) -> Senior MTS -> Principal"
+    },
+    {
+        "name": "Walmart",
+        "industry": "Retail / Tech",
+        "founded_year": 1962,
+        "description": "Walmart Global Tech builds technology platform solutions to power the world's largest retailer.",
+        "mission": "To save people money so they can live better.",
+        "work_culture": "Scale-driven SDE culture. Heavy emphasis on massive e-commerce architectures, supply chain systems, and cloud databases.",
+        "tech_stack": ["Java", "Spring Boot", "React", "Cassandra", "Kafka", "Docker", "Kubernetes", "Azure"],
+        "hiring_process": ["OA", "DSA Round 1", "DSA Round 2 / LLD", "System Design HLD", "HM Round"],
+        "salary_range": {"intern": "35k-65k/mo", "sde1": "14-22 LPA", "sde2": "22-36 LPA"},
+        "career_growth": "SDE-1 -> SDE-2 -> Senior SDE -> Staff SDE -> Principal"
+    },
+    {
+        "name": "ServiceNow",
+        "industry": "Enterprise Software / SaaS",
+        "founded_year": 2004,
+        "description": "ServiceNow provides a cloud computing platform to help companies manage digital workflows.",
+        "mission": "We make the world of work, work better for people.",
+        "work_culture": "Enterprise SaaS engineering. Emphasis on platform scalability, automation workflows, JavaScript/Java frameworks, and database efficiency.",
+        "tech_stack": ["Java", "JavaScript", "React", "MySQL", "Docker", "Kubernetes", "AWS"],
+        "hiring_process": ["OA", "DSA Technical Round 1", "DSA/LLD Technical Round 2", "System Design", "HM/HR Loop"],
+        "salary_range": {"intern": "40k-70k/mo", "sde1": "16-24 LPA", "sde2": "24-40 LPA"},
+        "career_growth": "Associate Software Engineer -> Software Engineer -> Senior Software Engineer -> Staff SDE"
     }
 ]
 
@@ -206,7 +278,7 @@ def seed_database():
         
         # Determine company_type
         c_type = "Product"
-        if comp["name"] in ["Amazon", "Google", "Microsoft", "Meta"]:
+        if comp["name"] in ["Amazon", "Google", "Microsoft", "Meta", "Uber", "Atlassian", "Adobe"]:
             c_type = "MNC"
         elif comp["name"] in ["TCS", "Infosys"]:
             c_type = "IT Services"
@@ -229,7 +301,7 @@ def seed_database():
         backlogs = False
         hiring_count = 150
         
-        if comp["name"] in ["Google", "Microsoft", "Meta", "Amazon", "Blinkit", "Zomato", "Swiggy", "PhonePe"]:
+        if comp["name"] in ["Google", "Microsoft", "Meta", "Amazon", "Blinkit", "Zomato", "Swiggy", "PhonePe", "Uber", "Atlassian", "Adobe", "Walmart", "Razorpay", "ServiceNow"]:
             tier = 1
             hiring_bar = 90.0
             cgpa = 8.0

@@ -40,16 +40,22 @@ def evaluate_career_readiness(
     company_name: str,
     role_name: str,
     qualification: str = "3rd Year Student",
-    experience_years: float = 0.0
+    experience_years: float = 0.0,
+    candidate_profile: dict = None
 ) -> dict:
     """
     Orchestrates the individual assessor engines to calculate the core readiness scores,
     career stage expectation status, and company fit diagnostics.
     """
+    profile_vector = candidate_profile.get("candidate_profile_vector") if candidate_profile else student_skills
+    projects_list = candidate_profile.get("candidate_projects") if candidate_profile else resume_text
+    metadata = candidate_profile.get("candidate_metadata") if candidate_profile else None
+    github_details = metadata.get("github_details") if metadata else None
+
     # 1. Compute individual metrics
-    skill_strength = assess_skills(student_skills, company_name, role_name)
-    project_strength = assess_projects(resume_text, student_skills)
-    profile_data = assess_profile(linkedin_url, github_username, resume_text)
+    skill_strength = assess_skills(profile_vector, company_name, role_name)
+    project_strength = assess_projects(projects_list, student_skills)
+    profile_data = assess_profile(linkedin_url, github_username, resume_text, metadata, github_details)
     profile_strength = profile_data["profile_strength"]
 
     # 2. Compute Interview Strength

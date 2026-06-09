@@ -20,6 +20,7 @@ from profile_analyzer.linkedin_parser import LinkedInParser
 from profile_analyzer.github_analyzer import GitHubAnalyzer
 from profile_analyzer.resume_parser import ResumeParser
 from profile_analyzer.skill_extractor import SkillExtractor
+from ai_engine.profile.candidate_builder import CandidateBuilder
 
 from api.database_connector import (
     get_db_connection, query_stats, get_hiring_signals, get_stage_training, get_stage_assessment, get_profile_builder_template,
@@ -123,6 +124,12 @@ class ChatRequest(BaseModel):
     dream_company: str = ""
     dream_sector: str = ""
     qualification: str = ""
+    session_id: str = ""
+
+class StageProgressRequest(BaseModel):
+    stage_title: str
+    status: str
+    completion_pct: int = 0
 
 # Request schemas for new database-driven endpoints
 class AnalyzeRequest(BaseModel):
@@ -233,112 +240,10 @@ def analyze_student_profile(req: AnalyzeRequest):
             except Exception as e:
                 parsed_res = {"error": f"Unable to extract resume information: {str(e)}", "skills_raw": []}
             
-        # Collect sources and details for each skill
-        skill_metadata = {} # skill_name -> {"sources": set(), "github_frequency": 0}
+        # 1. Build unified candidate profile using CandidateBuilder
+        profile = CandidateBuilder.build_profile(req.known_skills, parsed_res, parsed_gh, parsed_li)
         
-        # 1. Manual User Selection
-        for s in req.known_skills:
-            if s:
-                if s not in skill_metadata:
-                    skill_metadata[s] = {"sources": set(), "github_frequency": 0}
-                skill_metadata[s]["sources"].add("Manual")
-                
-        # 2. LinkedIn Parser
-        if req.linkedin_url and parsed_li and "error" not in parsed_li:
-            for s in parsed_li.get("skills_raw", []):
-                if s:
-                    if s not in skill_metadata:
-                        skill_metadata[s] = {"sources": set(), "github_frequency": 0}
-                    skill_metadata[s]["sources"].add("LinkedIn")
-                    
-        # 3. GitHub Analyzer
-        if req.github_username and parsed_gh and "error" not in parsed_gh:
-            freq_map = parsed_gh.get("frequency_map", {})
-            for s in parsed_gh.get("skills_raw", []):
-                if s:
-                    if s not in skill_metadata:
-                        skill_metadata[s] = {"sources": set(), "github_frequency": 0}
-                    skill_metadata[s]["sources"].add("GitHub")
-                    skill_metadata[s]["github_frequency"] = freq_map.get(s, 0)
-                    
-        # 4. Resume Parser
-        if req.resume_text and parsed_res and "error" not in parsed_res:
-            for s in parsed_res.get("skills_raw", []):
-                if s:
-                    if s not in skill_metadata:
-                        skill_metadata[s] = {"sources": set(), "github_frequency": 0}
-                    skill_metadata[s]["sources"].add("Resume")
-                    
-        # Normalize and filter skills against database master list
-        db_skills = ResumeParser.get_all_db_skills()
-        normalized_skill_metadata = {}
-        for skill_name, meta in skill_metadata.items():
-            canonical_name = None
-            for db_s in db_skills:
-                if db_s.lower() == skill_name.lower():
-                    canonical_name = db_s
-                    break
-            if not canonical_name:
-                # Fallback mapping from SkillExtractor if available
-                canon_res = SkillExtractor.extract_and_normalize([skill_name])
-                if canon_res:
-                    canonical_name = canon_res[0]
-                else:
-                    canonical_name = skill_name.strip().title()
-                
-            if canonical_name not in normalized_skill_metadata:
-                normalized_skill_metadata[canonical_name] = {"sources": set(), "github_frequency": 0}
-            normalized_skill_metadata[canonical_name]["sources"].update(meta["sources"])
-            normalized_skill_metadata[canonical_name]["github_frequency"] = max(normalized_skill_metadata[canonical_name]["github_frequency"], meta["github_frequency"])
-
-        # Calculate confidence and format output
-        unified_skills = []
-        for s_name, meta in normalized_skill_metadata.items():
-            sources = sorted(list(meta["sources"]))
-            freq = meta["github_frequency"]
-            
-            # Calculate baseline score
-            scores = []
-            if "Manual" in sources:
-                scores.append(0.85)
-            if "Resume" in sources:
-                scores.append(0.70)
-            if "GitHub" in sources:
-                scores.append(0.60)
-            if "LinkedIn" in sources:
-                scores.append(0.70)
-                
-            base_score = max(scores) if scores else 0.50
-            
-            # Boost for multiple sources
-            source_count = len(sources)
-            if source_count == 2:
-                base_score += 0.10
-            elif source_count >= 3:
-                base_score += 0.15
-                
-            # Boost for GitHub frequency
-            if "GitHub" in sources and freq > 0:
-                base_score += min(0.20, freq * 0.05)
-                
-            confidence_score = min(1.0, base_score)
-            
-            if confidence_score >= 0.80:
-                confidence = "High"
-            elif confidence_score >= 0.65:
-                confidence = "Medium"
-            else:
-                confidence = "Low"
-                
-            unified_skills.append({
-                "name": s_name,
-                "confidence": confidence,
-                "confidence_score": round(confidence_score * 100),
-                "sources": sources,
-                "github_frequency": freq
-            })
-        
-        # PostgreSQL registration & session creation
+        # 2. Persist profile and student record to database
         conn = get_db_connection()
         student_id = None
         session_id = None
@@ -363,12 +268,18 @@ def analyze_student_profile(req: AnalyzeRequest):
                 row = cur.fetchone()
                 company_role_id = row[0] if row else 1
                 
-                # Generate a unique email for this onboarding to ensure isolation
                 import uuid
+                from psycopg2.extras import Json
                 unique_suffix = uuid.uuid4().hex[:8]
                 email = f"{req.name.lower().replace(' ', '_')}_{unique_suffix}@careercompass.ai"
+                
                 cur.execute("SELECT student_id FROM students WHERE email = %s LIMIT 1", (email,))
                 row = cur.fetchone()
+                
+                vector_json = Json(profile["candidate_profile_vector"])
+                projects_json = Json(profile["candidate_projects"])
+                confidence_json = Json(profile["candidate_skill_confidence"])
+                metadata_json = Json(profile["candidate_metadata"])
                 
                 if row:
                     student_id = int(row[0])
@@ -381,15 +292,22 @@ def analyze_student_profile(req: AnalyzeRequest):
                             target_company_role_id = %s,
                             linkedin_url = %s,
                             github_username = %s,
-                            resume_text = %s
+                            resume_text = %s,
+                            candidate_profile_vector = %s,
+                            candidate_projects = %s,
+                            candidate_skill_confidence = %s,
+                            candidate_metadata = %s
                         WHERE student_id = %s
-                    """, (req.name, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text, student_id))
+                    """, (req.name, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text, 
+                          vector_json, projects_json, confidence_json, metadata_json, student_id))
                 else:
                     cur.execute("""
-                        INSERT INTO students (name, email, qualification_id, branch, cgpa, target_company_role_id, linkedin_url, github_username, resume_text)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        INSERT INTO students (name, email, qualification_id, branch, cgpa, target_company_role_id, linkedin_url, github_username, resume_text,
+                                             candidate_profile_vector, candidate_projects, candidate_skill_confidence, candidate_metadata)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING student_id
-                    """, (req.name, email, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text))
+                    """, (req.name, email, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text,
+                          vector_json, projects_json, confidence_json, metadata_json))
                     student_id = int(cur.fetchone()[0])
                     
                 # Create session in analysis_sessions
@@ -407,13 +325,24 @@ def analyze_student_profile(req: AnalyzeRequest):
                 if conn: conn.rollback(); conn.close()
                 print("Database error during analyze registration:", db_err)
         
+        # Format the return keys expected by frontend/tests
+        extracted_skills = []
+        for s_name, s_meta in profile["candidate_skill_confidence"].items():
+            extracted_skills.append({
+                "name": s_name,
+                "confidence": s_meta["confidence"],
+                "confidence_score": s_meta["confidence_score"],
+                "sources": s_meta["sources"],
+                "github_frequency": s_meta["github_frequency"]
+            })
+            
         return {
             "student_id": student_id,
             "session_id": session_id,
             "linkedin_parsed": parsed_li,
             "github_parsed": parsed_gh,
             "resume_parsed": parsed_res,
-            "extracted_skills": unified_skills
+            "extracted_skills": extracted_skills
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -453,6 +382,21 @@ def recommend_career_guidance(req: RecommendRequest):
             if s_row:
                 student_id = int(s_row[0])
                 
+        db_li = ""
+        db_gh = ""
+        db_res = ""
+        if student_id:
+            cur.execute("""
+                SELECT linkedin_url, github_username, resume_text 
+                FROM students 
+                WHERE student_id = %s LIMIT 1
+            """, (student_id,))
+            s_exist = cur.fetchone()
+            if s_exist:
+                db_li = s_exist[0] or ""
+                db_gh = s_exist[1] or ""
+                db_res = s_exist[2] or ""
+                
         if not student_id:
             import uuid
             unique_suffix = uuid.uuid4().hex[:8]
@@ -463,8 +407,42 @@ def recommend_career_guidance(req: RecommendRequest):
                 RETURNING student_id
             """, (req.name, email, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text))
             student_id = int(cur.fetchone()[0])
+            
+        # Re-resolve urls/text for analyzer re-runs
+        li_url = req.linkedin_url or db_li
+        gh_user = req.github_username or db_gh
+        res_txt = req.resume_text or db_res
+
+        parsed_li = {}
+        parsed_gh = {}
+        parsed_res = {}
+        
+        if li_url:
+            try:
+                parsed_li = LinkedInParser.parse_profile(li_url)
+            except Exception as e:
+                parsed_li = {"error": str(e), "skills_raw": []}
+        if gh_user:
+            try:
+                parsed_gh = GitHubAnalyzer.analyze_profile(gh_user)
+            except Exception as e:
+                parsed_gh = {"error": str(e), "skills_raw": [], "frequency_map": {}}
+        if res_txt:
+            try:
+                parsed_res = ResumeParser.parse_resume(res_txt)
+            except Exception as e:
+                parsed_res = {"error": str(e), "skills_raw": []}
                 
-        # Update student profile
+        # Build unified candidate profile
+        profile = CandidateBuilder.build_profile(req.known_skills, parsed_res, parsed_gh, parsed_li)
+        
+        from psycopg2.extras import Json
+        vector_json = Json(profile["candidate_profile_vector"])
+        projects_json = Json(profile["candidate_projects"])
+        confidence_json = Json(profile["candidate_skill_confidence"])
+        metadata_json = Json(profile["candidate_metadata"])
+
+        # Update student profile with JSONB structures
         cur.execute("""
             UPDATE students
             SET name = %s,
@@ -474,9 +452,14 @@ def recommend_career_guidance(req: RecommendRequest):
                 target_company_role_id = %s,
                 linkedin_url = %s,
                 github_username = %s,
-                resume_text = %s
+                resume_text = %s,
+                candidate_profile_vector = %s,
+                candidate_projects = %s,
+                candidate_skill_confidence = %s,
+                candidate_metadata = %s
             WHERE student_id = %s
-        """, (req.name, qualification_id, req.branch, req.cgpa, company_role_id, req.linkedin_url, req.github_username, req.resume_text, student_id))
+        """, (req.name, qualification_id, req.branch, req.cgpa, company_role_id, li_url, gh_user, res_txt, 
+              vector_json, projects_json, confidence_json, metadata_json, student_id))
             
         # 4. Clear and insert skills in student_skills
         cur.execute("DELETE FROM student_skills WHERE student_id = %s", (student_id,))
@@ -633,6 +616,87 @@ def update_session_progress(session_id: str, req: UpdateProgressRequest):
         raise HTTPException(status_code=500, detail="Failed to update session progress.")
     return {"success": True, "status": req.status}
 
+@router.post("/session/{session_id}/stage-progress")
+def update_stage_progress(session_id: str, req: StageProgressRequest):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection unavailable.")
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        
+        # Resolve student_id
+        cur.execute("SELECT student_id FROM analysis_sessions WHERE session_id = %s LIMIT 1", (session_id,))
+        row = cur.fetchone()
+        if not row:
+            cur.close()
+            conn.close()
+            raise HTTPException(status_code=404, detail="Session not found.")
+            
+        student_id = row[0]
+        
+        # Upsert stage progress
+        cur.execute("""
+            INSERT INTO student_dynamic_progress (student_id, stage_title, status, completion_pct)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (student_id, stage_title)
+            DO UPDATE SET status = EXCLUDED.status, completion_pct = EXCLUDED.completion_pct
+        """, (student_id, req.stage_title, req.status, req.completion_pct))
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        return {"success": True, "stage_title": req.stage_title, "status": req.status}
+    except Exception as e:
+        if conn: conn.close()
+        if isinstance(e, HTTPException):
+            raise e
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/session/{session_id}/stage-progress")
+def get_stage_progress(session_id: str):
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection unavailable.")
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        
+        # Resolve student_id
+        cur.execute("SELECT student_id FROM analysis_sessions WHERE session_id = %s LIMIT 1", (session_id,))
+        row = cur.fetchone()
+        if not row:
+            cur.close()
+            conn.close()
+            raise HTTPException(status_code=404, detail="Session not found.")
+            
+        student_id = row[0]
+        
+        # Fetch stage progress
+        cur.execute("""
+            SELECT stage_title, status, completion_pct 
+            FROM student_dynamic_progress 
+            WHERE student_id = %s
+        """, (student_id,))
+        rows = cur.fetchall()
+        
+        cur.close()
+        conn.close()
+        
+        progress = []
+        for r in rows:
+            progress.append({
+                "stage_title": r[0],
+                "status": r[1],
+                "completion_pct": r[2]
+            })
+        return {"success": True, "progress": progress}
+    except Exception as e:
+        if conn: conn.close()
+        if isinstance(e, HTTPException):
+            raise e
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.get("/readiness/{session_id}")
 def get_readiness_by_session(session_id: str):
     rec = get_dynamic_guidance(session_id)
@@ -762,10 +826,55 @@ def get_career_guidance(req: CareerGuidanceRequest):
 @router.post("/chat")
 def chat_with_coach(req: ChatRequest):
     try:
+        student_context = None
+        dream_company = req.dream_company or "Blinkit"
+        if req.session_id:
+            conn = get_db_connection()
+            if conn:
+                try:
+                    cur = conn.cursor()
+                    cur.execute("SET search_path TO career_compass_ai, public;")
+                    cur.execute("""
+                        SELECT s.student_id, s.name, s.branch, s.cgpa,
+                               sess.target_company, sess.target_role
+                        FROM analysis_sessions sess
+                        JOIN students s ON sess.student_id = s.student_id
+                        WHERE sess.session_id = %s LIMIT 1
+                    """, (req.session_id,))
+                    row = cur.fetchone()
+                    if row:
+                        student_id, name, branch, cgpa, sess_company, sess_role = row
+                        
+                        # Query missing skills from candidate_skill_gaps
+                        cur.execute("""
+                            SELECT sk.skill_name 
+                            FROM candidate_skill_gaps csg
+                            JOIN skills sk ON csg.skill_id = sk.skill_id
+                            WHERE csg.student_id = %s AND csg.status = 'Missing'
+                        """, (student_id,))
+                        gap_rows = cur.fetchall()
+                        missing_skills = [r[0] for r in gap_rows]
+                        
+                        student_context = {
+                            "name": name,
+                            "target_role": sess_role or "Software Development Engineer",
+                            "branch": branch or "Computer Science",
+                            "cgpa": str(cgpa or 8.0),
+                            "missing_skills": missing_skills
+                        }
+                        if sess_company:
+                            dream_company = sess_company
+                    cur.close()
+                    conn.close()
+                except Exception as db_err:
+                    if conn: conn.close()
+                    print("Error loading student context for chat:", db_err)
+                    
         reply = classify_and_respond(
             req.message,
-            dream_company=req.dream_company or "Blinkit",
-            active_stage=req.stage_title or "active stage"
+            dream_company=dream_company,
+            active_stage=req.stage_title or "active stage",
+            student_context=student_context
         )
         return {
             "reply": reply,

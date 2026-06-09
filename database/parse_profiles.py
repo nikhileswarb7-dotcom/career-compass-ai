@@ -11,7 +11,7 @@ from pypdf import PdfReader
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EMPLOYEES_DIR = os.path.join(os.path.dirname(__file__), "industry_layer")
 CAREER_DIR = os.path.join(os.path.dirname(__file__), "career_layer")
-PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "Profiles(Linkedin)")
+PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_sde_profiles")
 RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 IMPORT_DATA_PATH = os.path.join(os.path.dirname(__file__), "import_data.py")
 
@@ -302,6 +302,8 @@ def normalize_company_name(name):
         return "Google"
     if "zomato" in name_lower:
         return "Zomato"
+    if "swiggy" in name_lower:
+        return "Swiggy"
     if "pocket fm" in name_lower or "pocketfm" in name_lower:
         return "Pocket FM"
     if "flipkart" in name_lower:
@@ -322,6 +324,26 @@ def normalize_company_name(name):
         return "Probo"
     if "urban company" in name_lower or "urbancompany" in name_lower:
         return "Urban Company"
+    if "juspay" in name_lower:
+        return "JUSPAY"
+    if "maersk" in name_lower:
+        return "A.P. Moller - Maersk"
+    if "myntra" in name_lower:
+        return "Myntra"
+    if "ola" in name_lower:
+        return "Ola"
+    if "paypal" in name_lower:
+        return "PayPal"
+    if "salesforce" in name_lower:
+        return "Salesforce"
+    if "apple" in name_lower:
+        return "Apple"
+    if "tcs" in name_lower or "tata consultancy" in name_lower:
+        return "TCS"
+    if "cognizant" in name_lower:
+        return "Cognizant"
+    if "oracle" in name_lower:
+        return "Oracle"
     return name.strip()
 
 def normalize_college_name(name):
@@ -419,12 +441,11 @@ def process_pipeline():
     # Find all PDFs to parse
     print("Scanning profiles directories...")
     pdf_files = []
-    for s_dir in [PROFILES_DIR, RAW_DATA_DIR]:
-        if os.path.exists(s_dir):
-            for root, dirs, files in os.walk(s_dir):
-                for f in files:
-                    if f.endswith(".pdf"):
-                        pdf_files.append(os.path.join(root, f))
+    if os.path.exists(PROFILES_DIR):
+        for root, dirs, files in os.walk(PROFILES_DIR):
+            for f in files:
+                if f.endswith(".pdf"):
+                    pdf_files.append(os.path.join(root, f))
                         
     print(f"Found {len(pdf_files)} PDF profile files. Parsing...")
     
@@ -433,16 +454,23 @@ def process_pipeline():
     for filepath in pdf_files:
         try:
             profile = parse_profile_pdf(filepath)
-            # Determine target company based on folder
-            folder_name = os.path.basename(os.path.dirname(filepath)).upper()
-            if "BLINKIT" in folder_name:
-                profile["target_company"] = "Blinkit"
-            elif "AMAZON" in folder_name:
-                profile["target_company"] = "Amazon"
-            elif "MICROSOFT" in folder_name:
-                profile["target_company"] = "Microsoft"
-            else:
-                profile["target_company"] = "Blinkit"
+            # Determine target company based on folder hierarchy
+            parent_dir = os.path.dirname(filepath)
+            folder_name = os.path.basename(parent_dir)
+            clean_folder = folder_name.replace("_profiles", "").replace("_", " ").strip()
+            
+            # If the folder name is generic like "Other" or nested folder names, check grandparent
+            if clean_folder.lower() in ["other", "raw_data", "linkedin_sde_profiles", "profiles"]:
+                grandparent_dir = os.path.dirname(parent_dir)
+                grandparent_folder = os.path.basename(grandparent_dir)
+                clean_folder = grandparent_folder.replace("_profiles", "").replace("_", " ").strip()
+                
+            target_company = normalize_company_name(clean_folder)
+            
+            if target_company.lower() in ["other", "raw_data", "linkedin_sde_profiles", "profiles"]:
+                target_company = "Other"
+                
+            profile["target_company"] = target_company
                 
             if profile["name"]:
                 name_low = profile["name"].strip().lower()
@@ -488,6 +516,75 @@ def process_pipeline():
         {"role_id": 12, "role_name": "AI / ML Engineer", "career_level": "Mid"}
     ]
     
+    # Resolve early company ID conflicts against the DB
+    db_config = load_db_config()
+    try:
+        conn_resolve = psycopg2.connect(**db_config)
+        cur_resolve = conn_resolve.cursor()
+        cur_resolve.execute("SET search_path TO career_compass_ai, public;")
+        
+        # Sync sequence first
+        cur_resolve.execute("SELECT MAX(company_id) FROM companies;")
+        db_max_company_id = cur_resolve.fetchone()[0] or 0
+        struct_max_company_id = max([c["company_id"] for c in structured_companies.values()]) if structured_companies else 0
+        absolute_max_company_id = max(db_max_company_id, struct_max_company_id)
+        cur_resolve.execute(f"SELECT setval('companies_company_id_seq', {absolute_max_company_id});")
+        
+        # Resolve company_id conflicts
+        for c in list(structured_companies.values()):
+            cur_resolve.execute("SELECT company_id FROM companies WHERE company_name = %s;", (c["company_name"],))
+            row = cur_resolve.fetchone()
+            if row:
+                c["company_id"] = row[0]
+            else:
+                cur_resolve.execute("SELECT company_name FROM companies WHERE company_id = %s;", (c["company_id"],))
+                taken_row = cur_resolve.fetchone()
+                if taken_row and taken_row[0] != c["company_name"]:
+                    cur_resolve.execute("SELECT nextval('companies_company_id_seq');")
+                    new_id = cur_resolve.fetchone()[0]
+                    c["company_id"] = new_id
+                    
+        cur_resolve.close()
+        conn_resolve.close()
+        print("Successfully resolved early company ID conflicts with database.")
+    except Exception as e:
+        print(f"Warning: Early company ID resolution skipped or failed: {e}")
+
+    # Resolve early role ID conflicts against the DB
+    try:
+        conn_resolve = psycopg2.connect(**db_config)
+        cur_resolve = conn_resolve.cursor()
+        cur_resolve.execute("SET search_path TO career_compass_ai, public;")
+        
+        # Sync roles sequence
+        cur_resolve.execute("SELECT MAX(role_id) FROM roles;")
+        db_max_role_id = cur_resolve.fetchone()[0] or 0
+        struct_max_role_id = max([rs["role_id"] for rs in role_specializations]) if role_specializations else 0
+        absolute_max_role_id = max(db_max_role_id, struct_max_role_id)
+        cur_resolve.execute(f"SELECT setval('roles_role_id_seq', {absolute_max_role_id});")
+        
+        # Resolve role_id conflicts
+        for rs in role_specializations:
+            cur_resolve.execute("SELECT role_id FROM roles WHERE role_name = %s;", (rs["role_name"],))
+            row = cur_resolve.fetchone()
+            if row:
+                rs["role_id"] = row[0]
+            else:
+                cur_resolve.execute("SELECT role_name FROM roles WHERE role_id = %s;", (rs["role_id"],))
+                taken_row = cur_resolve.fetchone()
+                if taken_row and taken_row[0] != rs["role_name"]:
+                    cur_resolve.execute("SELECT nextval('roles_role_id_seq');")
+                    new_id = cur_resolve.fetchone()[0]
+                    rs["role_id"] = new_id
+                    
+        cur_resolve.close()
+        conn_resolve.close()
+        print("Successfully resolved early role ID conflicts with database.")
+    except Exception as e:
+        print(f"Warning: Early role ID resolution skipped or failed: {e}")
+
+    next_company_id = max([c["company_id"] for c in structured_companies.values()]) + 1 if structured_companies else 1
+
     next_profile_id = 1
     next_education_id = 1
     next_transition_id = 1
@@ -984,23 +1081,76 @@ def process_pipeline():
                 );
             """)
             
+            # Sync sequence to avoid primary key collisions with auto-increment values
+            cur.execute("SELECT MAX(company_id) FROM companies;")
+            db_max_company_id = cur.fetchone()[0] or 0
+            struct_max_company_id = max([c["company_id"] for c in structured_companies.values()]) if structured_companies else 0
+            absolute_max_company_id = max(db_max_company_id, struct_max_company_id)
+            cur.execute(f"SELECT setval('companies_company_id_seq', {absolute_max_company_id});")
+
+            cur.execute("SELECT MAX(role_id) FROM roles;")
+            db_max_role_id = cur.fetchone()[0] or 0
+            struct_max_role_id = max([rs["role_id"] for rs in role_specializations]) if role_specializations else 0
+            absolute_max_role_id = max(db_max_role_id, struct_max_role_id)
+            cur.execute(f"SELECT setval('roles_role_id_seq', {absolute_max_role_id});")
+
             # Insert Companies
             for c in structured_companies.values():
-                cur.execute("""
-                    INSERT INTO companies (company_id, company_name, industry, company_type)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (company_name) DO UPDATE 
-                    SET industry = EXCLUDED.industry, company_type = EXCLUDED.company_type;
-                """, (c["company_id"], c["company_name"], c["industry"], c["company_type"]))
+                cur.execute("SELECT company_id FROM companies WHERE company_name = %s;", (c["company_name"],))
+                row = cur.fetchone()
+                if row:
+                    existing_id = row[0]
+                    cur.execute("""
+                        UPDATE companies 
+                        SET industry = %s, company_type = %s
+                        WHERE company_id = %s;
+                    """, (c["industry"], c["company_type"], existing_id))
+                    c["company_id"] = existing_id
+                else:
+                    cur.execute("SELECT 1 FROM companies WHERE company_id = %s;", (c["company_id"],))
+                    id_taken = cur.fetchone()
+                    if id_taken:
+                        cur.execute("""
+                            INSERT INTO companies (company_name, industry, company_type)
+                            VALUES (%s, %s, %s)
+                            RETURNING company_id;
+                        """, (c["company_name"], c["industry"], c["company_type"]))
+                        new_id = cur.fetchone()[0]
+                        c["company_id"] = new_id
+                    else:
+                        cur.execute("""
+                            INSERT INTO companies (company_id, company_name, industry, company_type)
+                            VALUES (%s, %s, %s, %s);
+                        """, (c["company_id"], c["company_name"], c["industry"], c["company_type"]))
                 
             # Insert Roles
             for rs in role_specializations:
-                cur.execute("""
-                    INSERT INTO roles (role_id, role_name, career_level)
-                    VALUES (%s, %s, %s)
-                    ON CONFLICT (role_name) DO UPDATE
-                    SET career_level = EXCLUDED.career_level;
-                """, (rs["role_id"], rs["role_name"], rs["career_level"]))
+                cur.execute("SELECT role_id FROM roles WHERE role_name = %s;", (rs["role_name"],))
+                row = cur.fetchone()
+                if row:
+                    existing_id = row[0]
+                    cur.execute("""
+                        UPDATE roles
+                        SET career_level = %s
+                        WHERE role_id = %s;
+                    """, (rs["career_level"], existing_id))
+                    rs["role_id"] = existing_id
+                else:
+                    cur.execute("SELECT 1 FROM roles WHERE role_id = %s;", (rs["role_id"],))
+                    id_taken = cur.fetchone()
+                    if id_taken:
+                        cur.execute("""
+                            INSERT INTO roles (role_name, career_level)
+                            VALUES (%s, %s)
+                            RETURNING role_id;
+                        """, (rs["role_name"], rs["career_level"]))
+                        new_id = cur.fetchone()[0]
+                        rs["role_id"] = new_id
+                    else:
+                        cur.execute("""
+                            INSERT INTO roles (role_id, role_name, career_level)
+                            VALUES (%s, %s, %s);
+                        """, (rs["role_id"], rs["role_name"], rs["career_level"]))
                 
             # Insert Profiles
             for p in employee_profiles:

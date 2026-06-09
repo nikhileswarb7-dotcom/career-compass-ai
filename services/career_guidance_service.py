@@ -43,7 +43,8 @@ class CareerGuidanceService:
             
             # 1. Fetch Student Profile
             cur.execute("""
-                SELECT s.name, q.qualification_name, s.branch, s.cgpa, s.email, s.linkedin_url, s.github_username, s.resume_text
+                SELECT s.name, q.qualification_name, s.branch, s.cgpa, s.email, s.linkedin_url, s.github_username, s.resume_text,
+                       s.candidate_profile_vector, s.candidate_projects, s.candidate_skill_confidence, s.candidate_metadata
                 FROM students s
                 LEFT JOIN qualifications q ON s.qualification_id = q.qualification_id
                 WHERE s.student_id = %s
@@ -55,7 +56,7 @@ class CareerGuidanceService:
                 conn.close()
                 raise ValueError(f"Student profile with ID {student_id} not found in database. Onboarding is required.")
                 
-            name, qualification, branch, cgpa, email, linkedin_url, github_username, resume_text = student_row
+            name, qualification, branch, cgpa, email, linkedin_url, github_username, resume_text, profile_vector, projects, skill_confidence, metadata = student_row
             qualification = qualification or "3rd Year Student"
             
             # 2. Fetch Student Skills
@@ -68,6 +69,51 @@ class CareerGuidanceService:
             skills_rows = cur.fetchall()
             known_skills = [row[0] for row in skills_rows]
             
+            # Rebuild candidate profile dynamically if JSONB fields are missing
+            if not profile_vector or not projects or not skill_confidence or not metadata:
+                from profile_analyzer.linkedin_parser import LinkedInParser
+                from profile_analyzer.github_analyzer import GitHubAnalyzer
+                from profile_analyzer.resume_parser import ResumeParser
+                from ai_engine.profile.candidate_builder import CandidateBuilder
+                
+                parsed_li = {}
+                parsed_gh = {}
+                parsed_res = {}
+                if linkedin_url:
+                    try: parsed_li = LinkedInParser.parse_profile(linkedin_url)
+                    except Exception: parsed_li = {}
+                if github_username:
+                    try: parsed_gh = GitHubAnalyzer.analyze_profile(github_username)
+                    except Exception: parsed_gh = {}
+                if resume_text:
+                    try: parsed_res = ResumeParser.parse_resume(resume_text)
+                    except Exception: parsed_res = {}
+                
+                profile = CandidateBuilder.build_profile(known_skills, parsed_res, parsed_gh, parsed_li)
+                profile_vector = profile["candidate_profile_vector"]
+                projects = profile["candidate_projects"]
+                skill_confidence = profile["candidate_skill_confidence"]
+                metadata = profile["candidate_metadata"]
+                
+                # Persist rebuilt structures in students table
+                from psycopg2.extras import Json
+                cur.execute("""
+                    UPDATE students
+                    SET candidate_profile_vector = %s,
+                        candidate_projects = %s,
+                        candidate_skill_confidence = %s,
+                        candidate_metadata = %s
+                    WHERE student_id = %s
+                """, (Json(profile_vector), Json(projects), Json(skill_confidence), Json(metadata), student_id))
+                conn.commit()
+                
+            candidate_profile = {
+                "candidate_profile_vector": profile_vector,
+                "candidate_projects": projects,
+                "candidate_skill_confidence": skill_confidence,
+                "candidate_metadata": metadata
+            }
+
             logger.info(f"Loaded student '{name}' with {len(known_skills)} skills: {known_skills}")
             
             # Determine target sector (e.g. Quick-Commerce for Blinkit)
@@ -98,7 +144,8 @@ class CareerGuidanceService:
                 github_username=github_username or "",
                 resume_text=resume_text or "",
                 cgpa=float(cgpa or 8.0),
-                experience_years=experience_years
+                experience_years=experience_years,
+                candidate_profile=candidate_profile
             )
             
             # 4. Cache Assessment in career_assessments Table
@@ -165,6 +212,43 @@ class CareerGuidanceService:
                     plan_json,
                     rec_details["timeline"]["months_remaining"]
                 ))
+                
+            # Save candidate skill gaps in candidate_skill_gaps table
+            try:
+                # 1. Clear existing gaps for student
+                cur.execute("DELETE FROM candidate_skill_gaps WHERE student_id = %s", (int(student_id),))
+                
+                # 2. Insert missing and matched skills
+                cur.execute("SELECT skill_id, skill_name FROM skills;")
+                all_skills = cur.fetchall()
+                s_map = {name.lower().strip(): s_id for s_id, name in all_skills}
+                
+                gaps_obj = rec_details.get("gaps", {})
+                high_missing = gaps_obj.get("high_priority_missing", [])
+                med_missing = gaps_obj.get("medium_priority_missing", [])
+                low_missing = gaps_obj.get("low_priority_missing", [])
+                matched = gaps_obj.get("matched_skills", [])
+                
+                for prio, skills_list in [("High", high_missing), ("Medium", med_missing), ("Low", low_missing)]:
+                    for skill in skills_list:
+                        s_low = skill.lower().strip()
+                        if s_low in s_map:
+                            cur.execute("""
+                                INSERT INTO candidate_skill_gaps (student_id, skill_id, priority, status)
+                                VALUES (%s, %s, %s, 'Missing')
+                                ON CONFLICT (student_id, skill_id) DO NOTHING;
+                            """, (int(student_id), s_map[s_low], prio))
+                            
+                for skill in matched:
+                    s_low = skill.lower().strip()
+                    if s_low in s_map:
+                        cur.execute("""
+                            INSERT INTO candidate_skill_gaps (student_id, skill_id, priority, status)
+                            VALUES (%s, %s, 'None', 'Acquired')
+                            ON CONFLICT (student_id, skill_id) DO NOTHING;
+                        """, (int(student_id), s_map[s_low]))
+            except Exception as gap_err:
+                logger.warning(f"Failed to save to candidate_skill_gaps: {gap_err}")
                 
             # 4b. Write to recommendation_audit_log table
             try:

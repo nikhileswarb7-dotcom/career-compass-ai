@@ -118,15 +118,19 @@ def get_role_skills_requirements(company_name: str, role_name: str) -> dict:
 
     return FALLBACK_REQUIREMENTS
 
-def assess_skills(student_skills: list, company_name: str, role_name: str) -> float:
+def assess_skills(student_skills, company_name: str, role_name: str) -> float:
     """
     Computes a score (0 to 100) representing Technical Skill Strength.
+    Supports student_skills as a list or dictionary (mapping skill name to proficiency score 0.0-1.0).
     """
     requirements = get_role_skills_requirements(company_name, role_name)
     if not requirements:
         return 0.0
         
-    student_skills_lower = {s.lower().strip() for s in student_skills}
+    if isinstance(student_skills, dict):
+        student_skills_map = {s.lower().strip(): val for s, val in student_skills.items()}
+    else:
+        student_skills_map = {s.lower().strip(): 1.0 for s in student_skills}
     
     total_weight = 0
     matched_weight = 0
@@ -140,17 +144,25 @@ def assess_skills(student_skills: list, company_name: str, role_name: str) -> fl
     for skill_name, priority in requirements.items():
         weight = priority_weights.get(priority, 1)
         total_weight += weight
-        if skill_name.lower().strip() in student_skills_lower:
-            matched_weight += weight
+        norm_key = skill_name.lower().strip()
+        if norm_key in student_skills_map:
+            proficiency = student_skills_map[norm_key]
+            matched_weight += weight * proficiency
             
     if total_weight == 0:
         return 0.0
         
     # Extra minor bonus (0.5 points per non-required skill, capped at 8 points bonus)
     non_req_matches = 0
-    for s in student_skills:
-        if s.lower().strip() not in {k.lower().strip() for k in requirements.keys()}:
-            non_req_matches += 1
+    if isinstance(student_skills, dict):
+        for s, val in student_skills.items():
+            if s.lower().strip() not in {k.lower().strip() for k in requirements.keys()}:
+                non_req_matches += val
+    else:
+        for s in student_skills:
+            if s.lower().strip() not in {k.lower().strip() for k in requirements.keys()}:
+                non_req_matches += 1
+                
     bonus = min(non_req_matches * 0.5, 8.0)
     
     score = (matched_weight / total_weight) * 100 + bonus

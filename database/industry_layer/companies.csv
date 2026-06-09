@@ -22,87 +22,87 @@ company_id,company_name,industry,company_type
 21,Accenture,IT Services,MNC
 22,Cognizant,IT Services,MNC
 23,Infosys,IT Services,MNC
-24,FactSet,Technology,Startup
-25,American Express,Technology,Startup
-26,Tata Consultancy Services,Technology,Startup
-27,HashedIn,Technology,Startup
-28,GoScale Technologies,Technology,Startup
-29,Software Development Engineer III,Technology,Startup
-30,University of Oklahoma,Technology,Academic
-31,MyMedGlobal,Technology,Startup
-32,Zoho,Technology,Startup
-33,V-REAP Foundation,Technology,Startup
-34,Lead4u,Technology,Startup
-35,Voice Qube,Technology,Startup
-36,Pucho Technology Information Private Limited,Technology,Startup
-37,Mate Labs,Technology,Startup
-38,KocharTech,Technology,Startup
-39,Offshore Software Solutions,Technology,Startup
-40,Mad Street Den,Technology,Startup
-41,30% of development efforts leading to higher throughputs,Technology,Startup
-42,Shopconnect.live,Technology,Startup
-43,Toddle - Your Teaching Partner,Technology,Startup
-44,Rocket,Technology,Startup
-45,Virtusa,Technology,Startup
-46,Edyst,Technology,Startup
-47,EPAM Systems,Technology,Startup
-48,Jio Platforms,Technology,Product
-49,Web Development Intern,Technology,Startup
-50,Samsung Electronics,Technology,Startup
-51,Wipro Digital,Technology,Startup
-52,Manhattan Associates,Technology,Startup
-53,based on user inputs.,Technology,Startup
-54,PayPal,Technology,Startup
-55,LinkedIn,Technology,Startup
-56,cppsecrets.com,Technology,Startup
-57,Cogos Technologies Pvt Ltd,Technology,Startup
-58,Predigle,Technology,Startup
-59,Josh Technology Group,Technology,Startup
-60,Deloitte,Technology,Startup
-61,NICE Ltd,Technology,Startup
-62,FlexTrade,Technology,Startup
-63,Codingal,Technology,Startup
-64,BillFree Labs,Technology,Startup
-65,Zolo,Technology,Startup
-66,MAQ Software,Technology,Startup
-67,Kaggle,Technology,Startup
-68,The Sparks Foundation,Technology,Startup
-69,Falistro,Technology,Startup
-70,Codepro Management Private Limited,Technology,Startup
-71,TOMIA,Technology,Startup
-72,ATONARP,Technology,Startup
-73,Prismforce,Technology,Startup
-74,Lean In @IGDTUW,Technology,Startup
-75,Markytics,Technology,Startup
-76,Project Intern,Technology,Startup
-77,HELLA,Technology,Startup
-78,NEWME,Technology,Startup
-79,backend changes. Developed the project using ReactJs and ReScript.,Technology,Startup
-80,NOGOZO,Technology,Startup
-81,Chegg Inc.,Technology,Startup
-82,Ecowiser,Technology,Startup
-83,Bungee Tech,Technology,Startup
-84,MIRROR SCORE,Technology,Startup
-85,DataToBiz,Technology,Startup
-86,reducing significant efforts to query multiple services,Technology,Startup
-87,Yubi,Technology,Startup
-88,Bennett University,Technology,Academic
-89,MapOut,Technology,Startup
-90,Crio.Do,Technology,Startup
-91,JPMorgan Chase & Co.,Technology,Startup
-92,ixigo,Technology,Startup
-93,Engineering IIT Ropar,Technology,Startup
-94,E-CELL IIT ROPAR,Technology,Startup
-95,ASEAN-INDIA Hackathon,Technology,Startup
-96,Urban Company,Technology,Startup
-97,Red Hat,Technology,Startup
-98,significantly.,Technology,Startup
-99,Swayam Infotech,Technology,Startup
-100,IIT Roorkee Motorsports,Technology,Startup
-101,Project Leader,Technology,Startup
-102,"Information Management Group, IIT Roorkee",Technology,Startup
-103,ITC Limited,Technology,Startup
-104,Stormlight Synergies,Technology,Startup
+30,FactSet,Technology,Startup
+31,American Express,Technology,Startup
+32,Tata Consultancy Services,Technology,Startup
+33,HashedIn,Technology,Startup
+34,GoScale Technologies,Technology,Startup
+35,Software Development Engineer III,Technology,Startup
+36,University of Oklahoma,Technology,Academic
+37,MyMedGlobal,Technology,Startup
+38,Zoho,Technology,Startup
+39,V-REAP Foundation,Technology,Startup
+40,Lead4u,Technology,Startup
+41,Voice Qube,Technology,Startup
+42,Pucho Technology Information Private Limited,Technology,Startup
+43,Mate Labs,Technology,Startup
+44,KocharTech,Technology,Startup
+45,Offshore Software Solutions,Technology,Startup
+46,Mad Street Den,Technology,Startup
+47,30% of development efforts leading to higher throughputs,Technology,Startup
+48,Shopconnect.live,Technology,Startup
+49,Toddle - Your Teaching Partner,Technology,Startup
+50,Rocket,Technology,Startup
+51,Virtusa,Technology,Startup
+52,Edyst,Technology,Startup
+53,EPAM Systems,Technology,Startup
+54,Jio Platforms,Technology,Product
+55,Web Development Intern,Technology,Startup
+56,Samsung Electronics,Technology,Startup
+57,Wipro Digital,Technology,Startup
+58,Manhattan Associates,Technology,Startup
+59,based on user inputs.,Technology,Startup
+60,PayPal,Technology,Startup
+61,LinkedIn,Technology,Startup
+62,cppsecrets.com,Technology,Startup
+63,Cogos Technologies Pvt Ltd,Technology,Startup
+64,Predigle,Technology,Startup
+65,Josh Technology Group,Technology,Startup
+66,Deloitte,Technology,Startup
+67,NICE Ltd,Technology,Startup
+68,FlexTrade,Technology,Startup
+69,Codingal,Technology,Startup
+70,BillFree Labs,Technology,Startup
+71,Zolo,Technology,Startup
+72,MAQ Software,Technology,Startup
+73,Kaggle,Technology,Startup
+74,The Sparks Foundation,Technology,Startup
+75,Falistro,Technology,Startup
+76,Codepro Management Private Limited,Technology,Startup
+77,TOMIA,Technology,Startup
+78,ATONARP,Technology,Startup
+79,Prismforce,Technology,Startup
+80,Lean In @IGDTUW,Technology,Startup
+81,Markytics,Technology,Startup
+82,Project Intern,Technology,Startup
+83,HELLA,Technology,Startup
+84,NEWME,Technology,Startup
+85,backend changes. Developed the project using ReactJs and ReScript.,Technology,Startup
+86,NOGOZO,Technology,Startup
+87,Chegg Inc.,Technology,Startup
+88,Ecowiser,Technology,Startup
+89,Bungee Tech,Technology,Startup
+90,MIRROR SCORE,Technology,Startup
+91,DataToBiz,Technology,Startup
+92,reducing significant efforts to query multiple services,Technology,Startup
+93,Yubi,Technology,Startup
+94,Bennett University,Technology,Academic
+95,MapOut,Technology,Startup
+96,Crio.Do,Technology,Startup
+97,JPMorgan Chase & Co.,Technology,Startup
+98,ixigo,Technology,Startup
+99,Engineering IIT Ropar,Technology,Startup
+100,E-CELL IIT ROPAR,Technology,Startup
+101,ASEAN-INDIA Hackathon,Technology,Startup
+102,Urban Company,Technology,Startup
+103,Red Hat,Technology,Startup
+104,significantly.,Technology,Startup
+418,Swayam Infotech,Technology,Startup
+419,IIT Roorkee Motorsports,Technology,Startup
+420,Project Leader,Technology,Startup
+421,"Information Management Group, IIT Roorkee",Technology,Startup
+422,ITC Limited,Technology,Startup
+423,Stormlight Synergies,Technology,Startup
 106,CodeChef KIET Chapter,Technology,Startup
 107,Software Developer Engineer,Technology,Startup
 108,Lowe's India,Technology,Startup
@@ -139,7 +139,7 @@ company_id,company_name,industry,company_type
 139,Mastercard,Technology,Startup
 140,vCreaTek Consulting Services Pvt Ltd,Technology,Startup
 141,Franklin Templeton,Technology,Startup
-142,Adobe,Technology,Startup
+27,Adobe,Technology,Startup
 143,Hewlett Packard Enterprise,Technology,Startup
 144,Team Syndicate,Technology,Startup
 145,AfterNow,Technology,Startup
@@ -232,7 +232,7 @@ company_id,company_name,industry,company_type
 232,Chromium,Technology,Startup
 233,HSBC,Technology,Startup
 234,Expedia Group,Technology,Startup
-235,ZeMoSo Technologies,Technology,Startup
+417,ZeMoSo Technologies,Technology,Startup
 236,Smart Interviews,Technology,Startup
 237,Sureify,Technology,Startup
 238,Salesforce,Technology,MNC
@@ -319,7 +319,6 @@ company_id,company_name,industry,company_type
 319,Codess.Cafe,Technology,Startup
 320,Harvard WECode: Women Engineers Code Conference,Technology,Startup
 321,BNY,Technology,Startup
-322,Zemoso Technologies,Technology,Startup
 323,Junior Software Engineer,Technology,Startup
 324,Self-employed,Technology,Startup
 325,Index Information Technology Services LLC,Technology,Startup
@@ -410,3 +409,6 @@ company_id,company_name,industry,company_type
 410,continuous performance and quality improvements.,Technology,Startup
 411,Wells Fargo,Technology,Startup
 412,business including Native brand,Technology,Startup
+413,release.,Technology,Startup
+29,ServiceNow,Technology,Startup
+424,Zemoso Technologies,Technology,Startup

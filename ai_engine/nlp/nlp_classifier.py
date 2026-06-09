@@ -123,13 +123,35 @@ def load_env_keys():
         except Exception as e:
             print(f"Error dynamically loading .env: {e}")
 
-def classify_and_respond(user_message, dream_company="Blinkit", active_stage="active stage"):
+def classify_and_respond(user_message, dream_company="Blinkit", active_stage="active stage", student_context=None):
     """
     First tries to generate response using Google Gemini Large Language Model (LLM).
     If API key is missing or calls fail, gracefully falls back to the VSM Cosine Similarity matcher.
     """
     load_env_keys()
     api_key = os.environ.get("GEMINI_API_KEY")
+    
+    # Format a highly contextual instruction if student profile is available
+    context_str = ""
+    name_str = "Candidate"
+    gaps_str = "None"
+    role_str = "SDE"
+    
+    if student_context:
+        name_str = student_context.get("name", "Candidate")
+        role_str = student_context.get("target_role", "Software Development Engineer")
+        branch = student_context.get("branch", "")
+        cgpa = student_context.get("cgpa", "")
+        gaps = student_context.get("missing_skills", [])
+        gaps_str = ", ".join(gaps) if gaps else "None"
+        context_str = (
+            f"Candidate Profile:\n"
+            f"- Name: {name_str}\n"
+            f"- Target SDE Role: {role_str}\n"
+            f"- Branch/CGPA: {branch} (CGPA: {cgpa})\n"
+            f"- Critical Missing Skills (Gaps): {gaps_str}\n"
+        )
+
     if HAS_GEMINI_SDK and api_key:
         try:
             genai.configure(api_key=api_key)
@@ -139,12 +161,15 @@ def classify_and_respond(user_message, dream_company="Blinkit", active_stage="ac
                 "You are an SDE Placement Coach and AI Assistant for CareerCompass AI.\n"
                 "Your goal is to guide freshers and student candidates to prepare for software engineering interviews.\n"
                 "You must tailor your advice to their target company, dream sector, and active preparation stage.\n"
+                "Always refer to the candidate by their name if provided in context, address their branch/CGPA if relevant, "
+                "and directly coach them on closing their specific missing skills (gaps).\n"
                 "Be brief, encouraging, professional, and focus on practical engineering steps. Limit response to 3-4 sentences."
             )
             
             prompt = (
                 f"{system_instruction}\n\n"
-                f"Candidate Details:\n"
+                f"{context_str}"
+                f"Candidate Targets:\n"
                 f"- Target Company: {dream_company}\n"
                 f"- Active Stage: {active_stage}\n\n"
                 f"User Message: {user_message}\n"
@@ -163,7 +188,7 @@ def classify_and_respond(user_message, dream_company="Blinkit", active_stage="ac
         user_tokens = [w for w in re.sub(r'[^\w\s]', ' ', user_message.lower()).split() if w]
         
     if not user_tokens:
-        return "Please ask me any SDE preparation questions!"
+        return f"Hi {name_str}! Please ask me any questions about your {role_str} roadmap stages or {dream_company} prep!"
 
     user_vector = get_tf_vector(user_tokens)
     
@@ -184,6 +209,15 @@ def classify_and_respond(user_message, dream_company="Blinkit", active_stage="ac
             
     if best_intent and best_score >= 0.12:
         reply_template = best_intent["reply"]
-        return reply_template.format(dream_company=dream_company, active_stage=active_stage)
+        reply_str = reply_template.format(dream_company=dream_company, active_stage=active_stage)
+        if name_str != "Candidate":
+            reply_str = f"Hi {name_str}, " + reply_str[0].lower() + reply_str[1:]
+        if gaps_str != "None":
+            reply_str += f" Focus on closing gaps in: {gaps_str}."
+        return reply_str
         
-    return f"That's a vital question. For your current milestone ({active_stage}), make sure to implement hands-on code in the sandbox rather than just reading about it. Try building minor features for {dream_company}'s SDE use case!"
+    fallback_reply = f"Hi {name_str}, that's a vital question. For your active stage ({active_stage}), make sure to implement hands-on code rather than just reading. Try building microservices matching the SDE stack at {dream_company}."
+    if gaps_str != "None":
+        fallback_reply += f" Pay special attention to your gaps: {gaps_str}."
+    return fallback_reply
+

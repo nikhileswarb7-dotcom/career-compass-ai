@@ -249,6 +249,340 @@ def load_roadmap_from_db(qualification: str, dream_company: str, target_role: st
             conn.close()
     return None
 
+def get_all_skills():
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if not conn:
+        return []
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        cur.execute("SELECT skill_id, skill_name, category, difficulty FROM skills")
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        return [{"id": r[0], "name": r[1], "category": r[2], "difficulty": r[3]} for r in rows]
+    except Exception:
+        if conn: conn.close()
+        return []
+
+def get_skills_master():
+    skills = get_all_skills()
+    if skills:
+        return skills
+    # Fallback to CSV
+    import csv, os
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    csv_path = os.path.join(base_dir, "database", "career_layer", "skills_master.csv")
+    if os.path.exists(csv_path):
+        try:
+            with open(csv_path, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                return [{
+                    "id": int(row["skill_id"]),
+                    "name": row["skill_name"],
+                    "category": row.get("category", "General"),
+                    "difficulty": row.get("difficulty", "Intermediate")
+                } for row in reader]
+        except Exception:
+            pass
+    return []
+
+def get_resources_by_skill_ids(skill_ids: list):
+    if not skill_ids:
+        return []
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            placeholders = ",".join(["%s"] * len(skill_ids))
+            cur.execute(f"""
+                SELECT resource_id, title, resource_type, topic, skill_id, url, platform, difficulty
+                FROM resources
+                WHERE skill_id IN ({placeholders})
+            """, tuple(skill_ids))
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            return [{
+                "id": r[0],
+                "title": r[1],
+                "type": r[2],
+                "topic": r[3],
+                "skill_id": r[4],
+                "url": r[5],
+                "platform": r[6],
+                "difficulty": r[7]
+            } for r in rows]
+        except Exception:
+            if conn: conn.close()
+    
+    # Fallback to CSV
+    import csv, os
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    csv_path = os.path.join(base_dir, "database", "learning_layer", "learning_resources.csv")
+    res_list = []
+    if os.path.exists(csv_path):
+        try:
+            with open(csv_path, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    s_id_str = row.get("skill_id")
+                    if s_id_str:
+                        try:
+                            s_id = int(s_id_str)
+                            if s_id in skill_ids:
+                                res_list.append({
+                                    "id": int(row.get("resource_id", 0) or 0),
+                                    "title": row.get("title"),
+                                    "type": row.get("resource_type"),
+                                    "topic": row.get("topic"),
+                                    "skill_id": s_id,
+                                    "url": row.get("url"),
+                                    "platform": row.get("platform"),
+                                    "difficulty": row.get("difficulty", "Intermediate")
+                                })
+                        except ValueError:
+                            pass
+            return res_list
+        except Exception:
+            pass
+    return []
+
+def get_all_db_projects():
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            cur.execute("SELECT project_id, project_name, description, difficulty, skills_covered FROM projects")
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            import json
+            res = []
+            for r in rows:
+                skills = r[4]
+                if isinstance(skills, str):
+                    try:
+                        skills = json.loads(skills)
+                    except Exception:
+                        skills = []
+                res.append({
+                    "id": r[0],
+                    "name": r[1],
+                    "details": r[2],
+                    "difficulty": r[3],
+                    "skills": skills if isinstance(skills, list) else []
+                })
+            return res
+        except Exception:
+            if conn: conn.close()
+    return []
+
+def get_db_skill_clusters():
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if not conn:
+        return []
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        cur.execute("""
+            SELECT c.cluster_id, c.cluster_name, c.default_milestone, c.display_order, s.skill_name
+            FROM skill_clusters c
+            JOIN skill_cluster_skills cs ON c.cluster_id = cs.cluster_id
+            JOIN skills s ON cs.skill_id = s.skill_id
+            ORDER BY c.display_order ASC;
+        """)
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        
+        clusters = {}
+        for r_id, name, milestone, display_order, skill_name in rows:
+            if name not in clusters:
+                clusters[name] = {
+                    "id": name.lower().replace(" ", "_"),
+                    "title": name,
+                    "skills": [],
+                    "default_milestone": milestone
+                }
+            clusters[name]["skills"].append(skill_name.lower().strip())
+        return list(clusters.values())
+    except Exception as e:
+        if conn: conn.close()
+        print("Error loading clusters from DB:", e)
+        return []
+
+def get_resources_by_skill_ids_db(skill_ids: list):
+    if not skill_ids:
+        return []
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            placeholders = ",".join(["%s"] * len(skill_ids))
+            cur.execute(f"""
+                SELECT r.resource_id, r.title, r.resource_type, r.topic, rsm.skill_id, r.url, r.platform, r.difficulty, r.duration_hours
+                FROM resources r
+                JOIN resource_skill_mapping rsm ON r.resource_id = rsm.resource_id
+                WHERE rsm.skill_id IN ({placeholders})
+            """, tuple(skill_ids))
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            return [{
+                "id": r[0],
+                "title": r[1],
+                "type": r[2],
+                "topic": r[3],
+                "skill_id": r[4],
+                "url": r[5],
+                "platform": r[6],
+                "difficulty": r[7],
+                "duration_hours": r[8] or 4.0
+            } for r in rows]
+        except Exception:
+            if conn: conn.close()
+    return []
+
+def get_projects_by_skill_ids_db(skill_ids: list):
+    if not skill_ids:
+        return []
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            placeholders = ",".join(["%s"] * len(skill_ids))
+            cur.execute(f"""
+                SELECT DISTINCT p.project_id, p.project_name, p.description, p.difficulty, p.skills_covered
+                FROM projects p
+                JOIN project_skill_mapping psm ON p.project_id = psm.project_id
+                WHERE psm.skill_id IN ({placeholders})
+            """, tuple(skill_ids))
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            import json
+            res = []
+            for r in rows:
+                skills = r[4]
+                if isinstance(skills, str):
+                    try: skills = json.loads(skills)
+                    except Exception: skills = []
+                res.append({
+                    "id": r[0],
+                    "name": r[1],
+                    "details": r[2],
+                    "difficulty": r[3],
+                    "skills": skills if isinstance(skills, list) else []
+                })
+            return res
+        except Exception:
+            if conn: conn.close()
+    return []
+
+def get_interview_questions_by_skill_ids_db(skill_ids: list):
+    if not skill_ids:
+        return []
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            placeholders = ",".join(["%s"] * len(skill_ids))
+            cur.execute(f"""
+                SELECT DISTINCT q.question_id, q.question, q.answer, q.explanation, q.difficulty, q.category
+                FROM interview_questions q
+                JOIN interview_question_skill_mapping iqsm ON q.question_id = iqsm.question_id
+                WHERE iqsm.skill_id IN ({placeholders})
+            """, tuple(skill_ids))
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            return [{
+                "id": r[0],
+                "question": r[1],
+                "answer": r[2],
+                "explanation": r[3],
+                "difficulty": r[4],
+                "category": r[5]
+            } for r in rows]
+        except Exception:
+            if conn: conn.close()
+    return []
+
+def get_mcqs_by_skill_ids_db(skill_ids: list):
+    if not skill_ids:
+        return []
+    try:
+        from api.database_connector import get_db_connection
+    except ImportError:
+        return []
+    conn = get_db_connection()
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            placeholders = ",".join(["%s"] * len(skill_ids))
+            cur.execute(f"""
+                SELECT DISTINCT m.mcq_id, m.question, m.options, m.correct_option, m.explanation
+                FROM mcqs m
+                JOIN mcq_skill_mapping msm ON m.mcq_id = msm.mcq_id
+                WHERE msm.skill_id IN ({placeholders})
+            """, tuple(skill_ids))
+            rows = cur.fetchall()
+            cur.close()
+            conn.close()
+            import json
+            res = []
+            for r in rows:
+                opts = r[2]
+                if isinstance(opts, str):
+                    try: opts = json.loads(opts)
+                    except Exception: opts = []
+                res.append({
+                    "question": r[1],
+                    "options": opts,
+                    "correct": r[3],
+                    "explanation": r[4]
+                })
+            return res
+        except Exception:
+            if conn: conn.close()
+    return []
+
+
 def generate_timeline(
     qualification: str, 
     missing_skills: dict, 
@@ -257,10 +591,11 @@ def generate_timeline(
     fresh_passout: bool = False, 
     target_role: str = "Junior Software Engineer",
     similar_engineers: list = None,
-    assessment_scores: dict = None
+    assessment_scores: dict = None,
+    candidate_profile: dict = None
 ) -> dict:
     """
-    Generates a personalized, stage-by-stage study timeline tailored to the student's
+    Generates a personalized, stage-by-stage study timeline dynamically tailored to the student's
     college year/qualification and specific missing skills.
     """
     meta = QUALIFICATION_META.get(qualification, {"urgency": "Medium", "weekly_hours": 15, "months": 12})
@@ -268,13 +603,11 @@ def generate_timeline(
     weekly_hours = meta["weekly_hours"]
     urgency = meta["urgency"]
     
-    # 1. Apply Career Stage intelligence adjustments
+    # Apply Career Stage intelligence adjustments
     stage_eval = None
     if assessment_scores and "career_stage" in assessment_scores:
         stage_eval = assessment_scores["career_stage"]
-        # Use stage recommended hours as baseline
         weekly_hours = stage_eval.get("recommended_hours_weekly", weekly_hours)
-        # If student track status is Needs Acceleration, scale prep intensity by 1.2x
         if stage_eval.get("track_status") == "Needs Acceleration":
             weekly_hours = min(int(weekly_hours * 1.2), 45)
             urgency = "Critical (Needs Acceleration)"
@@ -285,298 +618,320 @@ def generate_timeline(
         weekly_hours = max(weekly_hours * 1.5, 35)
         urgency = "Immediate / Fast-Track"
 
-    # Define skill categories for smart AI focus injections
-    LANG_SKILLS = ["Java", "Go", "Python", "NodeJS", "Spring Boot"]
-    DB_SKILLS = ["PostgreSQL", "MySQL", "Redis", "Kafka", "ElasticSearch"]
-    SYS_SKILLS = ["System Design", "Distributed Systems", "Docker", "Kubernetes", "AWS", "gRPC", "Microservices"]
-
-    def get_focus_phrase(skills_list):
-        prio_missing = []
-        for p in ["High", "Medium", "Low"]:
-            prio_missing += [s for s in missing_skills.get(p, []) if s in skills_list]
-        if prio_missing:
-            return "Focus on closing skill gaps: " + ", ".join(prio_missing)
-        return "Review advanced SDE patterns and optimizations"
-
-    # 1. Try to load stages and duration dynamically from the PostgreSQL database
-    db_roadmap = load_roadmap_from_db(qualification, dream_company, target_role)
-    if db_roadmap:
-        months = db_roadmap["months"]
-        if fresh_passout:
-            months = 3
-        stages = []
-        for s in db_roadmap["stages"]:
-            # Inject dynamic skill focuses based on stage index/type
-            stage_idx = s["stage"]
-            focus_text = s["focus"]
-            if stage_idx == 1:
-                focus_text += f" {get_focus_phrase(LANG_SKILLS)}."
-            elif stage_idx == 2:
-                focus_text += f" {get_focus_phrase(DB_SKILLS)}."
-            elif stage_idx == 3:
-                focus_text += f" {get_focus_phrase(SYS_SKILLS)}."
-            else:
-                focus_text += f" {get_focus_phrase(LANG_SKILLS + DB_SKILLS + SYS_SKILLS)}."
-                
-            stages.append({
-                "stage": s["stage"],
-                "title": s["title"],
-                "duration_weeks": s["duration_weeks"],
-                "focus": focus_text,
-                "milestone": s["milestone"],
-                "learning_goals": list(s["learning_goals"]) if s["learning_goals"] else []
-            })
+    # Determine preferred difficulty order based on qualification/level
+    pref_diffs = ["Intermediate", "Advanced", "Easy", "Beginner"]
+    if qualification in ("1st Year Student", "2nd Year Student"):
+        pref_diffs = ["Easy", "Beginner", "Intermediate", "Advanced"]
+    elif qualification in ("3rd Year Student", "Trainee Engineer"):
+        pref_diffs = ["Intermediate", "Advanced", "Easy", "Beginner"]
     else:
-        raise RuntimeError(f"Database roadmap unavailable or not seeded. Could not load SDE timeline for target: {dream_company} ({target_role})")
+        pref_diffs = ["Advanced", "Intermediate", "Easy", "Beginner"]
 
-    # Recommended Projects based on Dream Sector and Missing Skills
-    flat_missing = []
-    for priority, skills in missing_skills.items():
-        flat_missing += [s.lower() for s in skills]
+    # Fetch master list of skills
+    skills_master = get_skills_master()
+    skills_by_name = {s["name"].lower().strip(): s for s in skills_master}
+    
+    # Flatten missing skills with their priority
+    missing_with_meta = []
+    for prio, s_list in missing_skills.items():
+        if not isinstance(s_list, list):
+            continue
+        for s_name in s_list:
+            s_name_lower = s_name.lower().strip()
+            if s_name_lower in skills_by_name:
+                meta_s = skills_by_name[s_name_lower]
+                missing_with_meta.append({
+                    "name": meta_s["name"],
+                    "id": meta_s["id"],
+                    "category": meta_s["category"],
+                    "difficulty": meta_s["difficulty"],
+                    "priority": prio
+                })
+            else:
+                # Fallback category mapping based on keywords
+                category = "Programming"
+                if any(k in s_name_lower for k in ["design", "architecture", "microservices", "kubernetes", "docker", "cloud", "aws", "grpc"]):
+                    category = "Cloud"
+                elif any(k in s_name_lower for k in ["dbms", "sql", "postgres", "mysql", "redis", "kafka", "mongo"]):
+                    category = "Backend"
+                missing_with_meta.append({
+                    "name": s_name,
+                    "id": None,
+                    "category": category,
+                    "difficulty": "Intermediate",
+                    "priority": prio
+                })
 
-    all_projects = load_dynamic_projects()
-    projects = []
-    
-    if all_projects:
-        # Score and sort projects
-        scored_projects = []
-        for p in all_projects:
-            score = 0
-            for s in p["skills"]:
-                if s.lower() in flat_missing:
-                    score += 2
-            
-            # Align project difficulty with candidate qualification/stage to personalize recommendations
-            p_diff = p.get("difficulty", "Intermediate")
-            if p_diff == "Easy":
-                p_diff = "Beginner"
-            if qualification in ["1st Year Student", "2nd Year Student"]:
-                if p_diff == "Beginner":
-                    score += 5
-                elif p_diff == "Intermediate":
-                    score += 0
-                else:
-                    score -= 5
-            elif qualification in ["3rd Year Student", "4th Year Student", "Fresh Graduate"]:
-                if p_diff == "Intermediate":
-                    score += 5
-                elif p_diff == "Advanced":
-                    score += 2
-                else:
-                    score -= 2
-            else: # Trainee or Junior SDE
-                if p_diff == "Advanced":
-                    score += 5
-                elif p_diff == "Intermediate":
-                    score += 2
-                else:
-                    score -= 5
-                    
-            # Add small weight for difficulty matches
-            if urgency in ["Critical", "Immediate / Fast-Track"] and p["difficulty"] == "Advanced":
-                score += 1
-            scored_projects.append((score, p))
-            
-        scored_projects.sort(key=lambda x: x[0], reverse=True)
-        projects = [{"name": p["name"], "difficulty": p["difficulty"], "details": p["details"]} for score, p in scored_projects[:2]]
-        
-    if not projects:
-        if dream_sector.lower() in ["quick-commerce", "e-commerce"]:
-            projects = [
-                {
-                    "name": f"High-Concurrency {dream_company}-Style Delivery Engine",
-                    "difficulty": "Advanced" if not fresh_passout else "Intermediate",
-                    "details": f"Scalable order dispatching system using Go/Java, Redis for geo-indexing riders, and Kafka for real-time delivery status broadcasts."
-                },
-                {
-                    "name": "Distributed Shopping Cart Cache",
-                    "difficulty": "Intermediate",
-                    "details": "Cart session management system utilizing Redis clustered databases, ensuring <5ms latency under peak e-commerce search traffic."
-                }
-            ]
-        elif dream_sector.lower() == "fintech":
-            projects = [
-                {
-                    "name": "Idempotent Transaction Ledger API",
-                    "difficulty": "Advanced",
-                    "details": "Double-entry bookkeeping system with PostgreSQL transactions, Spring Boot, and Kafka logs to guarantee zero-data-loss payment operations."
-                },
-                {
-                    "name": "Fraud Detection Pipeline",
-                    "difficulty": "Intermediate",
-                    "details": "Real-time payment event stream analyzer using Python, Apache Kafka, and a rule engine to block fraudulent checkouts instantly."
-                }
-            ]
-        elif dream_sector.lower() == "saas":
-            projects = [
-                {
-                    "name": "Multi-Tenant Event Logging Framework",
-                    "difficulty": "Advanced",
-                    "details": "SaaS metrics collection daemon written in Go, exposing gRPC endpoints and utilizing Elasticsearch to query system logs across tenants."
-                },
-                {
-                    "name": "JWT-Based Role Based Access Control",
-                    "difficulty": "Intermediate",
-                    "details": "Secure authentication microservice with Node.js/TypeScript, Redis token revocation, and middleware security checks."
-                }
-            ]
-        else: # Default Service-based/General SDE
-            projects = [
-                {
-                    "name": "Distributed URL Shortener Service",
-                    "difficulty": "Advanced",
-                    "details": "Go & Redis backend with unique slug generation, rate limiting, and write-through cache architecture."
-                },
-                {
-                    "name": "Collaborative Task Manager API",
-                    "difficulty": "Intermediate",
-                    "details": "REST API with WebSockets for real-time board updates, built using Express, PostgreSQL, and Docker containerization."
-                }
-            ]
-            
-    # Recommended Resources based on Target Company and Missing Skills
-    all_resources = load_dynamic_resources()
-    resources = []
-    
-    if all_resources:
-        scored_resources = []
-        for r in all_resources:
-            score = 0
-            if r["topic"].lower() in flat_missing:
-                score += 2
-            if r.get("title") and dream_company.lower() in r["title"].lower():
-                score += 1
+    def calculate_hours_needed(skills_list):
+        hours = 0
+        for s in skills_list:
+            diff = s["difficulty"].lower()
+            prio = s["priority"]
+            if prio == "High":
+                factor = 1.0
+            elif prio == "Medium":
+                factor = 0.75
+            else:
+                factor = 0.5
                 
-            # Align learning resource difficulty with candidate qualification/stage to personalize recommendations
-            r_diff = r.get("difficulty", "Intermediate")
-            if qualification in ["1st Year Student", "2nd Year Student"]:
-                if r_diff == "Beginner":
-                    score += 5
-                elif r_diff == "Intermediate":
-                    score += 2
-                else:
-                    score -= 5
-            elif qualification in ["3rd Year Student", "4th Year Student", "Fresh Graduate"]:
-                if r_diff == "Intermediate":
-                    score += 5
-                elif r_diff == "Advanced":
-                    score += 2
-                else:
-                    score -= 2
-            else: # Trainee or Junior SDE
-                if r_diff == "Advanced":
-                    score += 5
-                elif r_diff == "Intermediate":
-                    score += 2
-                else:
-                    score -= 5
-                    
-            scored_resources.append((score, r))
+            if "advanced" in diff:
+                base = 40
+            elif "beginner" in diff:
+                base = 20
+            else:
+                base = 30
+            hours += base * factor
+        return max(hours, 15)
+
+    # Load skill clusters from database
+    db_clusters = get_db_skill_clusters()
+    
+    # Fallback to local hardcoded clusters if DB is empty
+    if not db_clusters:
+        db_clusters = [
+            {
+                "id": "languages_foundations",
+                "title": "Languages & Foundations",
+                "skills": ["java", "python", "go", "c programming", "c++", "object oriented programming", "oop", "git & github"],
+                "default_milestone": "Demonstrate language familiarity, OOP concepts, and basic git workspace setup."
+            },
+            {
+                "id": "dsa_algorithms",
+                "title": "Data Structures & Algorithms",
+                "skills": ["dsa (combined)", "data structures", "algorithms"],
+                "default_milestone": "Master time complexities and solve medium-level algorithmic challenges on array/linked lists/trees."
+            },
+            {
+                "id": "databases_core_cs",
+                "title": "Databases & Core CS",
+                "skills": ["dbms", "sql", "mysql", "postgresql", "operating systems", "computer networks", "linux basics"],
+                "default_milestone": "Design relational database schemas, write complex queries, and explain core OS/network protocols."
+            },
+            {
+                "id": "backend_api_foundations",
+                "title": "Backend API Foundations",
+                "skills": ["spring boot", "rest apis", "nodejs"],
+                "default_milestone": "Develop and deploy robust CRUD API endpoints with error handling and validations."
+            },
+            {
+                "id": "distributed_systems_caching",
+                "title": "Distributed Systems & Caching",
+                "skills": ["redis", "kafka", "microservices", "docker", "message queues (kafka)", "aws basics", "kubernetes"],
+                "default_milestone": "Configure Redis caches, process real-time Kafka event streams, and dockerize backend services."
+            },
+            {
+                "id": "system_design_architecture",
+                "title": "System Design & Architecture",
+                "skills": ["system design", "low level design", "high level design"],
+                "default_milestone": "Create low-level class structural models and high-level architectural designs for scaling traffic."
+            }
+        ]
+
+    stages = []
+    stage_idx = 1
+    
+    seen_skills = set()
+    global_projects = []
+    global_resources = []
+
+    # Map missing skills into clusters
+    for c in db_clusters:
+        cluster_skills = []
+        cluster_skill_ids = []
+        for s in missing_with_meta:
+            s_low = s["name"].lower().strip()
+            # Match if skill name matches cluster skill list
+            if s_low in c["skills"] and s_low not in seen_skills:
+                cluster_skills.append(s)
+                seen_skills.add(s_low)
+                if s["id"] is not None:
+                    cluster_skill_ids.append(s["id"])
+
+        if cluster_skills:
+            # Calculate duration
+            hours = calculate_hours_needed(cluster_skills)
+            weeks = max(round(hours / weekly_hours), 2)
             
-        scored_resources.sort(key=lambda x: x[0], reverse=True)
-        resources = [{"title": r["title"], "platform": r["platform"], "type": r["type"], "url": r["url"]} for score, r in scored_resources[:3]]
+            # Fetch resources
+            db_res = get_resources_by_skill_ids_db(cluster_skill_ids)
+            if db_res:
+                db_res = sorted(db_res, key=lambda r: pref_diffs.index(r["difficulty"]) if r.get("difficulty") in pref_diffs else 999)
+
+            videos = []
+            materials = []
+            for r in db_res:
+                r_item = {
+                    "title": r["title"],
+                    "platform": r["platform"],
+                    "type": r["type"],
+                    "url": r["url"],
+                    "topic": r["topic"],
+                    "difficulty": r["difficulty"],
+                    "duration_hours": r["duration_hours"],
+                    "duration": f"{int(r['duration_hours'])} hrs"
+                }
+                if r["type"] in ("Video", "Playlist"):
+                    videos.append(r_item)
+                else:
+                    materials.append(r_item)
+                
+                # Collect for overall recommendations
+                global_resources.append({
+                    "title": r["title"],
+                    "platform": r["platform"],
+                    "type": r["type"],
+                    "url": r["url"],
+                    "difficulty": r["difficulty"]
+                })
+
+            # Fetch project
+            db_projs = get_projects_by_skill_ids_db(cluster_skill_ids)
+            best_proj = None
+            if db_projs:
+                db_projs = sorted(db_projs, key=lambda p: pref_diffs.index(p["difficulty"]) if p.get("difficulty") in pref_diffs else 999)
+                best_proj = db_projs[0]
+                global_projects.append({
+                    "name": best_proj["name"],
+                    "difficulty": best_proj["difficulty"],
+                    "details": best_proj["details"]
+                })
+
+            # Fetch MCQs
+            db_mcqs = get_mcqs_by_skill_ids_db(cluster_skill_ids)
+
+            # Fetch interview questions
+            db_questions = get_interview_questions_by_skill_ids_db(cluster_skill_ids)
+
+            focus = f"Acquire SDE competencies in: {', '.join([s['name'] for s in cluster_skills])}"
+            if best_proj:
+                focus += f". Recommended Project: {best_proj['name']}"
+
+            learning_goals = [f"Understand core paradigms of {', '.join([s['name'] for s in cluster_skills])}."]
+            for r in db_res[:2]:
+                learning_goals.append(f"Learn {r['topic'] or 'Skill'}: {r['title']} ({r['platform']}) - {r['url']}")
+
+            # Dynamic stage title reflecting covered skills
+            skills_names = [s["name"] for s in cluster_skills]
+            if len(skills_names) > 3:
+                stage_skills_str = ", ".join(skills_names[:3]) + ", etc."
+            else:
+                stage_skills_str = ", ".join(skills_names)
+
+            stages.append({
+                "stage": stage_idx,
+                "title": f"Stage {stage_idx}: {c['title']} ({stage_skills_str}) - {weeks} weeks",
+                "duration_weeks": weeks,
+                "focus": focus,
+                "milestone": c.get("default_milestone", "Complete dynamic milestone checkpoints."),
+                "learning_goals": learning_goals,
+                "videos": videos[:3],
+                "materials": materials[:3],
+                "mcqs": db_mcqs[:3],
+                "coding": {
+                    "title": best_proj["name"] if best_proj else f"SDE Sandbox coding challenge for {c['title']}",
+                    "desc": best_proj["details"] if best_proj else "Write and execute SDE modular test logic matching the topic.",
+                    "template": "function solve() {\n    // write your logic here\n    return true;\n}"
+                },
+                "interview_questions": db_questions[:3]
+            })
+            stage_idx += 1
+
+    # Add default "Interview Prep & Review" stage if not already present, or if stages list is empty
+    if not stages or len(stages) < 3:
+        # Create final interview prep stage
+        duration_weeks = max(round(30 / weekly_hours), 2)
+        stage_goals = [
+            f"Solve {dream_company}-specific coding questions.",
+            f"Prepare for {dream_company} core values and SDE behavioral questions.",
+            "Conduct mock technical interview sessions."
+        ]
         
-    if len(resources) < 3:
-        # Fallback/Append standard resources
-        standard_res = [
+        stages.append({
+            "stage": stage_idx,
+            "title": f"Stage {stage_idx}: SDE Placement Review & Mocks",
+            "duration_weeks": duration_weeks,
+            "focus": f"Final preparation targeting {dream_company} interview rounds.",
+            "milestone": "Pass mock technical loops and finalize ATS-optimized resume.",
+            "learning_goals": stage_goals,
+            "videos": [
+                { "title": "Cracking SDE Interview Coding Rounds", "duration": "40 mins", "platform": "YouTube", "type": "Video", "url": "https://www.youtube.com/embed/V8V_vH2Sj9w" },
+                { "title": "STAR Behavioral Template for SDEs", "duration": "15 mins", "platform": "YouTube", "type": "Video", "url": "https://www.youtube.com/embed/w7mko_X4kO8" }
+            ],
+            "materials": [
+                { "title": "Leetcode Prep Cheatsheet.md", "platform": "Markdown Guide", "type": "Documentation", "url": "#", "duration_hours": 2.0 },
+                { "title": "STAR Method Guide.pdf", "platform": "PDF Resource", "type": "Article", "url": "#", "duration_hours": 1.0 }
+            ],
+            "mcqs": [
+                {
+                    "question": "In behavioral SDE rounds, what does the 'A' represent in the STAR template?",
+                    "options": ["Assessment", "Allocation", "Action taken", "Algorithmic score"],
+                    "correct": 2,
+                    "explanation": "STAR stands for Situation, Task, Action, Result. The A represents Action taken."
+                }
+            ],
+            "coding": {
+                "title": "Two Sum Optimal O(N)",
+                "desc": "Write a function twoSum(nums, target) returning indices of the two elements adding up to target in linear time complexity.",
+                "template": """function twoSum(nums, target) {
+    const map = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        map.set(nums[i], i);
+    }
+    return [];
+}"""
+            },
+            "interview_questions": [
+                { "question": "Explain CAP theorem and how it applies to databases.", "answer": "Consistency, Availability, Partition Tolerance - choose 2." }
+            ]
+        })
+
+    # Overall timeline duration in months
+    total_weeks = sum(s["duration_weeks"] for s in stages)
+    months = max(round(total_weeks / 4.3), 1)
+
+    # Fallbacks for overall projects recommendations
+    if not global_projects:
+        global_projects = [
+            {
+                "name": f"High-Concurrency {dream_company}-Style Delivery Engine",
+                "difficulty": "Advanced",
+                "details": f"Scalable order dispatching system using Go/Java, Redis for geo-indexing riders, and Kafka for real-time delivery status broadcasts."
+            },
+            {
+                "name": "Distributed Shopping Cart Cache",
+                "difficulty": "Intermediate",
+                "details": "Cart session management system utilizing Redis clustered databases, ensuring <5ms latency under peak e-commerce search traffic."
+            }
+        ]
+
+    # Fallbacks for overall resources recommendations
+    if len(global_resources) < 3:
+        global_resources = [
             {"title": "Striver's A2Z DSA Sheet", "platform": "TakeUForward", "type": "Practice", "url": "https://takeuforward.org"},
             {"title": f"{dream_company} Interview Experience Archives", "platform": "GeeksforGeeks", "type": "Mock Prep", "url": "https://geeksforgeeks.org"},
             {"title": "System Design Primer by Donne Martin", "platform": "GitHub", "type": "Documentation", "url": "https://github.com/donnemartin/system-design-primer"}
         ]
-        for sr in standard_res:
-            if sr["title"] not in [r["title"] for r in resources]:
-                resources.append(sr)
-                
-    if dream_company.lower() == "amazon" and "Amazon SDE Leadership Principles Prep" not in [r["title"] for r in resources]:
-        resources.append({"title": "Amazon SDE Leadership Principles Prep", "platform": "Medium", "type": "Behavioral", "url": "https://medium.com"})
-    elif dream_company.lower() in ["blinkit", "flipkart"] and "System Design of E-Commerce Quick-Commerce" not in [r["title"] for r in resources]:
-        resources.append({"title": "System Design of E-Commerce Quick-Commerce", "platform": "YouTube", "type": "Video Guide", "url": "https://youtube.com"})
-        
-    resources = resources[:4]
-    
-    # Calculate missing skills frequencies if similar_engineers is provided
-    missing_freqs = {}
-    if similar_engineers:
-        try:
-            from ai_engine.similarity.career_path_analyzer import analyze_career_paths
-            flat_missing = list(missing_skills.get("High", [])) + list(missing_skills.get("Medium", [])) + list(missing_skills.get("Low", []))
-            paths_analysis = analyze_career_paths(similar_engineers, flat_missing)
-            missing_freqs = paths_analysis.get("missing_skills_frequency", {})
-        except Exception:
-            pass
 
-    def get_coach_explanation(stage_idx: int) -> str:
-        # Determine relevant skills for this stage
-        if stage_idx == 1:
-            stage_skills = ["Java", "Go", "Python", "NodeJS", "Spring Boot"]
-            default_gap = "Programming Foundations"
-        elif stage_idx == 2:
-            stage_skills = ["PostgreSQL", "MySQL", "Redis", "Kafka", "ElasticSearch", "SQL"]
-            default_gap = "Databases & Caching"
-        elif stage_idx == 3:
-            stage_skills = ["System Design", "Distributed Systems", "Docker", "Kubernetes", "AWS", "gRPC", "Microservices", "Low Level Design", "High Level Design"]
-            default_gap = "System Design"
-        else:
-            stage_skills = ["DSA (Combined)", "Object Oriented Programming", "REST APIs"]
-            default_gap = "DSA & Algorithms"
-
-        # Find if any of these are in the student's missing skills
-        matched_gap = None
-        for skill in stage_skills:
-            for cat in ["High", "Medium", "Low"]:
-                if skill.lower() in [s.lower() for s in missing_skills.get(cat, [])]:
-                    matched_gap = skill
-                    break
-            if matched_gap:
-                break
-
-        if matched_gap:
-            freq = missing_freqs.get(matched_gap, 0.0)
-            impact = "High" if matched_gap in missing_skills.get("High", []) else ("Medium" if matched_gap in missing_skills.get("Medium", []) else "Low")
-            if freq > 0:
-                why = f"{int(freq * 100)}% of matched SDE peers at {dream_company} mastered this"
-            else:
-                why = f"Core prerequisite matching target role specifications"
-            return f" (Coach Coach-Explanation: Why: {why} | Addresses Gap: {matched_gap} | Expected Impact: {impact})"
-        else:
-            return f" (Coach Coach-Explanation: Why: Reinforces core engineering competency | Addresses Gap: {default_gap} (Review) | Expected Impact: Medium)"
-
-    # Inject learning resources and annotate stages with coach-explanations
-    for s in stages:
-        stage_idx = s.get("stage", 1)
-        s["focus"] = s.get("focus", "") + get_coach_explanation(stage_idx)
-        
-        # Inject Gap-Based dynamic learning resources
-        if stage_idx == 1:
-            stage_skills = ["Java", "Go", "Python", "NodeJS", "Spring Boot"]
-        elif stage_idx == 2:
-            stage_skills = ["PostgreSQL", "MySQL", "Redis", "Kafka", "ElasticSearch", "SQL"]
-        elif stage_idx == 3:
-            stage_skills = ["System Design", "Distributed Systems", "Docker", "Kubernetes", "AWS", "gRPC", "Microservices", "Low Level Design", "High Level Design"]
-        else:
-            stage_skills = ["DSA (Combined)", "Object Oriented Programming", "REST APIs"]
-            
-        stage_gaps = []
-        for skill in stage_skills:
-            for cat in ["High", "Medium", "Low"]:
-                if skill.lower() in [ms.lower() for ms in missing_skills.get(cat, [])]:
-                    stage_gaps.append(skill)
-                    
-        # Match resources for these stage gaps
-        if stage_gaps and all_resources:
-            stage_resources = []
-            for r in all_resources:
-                topic = r.get("topic") or ""
-                title = r.get("title") or ""
-                if topic.lower().strip() in {sg.lower().strip() for sg in stage_gaps}:
-                    res_str = f"Learn {topic}: {r.get('title')} ({r.get('platform')})"
-                    if res_str not in stage_resources:
-                        stage_resources.append(res_str)
-            
-            # Append resources to the learning_goals list
-            if "learning_goals" not in s or not isinstance(s["learning_goals"], list):
-                s["learning_goals"] = []
-            s["learning_goals"].extend(stage_resources[:2])
+    # Format resources to match schema list structure
+    if global_resources:
+        global_resources = sorted(global_resources, key=lambda r: pref_diffs.index(r["difficulty"]) if r.get("difficulty") in pref_diffs else 999)
+        formatted_resources = []
+        seen_titles = set()
+        for r in global_resources:
+            title = r["title"]
+            if title not in seen_titles:
+                seen_titles.add(title)
+                formatted_resources.append({
+                    "title": r["title"],
+                    "platform": r["platform"],
+                    "type": r["type"],
+                    "url": r["url"]
+                })
+        global_resources = formatted_resources[:4]
 
     return {
         "qualification": qualification,
@@ -584,6 +939,7 @@ def generate_timeline(
         "weekly_hours_recommended": weekly_hours,
         "urgency": urgency,
         "stages": stages,
-        "projects": projects,
-        "resources": resources
+        "projects": global_projects,
+        "resources": global_resources
     }
+

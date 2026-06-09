@@ -1,10 +1,12 @@
 # GitHub Profile Analyzer - CareerCompass AI
+# Dynamically queries PostgreSQL skills, pulls live repositories, and generates a consolidated technology map.
 
 import re
 import urllib.request
 import json
 import base64
 import psycopg2
+from profile_analyzer.resume_parser import ResumeParser
 
 try:
     from api.database_connector import get_db_connection
@@ -43,29 +45,11 @@ class GitHubAnalyzer:
 
     @staticmethod
     def get_all_db_skills() -> list:
-        fallback_skills = [
-            "C Programming", "C++", "Java", "Python", "SQL", "Data Structures", 
-            "Algorithms", "DSA (Combined)", "DBMS", "Operating Systems", "Computer Networks", 
-            "Object Oriented Programming", "Spring Boot", "REST APIs", "Microservices", 
-            "Message Queues (Kafka)", "MySQL", "PostgreSQL", "Redis", "Git & GitHub", 
-            "Docker", "AWS Basics", "Linux Basics", "Low Level Design", "High Level Design", 
-            "System Design", "Go", "Kubernetes"
-        ]
-        conn = get_db_connection()
-        if not conn:
-            return fallback_skills
-        try:
-            cur = conn.cursor()
-            cur.execute("SET search_path TO career_compass_ai, public;")
-            cur.execute("SELECT skill_name FROM skills")
-            skills = [r[0] for r in cur.fetchall()]
-            cur.close()
-            conn.close()
-            return skills if skills else fallback_skills
-        except Exception as e:
-            print("Error loading skills in GitHubAnalyzer:", e)
-            if conn: conn.close()
-            return fallback_skills
+        """
+        Dynamically queries skills from PostgreSQL.
+        Throws RuntimeError if DB is unreachable.
+        """
+        return ResumeParser.get_all_db_skills()
 
     @staticmethod
     def match_skill_in_text(skill_name: str, text: str) -> bool:
@@ -88,25 +72,28 @@ class GitHubAnalyzer:
             return {"error": "Invalid GitHub username or URL.", "skills_raw": [], "frequency_map": {}}
 
         try:
-            # 1. Fetch repositories from live API
+            # 1. Load dynamic skills from database
+            db_skills = GitHubAnalyzer.get_all_db_skills()
+            db_skills_lower = {s.lower().strip(): s for s in db_skills}
+
+            # 2. Fetch repositories from live API
             url = f"https://api.github.com/users/{handle}/repos?per_page=30"
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
             
-            with urllib.request.urlopen(req, timeout=3.0) as response:
+            with urllib.request.urlopen(req, timeout=4.0) as response:
                 repos = json.loads(response.read().decode('utf-8'))
                 
             if not isinstance(repos, list):
                 raise ValueError("API response is not a valid list of repositories.")
                 
-            db_skills = GitHubAnalyzer.get_all_db_skills()
             frequency_map = {}
             skills_raw = set()
             parsed_repos = []
             
-            # Sort repos by stargazers_count to analyze the most important ones first
+            # Sort repos by stargazers_count
             sorted_repos = sorted(repos, key=lambda x: x.get("stargazers_count", 0), reverse=True)
             
-            # Analyze up to 8 repositories to balance depth and performance/rate-limits
+            # Analyze top 8 repositories
             for idx, r in enumerate(sorted_repos[:8]):
                 repo_name = r.get("name", "")
                 description = r.get("description") or ""
@@ -114,18 +101,18 @@ class GitHubAnalyzer:
                 topics = r.get("topics") or []
                 topics_str = " ".join(topics)
                 
-                # Fetch README content for the top 3 repositories
+                # Fetch README content for top 3 repos
                 readme_text = ""
                 if idx < 3:
                     try:
                         readme_url = f"https://api.github.com/repos/{handle}/{repo_name}/readme"
                         readme_req = urllib.request.Request(readme_url, headers={'User-Agent': 'Mozilla/5.0'})
-                        with urllib.request.urlopen(readme_req, timeout=1.5) as readme_resp:
+                        with urllib.request.urlopen(readme_req, timeout=2.0) as readme_resp:
                             readme_data = json.loads(readme_resp.read().decode('utf-8'))
                             content_b64 = readme_data.get("content", "").replace("\n", "")
                             readme_text = base64.b64decode(content_b64).decode('utf-8', errors='ignore')
                     except Exception:
-                        pass # Gracefully skip README if unavailable or rate-limited
+                        pass # Skip README if unavailable
                 
                 # Combine repo text
                 combined_text = f"{repo_name} {description} {language} {topics_str} {readme_text}"
@@ -138,78 +125,35 @@ class GitHubAnalyzer:
                     if GitHubAnalyzer.match_skill_in_text(skill, combined_text):
                         repo_skills.add(skill)
                 
-                # Inference rules
+                # Inference rules (aligned with DB skills)
                 inference_rules = {
-                    r'\b(kafka|apache kafka|rabbitmq|message queue[s]?)\b': [
-                        "Message Queues (Kafka)", 
-                        "Microservices"
-                    ],
-                    r'\b(spring boot|springboot|spring)\b': [
-                        "Spring Boot", 
-                        "Java", 
-                        "REST APIs", 
-                        "Microservices"
-                    ],
-                    r'\b(rest|rest api[s]?|restful)\b': [
-                        "REST APIs"
-                    ],
-                    r'\b(microservice[s]?)\b': [
-                        "Microservices", 
-                        "REST APIs"
-                    ],
-                    r'\b(docker|container[s]?)\b': [
-                        "Docker"
-                    ],
-                    r'\b(kubernetes|k8s)\b': [
-                        "Kubernetes", 
-                        "Docker"
-                    ],
-                    r'\b(aws|amazon web services|s3|ec2)\b': [
-                        "AWS Basics"
-                    ],
-                    r'\b(linux|unix|bash|shell)\b': [
-                        "Linux Basics"
-                    ],
-                    r'\b(mysql)\b': [
-                        "MySQL",
-                        "SQL",
-                        "DBMS"
-                    ],
-                    r'\b(postgresql|postgres)\b': [
-                        "PostgreSQL",
-                        "SQL",
-                        "DBMS"
-                    ],
-                    r'\b(sql)\b': [
-                        "SQL",
-                        "DBMS"
-                    ],
-                    r'\b(system design|distributed system[s]?|hld|high level design)\b': [
-                        "System Design",
-                        "High Level Design"
-                    ],
-                    r'\b(lld|low level design|design patterns?)\b': [
-                        "Low Level Design",
-                        "Object Oriented Programming"
-                    ],
-                    r'\b(oop[s]?|object oriented)\b': [
-                        "Object Oriented Programming"
-                    ],
-                    r'\b(dsa|data structures?|algorithms?|leetcode)\b': [
-                        "DSA (Combined)",
-                        "Data Structures",
-                        "Algorithms"
-                    ],
-                    r'\b(git|github)\b': [
-                        "Git & GitHub"
-                    ]
+                    "spring boot": ["java", "rest apis", "microservices"],
+                    "springboot": ["java", "rest apis", "microservices"],
+                    "spring": ["java", "rest apis", "microservices"],
+                    "kafka": ["message queues (kafka)", "microservices", "system design"],
+                    "apache kafka": ["message queues (kafka)", "microservices", "system design"],
+                    "postgresql": ["sql", "dbms"],
+                    "postgres": ["sql", "dbms"],
+                    "mysql": ["sql", "dbms"],
+                    "kubernetes": ["docker"],
+                    "docker": ["git & github"],
+                    "low level design": ["object oriented programming"],
+                    "lld": ["object oriented programming"],
+                    "high level design": ["system design"],
+                    "hld": ["system design"],
+                    "system design": ["microservices"],
+                    "go": ["rest apis"],
+                    "golang": ["rest apis"],
+                    "microservices": ["rest apis"],
+                    "django": ["python"],
+                    "flask": ["python"]
                 }
                 
-                for pattern, inferred_skills in inference_rules.items():
-                    if re.search(pattern, combined_text, re.IGNORECASE):
-                        for inf_skill in inferred_skills:
-                            if inf_skill in db_skills:
-                                repo_skills.add(inf_skill)
+                for term, inf_list in inference_rules.items():
+                    if re.search(r'\b' + re.escape(term) + r'\b', combined_text.lower()):
+                        for inf_skill in inf_list:
+                            if inf_skill in db_skills_lower:
+                                repo_skills.add(db_skills_lower[inf_skill])
                 
                 # Update frequency map
                 for skill in repo_skills:
@@ -235,8 +179,8 @@ class GitHubAnalyzer:
             }
             
         except Exception as e:
-            # Under new "Real Data Only" directive, never return simulated repository fallback profiles.
-            # Return professional error object
+            # Under new "Real Data Only" directive, never return simulated repositories fallbacks.
+            # Return professional clean error state
             return {
                 "error": "GitHub profile analysis is temporarily unavailable.",
                 "details": str(e),
