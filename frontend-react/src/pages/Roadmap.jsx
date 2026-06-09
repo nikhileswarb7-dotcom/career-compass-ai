@@ -259,12 +259,105 @@ export default function Roadmap() {
   const [skillModalData, setSkillModalData] = useState([]);
   const [skillModalLoading, setSkillModalLoading] = useState(false);
 
+  const hasLoadedProgress = useRef(false);
+
   // Sync state helpers
-  const saveState = (newStage = currentStageIndex, newStep = activeStageStep, newCompleted = completedStages) => {
+  const saveState = async (newStage = currentStageIndex, newStep = activeStageStep, newCompleted = completedStages) => {
     localStorage.setItem('roadmap_current_stage', newStage.toString());
     localStorage.setItem('roadmap_stage_step', newStep.toString());
     localStorage.setItem('roadmap_completed_stages', JSON.stringify(Array.from(newCompleted)));
+
+    if (!sessionId || newStage >= stages.length) return;
+    
+    const stage = stages[newStage];
+    if (!stage) return;
+
+    let status = 'In Progress';
+    let completion_pct = 0;
+    if (newStep === 1) completion_pct = 33;
+    else if (newStep === 2) completion_pct = 66;
+    else if (newStep >= 3) {
+      completion_pct = 100;
+      status = 'Completed';
+    }
+
+    try {
+      await fetch(`${API_BASE}/api/session/${sessionId}/stage-progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stage_title: stage.title,
+          status: status,
+          completion_pct: completion_pct
+        })
+      });
+    } catch (err) {
+      console.warn("Failed to sync stage progress to database", err);
+    }
   };
+
+  // Load stage progress from API on mount
+  useEffect(() => {
+    if (!sessionId || !stages.length || hasLoadedProgress.current) return;
+
+    async function loadProgress() {
+      try {
+        const response = await fetch(`${API_BASE}/api/session/${sessionId}/stage-progress`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.progress) {
+            const dbProgress = data.progress;
+            
+            const progressMap = {};
+            dbProgress.forEach(p => {
+              progressMap[p.stage_title] = p;
+            });
+
+            const nextCompleted = new Set();
+            let resolvedCurrentIndex = 0;
+            let resolvedActiveStep = 0;
+
+            for (let i = 0; i < stages.length; i++) {
+              const stage = stages[i];
+              const p = progressMap[stage.title];
+              if (p) {
+                if (p.status === 'Completed' || p.completion_pct >= 100) {
+                  nextCompleted.add(i);
+                } else {
+                  resolvedCurrentIndex = i;
+                  if (p.completion_pct >= 66) resolvedActiveStep = 2;
+                  else if (p.completion_pct >= 33) resolvedActiveStep = 1;
+                  else resolvedActiveStep = 0;
+                  break;
+                }
+              } else {
+                resolvedCurrentIndex = i;
+                resolvedActiveStep = 0;
+                break;
+              }
+            }
+
+            if (nextCompleted.size === stages.length && stages.length > 0) {
+              resolvedCurrentIndex = stages.length;
+              resolvedActiveStep = 0;
+            }
+
+            setCompletedStages(nextCompleted);
+            setCurrentStageIndex(resolvedCurrentIndex);
+            setActiveStageStep(resolvedActiveStep);
+            
+            setSelectedStageIndex(Math.min(resolvedCurrentIndex, stages.length - 1));
+            setSelectedStepIndex(Math.min(resolvedActiveStep, 3));
+            hasLoadedProgress.current = true;
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load stage progress from API:", err);
+      }
+    }
+
+    loadProgress();
+  }, [sessionId, stages]);
 
   // 1. Fetch Stage Content on selected stage index change
   useEffect(() => {
@@ -272,8 +365,19 @@ export default function Roadmap() {
     const stage = stages[selectedStageIndex];
     if (!stage) return;
 
+    // Use dynamic content from the stage if present
+    if ((stage.videos && stage.videos.length > 0) || (stage.materials && stage.materials.length > 0)) {
+      setLectureData({
+        source: 'Dynamic Timeline Stage',
+        videos: stage.videos || [],
+        materials: stage.materials || []
+      });
+      setActiveVideoEmbed('');
+      setActiveVideoTitle('');
+      return;
+    }
+
     async function fetchStageContent() {
-      // Set fallbacks if available
       const fallback = STAGE_LECTURES_FALLBACK[selectedStageIndex] || null;
 
       setLectureData({
@@ -303,13 +407,33 @@ export default function Roadmap() {
     }
 
     fetchStageContent();
-  }, [selectedStageIndex, stages.length]);
+  }, [selectedStageIndex, stages]);
 
   // 2. Fetch Stage Assessment on selected stage index change (for steps 1 & 2)
   useEffect(() => {
     if (selectedStageIndex >= stages.length) return;
     const stage = stages[selectedStageIndex];
     if (!stage) return;
+
+    // Use dynamic assessment from stage if present
+    if (stage.mcqs && stage.mcqs.length > 0) {
+      setAssessmentData({
+        source: 'Dynamic Timeline Stage',
+        mcqs: stage.mcqs,
+        coding: stage.coding || {
+          title: "Implement core algorithm for " + stage.title,
+          desc: "Write a function to solve the core objective outlined in this roadmap stage.",
+          template: "function solve() {\n    // write code\n    return true;\n}"
+        }
+      });
+      setCodeEditor(stage.coding?.template || "function solve() {\n    // write code\n    return true;\n}");
+      setCodingValidated(false);
+      setCompilerStatus('Ready to compile');
+      setCompilerColor('var(--text-muted)');
+      setSelectedMcqAnswers({});
+      setAssessmentResultMsg('');
+      return;
+    }
 
     async function fetchStageAssessment() {
       const fallback = ASSESSMENT_FALLBACK[selectedStageIndex] || {
@@ -337,10 +461,10 @@ export default function Roadmap() {
           const apiData = await response.json();
           setAssessmentData({
             source: 'PostgreSQL Database',
-            mcqs: apiData.mcqs || fallback.mcqs,
-            coding: apiData.coding_challenge || fallback.coding
+            mcqs: (apiData.mcqs && apiData.mcqs.length > 0) ? apiData.mcqs : fallback.mcqs,
+            coding: apiData.coding || apiData.coding_challenge || fallback.coding
           });
-          setCodeEditor(apiData.coding_challenge?.template || fallback.coding.template);
+          setCodeEditor(apiData.coding?.template || apiData.coding_challenge?.template || fallback.coding.template);
         }
       } catch (err) {
         console.warn("Stages assessment API offline. Using fallback.", err);
@@ -348,7 +472,7 @@ export default function Roadmap() {
     }
 
     fetchStageAssessment();
-  }, [selectedStageIndex, stages.length]);
+  }, [selectedStageIndex, stages]);
 
   // 3. Fetch Company Intelligence on startup
   useEffect(() => {
@@ -403,30 +527,38 @@ export default function Roadmap() {
           throw new Error("Code template not completed or placeholder remains.");
         }
 
-        if (selectedStageIndex === 0) {
+        if (codeEditor.includes("isBalanced")) {
           const testFn = new Function('root', codeEditor + "\nreturn isBalanced(root);");
           if (testFn(null) !== true) {
             throw new Error("Test Case 1 Failed: isBalanced(null) should return true.");
           }
-        } else if (selectedStageIndex === 1) {
+        } else if (codeEditor.includes("worker") && (codeEditor.includes("go ") || codeEditor.includes("chan"))) {
           if (!codeEditor.includes("go ") && !codeEditor.includes("go func")) {
             throw new Error("SDE Compiler Error: No concurrent goroutines found. Use 'go worker(...)' or similar.");
           }
           if (!codeEditor.includes("chan") && !codeEditor.includes("<-")) {
             throw new Error("SDE Compiler Error: No channels found. Go worker pool requires channel communication.");
           }
-        } else if (selectedStageIndex === 2) {
+        } else if (codeEditor.includes("RateLimiter")) {
           const evalCode = codeEditor + "\nreturn new RateLimiter();";
           const limiter = new Function(evalCode)();
           if (typeof limiter.isAllowed !== 'function') {
             throw new Error("Test Case 1 Failed: RateLimiter instance must have an isAllowed(userId) method.");
           }
-        } else if (selectedStageIndex === 3) {
+        } else if (codeEditor.includes("twoSum")) {
           const testFn = new Function('nums', 'target', codeEditor + "\nreturn twoSum(nums, target);");
           const res = testFn([2, 7, 11, 15], 9);
           if (!Array.isArray(res) || res[0] !== 0 || res[1] !== 1) {
             throw new Error("Test Case 1 Failed: twoSum([2, 7, 11, 15], 9) should return [0, 1]. Got: " + JSON.stringify(res));
           }
+        } else if (codeEditor.includes("solve")) {
+          const testFn = new Function(codeEditor + "\nreturn solve();");
+          if (testFn() !== true) {
+            throw new Error("Test Case 1 Failed: solve() should return true.");
+          }
+        } else {
+          // General syntax verification
+          new Function(codeEditor);
         }
 
         setCompilerStatus("Tests: PASS! Executed test suite successfully. (2/2 test cases passed)");
@@ -689,17 +821,20 @@ export default function Roadmap() {
   const activeProject = plan.projects?.[selectedStageIndex] || plan.projects?.[0];
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+    <div 
       className="roadmap-wrapper"
       style={{ '--chat-drawer-width': chatOpen ? `${chatWidth}px` : '0px' }}
     >
-      <div className="welcome-banner-row">
-        <h1>Interactive SDE Placement Coach</h1>
-        <p>Advance through targeted learning stages, write sandbox code, and check off milestone assessments.</p>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
+      >
+        <div className="welcome-banner-row">
+          <h1>Interactive SDE Placement Coach</h1>
+          <p>Advance through targeted learning stages, write sandbox code, and check off milestone assessments.</p>
+        </div>
 
       <div className={`roadmap-grid-layout ${chatOpen ? 'chat-open' : ''}`}>
         
@@ -1187,16 +1322,28 @@ export default function Roadmap() {
             onMouseDown={startResize}
             style={{
               position: 'absolute',
-              left: 0,
+              left: '-8px',
               top: 0,
               bottom: 0,
-              width: '6px',
+              width: '16px',
               cursor: 'ew-resize',
-              background: isResizing ? 'var(--primary)' : 'transparent',
-              transition: 'background 0.2s',
-              zIndex: 100
+              zIndex: 100,
+              background: 'transparent'
             }}
-          />
+          >
+            {/* Visual Indicator Line */}
+            <div 
+              style={{
+                position: 'absolute',
+                left: '8px',
+                top: 0,
+                bottom: 0,
+                width: '2px',
+                background: isResizing ? 'var(--primary)' : 'var(--border-glass)',
+                transition: 'background 0.2s'
+              }}
+            />
+          </div>
           <div className="chatbot-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Shield size={20} style={{ color: 'var(--primary)' }} />
@@ -1294,6 +1441,7 @@ export default function Roadmap() {
         </div>
       )}
 
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }

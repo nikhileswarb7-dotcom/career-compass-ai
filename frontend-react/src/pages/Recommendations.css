@@ -174,3 +174,12 @@
   color: var(--text-muted);
   font-size: 0.88rem;
 }
+
+@media (max-width: 480px) {
+  .recommendations-projects-grid {
+    grid-template-columns: 1fr;
+  }
+  .recommendations-resources-grid {
+    grid-template-columns: 1fr;
+  }
+}
