@@ -53,3 +53,6 @@ scratch/
 frontend-backup/
 frontend-build/
 search_fallbacks.py
+
+# Raw Data
+raw_data/
