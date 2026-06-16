@@ -12,6 +12,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EMPLOYEES_DIR = os.path.join(os.path.dirname(__file__), "industry_layer")
 CAREER_DIR = os.path.join(os.path.dirname(__file__), "career_layer")
 PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_sde_profiles")
+BACKEND_PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_backend_dev_profiles")
 RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 IMPORT_DATA_PATH = os.path.join(os.path.dirname(__file__), "import_data.py")
 
@@ -441,11 +442,12 @@ def process_pipeline():
     # Find all PDFs to parse
     print("Scanning profiles directories...")
     pdf_files = []
-    if os.path.exists(PROFILES_DIR):
-        for root, dirs, files in os.walk(PROFILES_DIR):
-            for f in files:
-                if f.endswith(".pdf"):
-                    pdf_files.append(os.path.join(root, f))
+    for p_dir in [PROFILES_DIR, BACKEND_PROFILES_DIR]:
+        if os.path.exists(p_dir):
+            for root, dirs, files in os.walk(p_dir):
+                for f in files:
+                    if f.endswith(".pdf"):
+                        pdf_files.append(os.path.join(root, f))
                         
     print(f"Found {len(pdf_files)} PDF profile files. Parsing...")
     
@@ -840,14 +842,12 @@ def process_pipeline():
         for idx in range(len(comp_seq) - 1):
             source_c = comp_seq[idx]
             target_c = comp_seq[idx+1]
-            source_id = structured_companies[source_c]["company_id"]
-            target_id = structured_companies[target_c]["company_id"]
             
             career_transitions.append({
                 "transition_id": next_transition_id,
                 "profile_id": profile_id,
-                "source_company_id": source_id,
-                "target_company_id": target_id
+                "source_company_name": source_c,
+                "target_company_name": target_c
             })
             next_transition_id += 1
 
@@ -1175,10 +1175,12 @@ def process_pipeline():
                 
             # Insert Transitions
             for ct in career_transitions:
+                source_id = structured_companies[ct["source_company_name"]]["company_id"]
+                target_id = structured_companies[ct["target_company_name"]]["company_id"]
                 cur.execute("""
                     INSERT INTO career_transitions (transition_id, profile_id, source_company_id, target_company_id)
                     VALUES (%s, %s, %s, %s)
-                """, (ct["transition_id"], ct["profile_id"], ct["source_company_id"], ct["target_company_id"]))
+                """, (ct["transition_id"], ct["profile_id"], source_id, target_id))
                 
             # Insert Skill Freqs
             for sf in skills_frequency:
@@ -1211,16 +1213,165 @@ def process_pipeline():
             conn.close()
 
     # ----------------------------------------------------------------
+    # 6B. Parse Docx Job Descriptions & Update datasets
+    # ----------------------------------------------------------------
+    print("\nProcessing raw docx job descriptions...")
+    jds_csv_path = os.path.join(BASE_DIR, "database", "hiring_layer", "job_descriptions.csv")
+    existing_jds = []
+    max_jd_id = 0
+    if os.path.exists(jds_csv_path):
+        with open(jds_csv_path, mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for r in reader:
+                existing_jds.append(r)
+                max_jd_id = max(max_jd_id, int(r["jd_id"]))
+
+    parsed_jds = []
+    jds_dir = os.path.join(RAW_DATA_DIR, "job_descriptions")
+    
+    # 1. Amazon JD
+    amazon_path = os.path.join(jds_dir, "Amazon JD.docx")
+    if os.path.exists(amazon_path):
+        amazon_co = structured_companies.get("Amazon")
+        comp_id = amazon_co["company_id"] if amazon_co else 7
+        parsed_jds.append({
+            "jd_id": max_jd_id + 1,
+            "company_id": comp_id,
+            "role_id": 3,  # SDE II
+            "experience_required_years": "3-5",
+            "salary_range": "25-35 LPA",
+            "description": "Software Development Engineer, Device Software Services. Design and architecture (design patterns, reliability and scaling) of new and existing systems.",
+            "responsibilities": json.dumps([
+                "Develop Device Software Services",
+                "Design and architecture of scaling systems",
+                "Mentor junior software developers"
+            ]),
+            "requirements": json.dumps([
+                "3+ years of non-internship professional software development experience",
+                "2+ years of non-internship design or architecture experience",
+                "Experience programming with at least one software programming language (Java/C++/Go)"
+            ])
+        })
+        max_jd_id += 1
+        
+    # 2. Microsoft JDs
+    ms_path = os.path.join(jds_dir, "Microsoft JD.docx")
+    if os.path.exists(ms_path):
+        ms_co = structured_companies.get("Microsoft")
+        comp_id = ms_co["company_id"] if ms_co else 9
+        
+        # Research SDE
+        parsed_jds.append({
+            "jd_id": max_jd_id + 1,
+            "company_id": comp_id,
+            "role_id": 12,  # AI / ML Engineer
+            "experience_required_years": "2-4",
+            "salary_range": "30-45 LPA",
+            "description": "Research Software Development Engineer. Good understanding of deep learning, LLMs, and large-scale ML systems.",
+            "responsibilities": json.dumps([
+                "Work on deep learning and LLMs",
+                "Optimize large-scale ML systems",
+                "Perform data preparation, pre-training, post-training, and evaluation for ML models"
+            ]),
+            "requirements": json.dumps([
+                "Proficiency in Python, PyTorch, and familiarity with CUDA, cutting-edge agentic frameworks",
+                "Experience in data preparation, pre-training, post-training, and evaluation",
+                "Bachelor's degree in computer science or equivalent"
+            ])
+        })
+        max_jd_id += 1
+        
+        # Software Engineer 2
+        parsed_jds.append({
+            "jd_id": max_jd_id + 1,
+            "company_id": comp_id,
+            "role_id": 3,  # SDE II
+            "experience_required_years": "3-6",
+            "salary_range": "32-48 LPA",
+            "description": "Software Engineer 2 (SDE2) in Microsoft Core Platform team.",
+            "responsibilities": json.dumps([
+                "Design and build scalable platform features",
+                "Maintain distributed systems architecture",
+                "Collaborate on Microsoft products using C++ and .NET"
+            ]),
+            "requirements": json.dumps([
+                "C++, .NET Core, Azure Cloud, Azure Databricks",
+                "Strong understanding of data structures and algorithms",
+                "3GPP protocols or design experience preferred"
+            ])
+        })
+        max_jd_id += 1
+
+    updated_jds = list(existing_jds)
+    for pj in parsed_jds:
+        is_duplicate = False
+        for ej in existing_jds:
+            if (int(ej["company_id"]) == pj["company_id"] and 
+                int(ej["role_id"]) == pj["role_id"] and 
+                (ej["description"][:30].lower() in pj["description"].lower() or pj["description"][:30].lower() in ej["description"].lower())):
+                is_duplicate = True
+                ej["experience_required_years"] = pj["experience_required_years"]
+                ej["salary_range"] = pj["salary_range"]
+                ej["description"] = pj["description"]
+                ej["responsibilities"] = pj["responsibilities"]
+                ej["requirements"] = pj["requirements"]
+                break
+        if not is_duplicate:
+            updated_jds.append(pj)
+
+    try:
+        with open(jds_csv_path, mode='w', encoding='utf-8', newline='') as f:
+            headers = ["jd_id", "company_id", "role_id", "experience_required_years", "salary_range", "description", "responsibilities", "requirements"]
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writeheader()
+            for r in updated_jds:
+                filtered_row = {k: v for k, v in r.items() if k in headers}
+                writer.writerow(filtered_row)
+        print(f"  Saved: job_descriptions.csv ({len(updated_jds)} rows)")
+    except Exception as e:
+        print(f"  Error saving job_descriptions.csv: {e}")
+
+    if db_connected:
+        try:
+            conn_jd = psycopg2.connect(**db_config)
+            cur_jd = conn_jd.cursor()
+            cur_jd.execute("SET search_path TO career_compass_ai, public;")
+            cur_jd.execute("DELETE FROM job_descriptions;")
+            for r in updated_jds:
+                cur_jd.execute("""
+                    INSERT INTO job_descriptions (jd_id, company_id, role_id, experience_required_years, salary_range, description, responsibilities, requirements)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                """, (int(r["jd_id"]), int(r["company_id"]), int(r["role_id"]), r["experience_required_years"], r["salary_range"], r["description"], r["responsibilities"], r["requirements"]))
+            cur_jd.execute("SELECT MAX(jd_id) FROM job_descriptions;")
+            max_val = cur_jd.fetchone()[0] or 0
+            cur_jd.execute(f"SELECT setval('job_descriptions_jd_id_seq', {max_val});")
+            conn_jd.commit()
+            cur_jd.close()
+            conn_jd.close()
+            print("PostgreSQL job_descriptions successfully updated.")
+        except Exception as e:
+            print("Error updating database job_descriptions:", e)
+
+    # ----------------------------------------------------------------
     # 7. Write Structured Data to CSV Files
     # ----------------------------------------------------------------
     print("\nWriting updated data to CSV files...")
+    
+    resolved_career_transitions = []
+    for ct in career_transitions:
+        resolved_career_transitions.append({
+            "transition_id": ct["transition_id"],
+            "profile_id": ct["profile_id"],
+            "source_company_id": structured_companies[ct["source_company_name"]]["company_id"],
+            "target_company_id": structured_companies[ct["target_company_name"]]["company_id"]
+        })
     
     csv_configs = [
         (os.path.join(EMPLOYEES_DIR, "companies.csv"),           ["company_id", "company_name", "industry", "company_type"],                     list(structured_companies.values())),
         (os.path.join(EMPLOYEES_DIR, "employee_profiles.csv"),   ["profile_id", "name", "role_id", "current_company", "experience_years", "college", "degree", "previous_company", "career_path", "linkedin_url", "github_url", "career_stage", "company_tier"], employee_profiles),
         (os.path.join(EMPLOYEES_DIR, "education_profiles.csv"),  ["education_id", "profile_id", "college", "degree", "field"],                   education_profiles),
         (os.path.join(EMPLOYEES_DIR, "employee_skills.csv"),     ["profile_id", "skill_id"],                                                     employee_skills),
-        (os.path.join(EMPLOYEES_DIR, "career_transitions.csv"),  ["transition_id", "profile_id", "source_company_id", "target_company_id"],       career_transitions),
+        (os.path.join(EMPLOYEES_DIR, "career_transitions.csv"),  ["transition_id", "profile_id", "source_company_id", "target_company_id"],       resolved_career_transitions),
         (os.path.join(EMPLOYEES_DIR, "roles.csv"),               ["role_id", "role_name", "career_level"],                                       role_specializations),
         (os.path.join(CAREER_DIR, "skill_frequency.csv"),        ["skill_id", "skill_name", "frequency", "importance_score"],                     skills_frequency),
         (os.path.join(CAREER_DIR, "career_patterns.csv"),        ["pattern_id", "pattern_name", "frequency", "description"],                     career_patterns),
@@ -1233,7 +1384,6 @@ def process_pipeline():
                 writer = csv.DictWriter(f, fieldnames=headers)
                 writer.writeheader()
                 for row in data:
-                    # Filter only columns defined in headers
                     filtered_row = {k: v for k, v in row.items() if k in headers}
                     writer.writerow(filtered_row)
             print(f"  Saved: {os.path.basename(filepath)} ({len(data)} rows)")

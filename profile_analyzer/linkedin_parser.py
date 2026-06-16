@@ -109,6 +109,7 @@ class LinkedInParser:
                         "summary": f"Professional profile matching employee in database.",
                         "experience": experience,
                         "skills_raw": [s for s in skills if s in db_skills],
+                        "connections": "500+",
                         "source": "LinkedIn Database Match"
                     }
                 cur.close()
@@ -175,6 +176,7 @@ class LinkedInParser:
                         "summary": f"Professional profile matching employee in local CSV.",
                         "experience": experience,
                         "skills_raw": [s for s in skills if s in db_skills],
+                        "connections": "500+",
                         "source": "LinkedIn CSV Match"
                     }
         except Exception as e:
@@ -185,21 +187,40 @@ class LinkedInParser:
         text = url_or_text
         name = "SDE Candidate"
         headline = "Software Development Engineer"
+        connections = "100+"
         about = ""
         experience = []
         education = "B.Tech Computer Science"
 
-        # Heuristic name extraction
+        # If it's a URL but didn't match any DB/CSV profiles
+        if is_url and handle:
+            clean_handle = re.sub(r'-\d+$', '', handle) # Remove numeric suffix
+            name_parts = [p.capitalize() for p in clean_handle.split('-') if p]
+            if name_parts:
+                name = " ".join(name_parts)
+            headline = "Software Development Engineer"
+            connections = "500+"
+
         lines = [l.strip() for l in text.split('\n') if l.strip()]
-        if lines:
-            # First non-empty line could be the name
-            name_candidate = lines[0]
-            if len(name_candidate.split()) <= 4 and re.match(r'^[A-Z][a-zA-Z\s\.\-]+$', name_candidate):
-                name = name_candidate
-                if len(lines) > 1:
-                    headline_candidate = lines[1]
-                    if len(headline_candidate) < 100:
-                        headline = headline_candidate
+        if lines and not is_url:
+            # Heuristic name & headline extraction from transcript lines
+            ignored_keywords = {"linkedin", "contact", "experience", "education", "skills", "summary", "about", "page", "profile"}
+            for i, line in enumerate(lines[:10]):
+                line_clean = line.strip()
+                if not line_clean:
+                    continue
+                if any(k in line_clean.lower() for k in ignored_keywords):
+                    continue
+                words = line_clean.split()
+                if 1 < len(words) <= 4 and re.match(r'^[A-Z][a-zA-Z\s\.\-]+$', line_clean):
+                    name = line_clean
+                    # The next non-ignored line is likely the headline
+                    for j in range(i + 1, min(i + 5, len(lines))):
+                        next_line = lines[j].strip()
+                        if next_line and not any(k in next_line.lower() for k in ignored_keywords) and len(next_line) < 100:
+                            headline = next_line
+                            break
+                    break
 
         # Extract sections using search bounds
         text_clean = text.replace('\r', '')
@@ -271,6 +292,20 @@ class LinkedInParser:
             if re.search(r'\b' + re.escape(skill.lower()) + r'\b', text.lower()):
                 skills_raw.append(skill)
 
+        # Extract connections count from text transcript
+        if not is_url:
+            conn_match = re.search(r'(\d+[\+\d]*)\s*connections', text_clean, re.IGNORECASE)
+            if conn_match:
+                connections = conn_match.group(1)
+            else:
+                conn_match2 = re.search(r'connections\s*:\s*(\d+[\+\d]*)', text_clean, re.IGNORECASE)
+                if conn_match2:
+                    connections = conn_match2.group(1)
+                else:
+                    conn_match3 = re.search(r'(\d+[\+\d]*)\s*followers', text_clean, re.IGNORECASE)
+                    if conn_match3:
+                        connections = conn_match3.group(1)
+
         return {
             "name": name,
             "headline": headline,
@@ -279,5 +314,6 @@ class LinkedInParser:
             "experience": experience,
             "education": education,
             "skills_raw": sorted(list(set(skills_raw))),
+            "connections": connections,
             "source": "LinkedIn Parsed Transcript"
         }

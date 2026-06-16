@@ -1,6 +1,6 @@
 pattern_id,pattern_name,frequency,description
-1,NonCSE->SDE,29,Engineers from non-CSE backgrounds transitioning into software engineering
-2,Intern->SDE,9,Observed transition path: Intern->SDE
+1,NonCSE->SDE,37,Engineers from non-CSE backgrounds transitioning into software engineering
+2,Intern->SDE,10,Observed transition path: Intern->SDE
 3,Amazon->Microsoft,7,Observed transition path: Amazon->Microsoft
 4,Intern->SDE1->SDE2,5,Observed transition path: Intern->SDE1->SDE2
 5,Campus->Amazon,5,Observed transition path: Campus->Amazon
@@ -152,4 +152,46 @@ pattern_id,pattern_name,frequency,description
 151,Wells Fargo->PayPal,1,Observed transition path: Wells Fargo->PayPal
 152,FactSet->Salesforce,1,Observed transition path: FactSet->Salesforce
 153,business including Native brand->Urban Company,1,Observed transition path: business including Native brand->Urban Company
-154,IIIT->Microsoft,1,IIIT graduates joining Microsoft
+154,Api partners infotech pvt ltd->Aicodecenter Technologies,1,Observed transition path: Api partners infotech pvt ltd->Aicodecenter Technologies
+155,eVitalRx->AimInfologics,1,Observed transition path: eVitalRx->AimInfologics
+156,Imagine Multi Services Pvt Ltd->American Express,1,Observed transition path: Imagine Multi Services Pvt Ltd->American Express
+157,TCS->,1,Observed transition path: TCS->
+158,Python Developer->Codezee Solutions Private Limited,1,Observed transition path: Python Developer->Codezee Solutions Private Limited
+159,Campus->Colley Inc,1,Observed transition path: Campus->Colley Inc
+160,Mythee Software->DharmikVibes | Spiritual Platform,1,Observed transition path: Mythee Software->DharmikVibes | Spiritual Platform
+161,Campus->DoubleTick & QuickSell,1,Observed transition path: Campus->DoubleTick & QuickSell
+162,Mumbai Coding Club->Ease My Ai Pvt Ltd,1,Observed transition path: Mumbai Coding Club->Ease My Ai Pvt Ltd
+163,Integraate Innovations->Ecolibrium,1,Observed transition path: Integraate Innovations->Ecolibrium
+164,Infinite Computer Solutions->Eggoz Nutrition,1,Observed transition path: Infinite Computer Solutions->Eggoz Nutrition
+165,Campus->Eweb Infoway,1,Observed transition path: Campus->Eweb Infoway
+166,Tkxel->Gelato,1,Observed transition path: Tkxel->Gelato
+167,Coding Club PRPCEM->Google,1,Observed transition path: Coding Club PRPCEM->Google
+168,Hashstack Solutions->Hashstack Solutions Pvt Ltd,1,Observed transition path: Hashstack Solutions->Hashstack Solutions Pvt Ltd
+169,TCS->IBM,1,Observed transition path: TCS->IBM
+170,Campus->Klout Club,1,Observed transition path: Campus->Klout Club
+171,Campus->KOFFEEKODES INNOVATIONS PRIVATE LIMITED,1,Observed transition path: Campus->KOFFEEKODES INNOVATIONS PRIVATE LIMITED
+172,Campus->Ola,1,Observed transition path: Campus->Ola
+173,Orinko->Lenskart.com,1,Observed transition path: Orinko->Lenskart.com
+174,Easework AI->Li4uid Ltd,1,Observed transition path: Easework AI->Li4uid Ltd
+175,Arham Labs->LUZO | Backed by 100X.VC,1,Observed transition path: Arham Labs->LUZO | Backed by 100X.VC
+176,Zilicon Network Solution Pvt Ltd->Mobavenue Media,1,Observed transition path: Zilicon Network Solution Pvt Ltd->Mobavenue Media
+177,continued growth and success of Mogi I/O.->Mogi I/O : OTT/Podcast/Short Video Apps for you,1,Observed transition path: continued growth and success of Mogi I/O.->Mogi I/O : OTT/Podcast/Short Video Apps for you
+178,Campus->MTN Haus,1,Observed transition path: Campus->MTN Haus
+179,Campus->Nayaab Services,1,Observed transition path: Campus->Nayaab Services
+180,Freelance->Noseberry Digitals,1,Observed transition path: Freelance->Noseberry Digitals
+181,PeekaPeds->OAK TREE TECH SOLUTIONS,1,Observed transition path: PeekaPeds->OAK TREE TECH SOLUTIONS
+182,Xotiv Technologies->PincodeKart,1,Observed transition path: Xotiv Technologies->PincodeKart
+183,Campus->PRINCE CAPITAL,1,Observed transition path: Campus->PRINCE CAPITAL
+184,Campus->QURILO TECHNOLOGIES LLC,1,Observed transition path: Campus->QURILO TECHNOLOGIES LLC
+185,Propelius Technologies->Reckit,1,Observed transition path: Propelius Technologies->Reckit
+186,EaseJobs->,1,Observed transition path: EaseJobs->
+187,BosLeo->Skillminds,1,Observed transition path: BosLeo->Skillminds
+188,KredX->SoftWebPOS,1,Observed transition path: KredX->SoftWebPOS
+189,Medkart Pharmacy->TapMind,1,Observed transition path: Medkart Pharmacy->TapMind
+190,TCS->Techlusion,1,Observed transition path: TCS->Techlusion
+191,sapnagroup->tentwenty digital agency,1,Observed transition path: sapnagroup->tentwenty digital agency
+192,Evolve Robot Lab->Vilva Networks - IT Consulting & eCommerce SaaS Company,1,Observed transition path: Evolve Robot Lab->Vilva Networks - IT Consulting & eCommerce SaaS Company
+193,Campus->WebAsha Technologies,1,Observed transition path: Campus->WebAsha Technologies
+194,Campus->WebDev Technology,1,Observed transition path: Campus->WebDev Technology
+195,Capgemini Engineering->Wisdomleaf Technologies,1,Observed transition path: Capgemini Engineering->Wisdomleaf Technologies
+196,IIIT->Microsoft,1,IIIT graduates joining Microsoft
