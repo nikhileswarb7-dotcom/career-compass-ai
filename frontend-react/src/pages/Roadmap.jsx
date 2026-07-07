@@ -679,67 +679,107 @@ export default function Roadmap() {
             <>
               {/* Tab 0: Overview & Videos */}
               {selectedStepIndex === 0 && (
-                <div className="lectures-grid">
-                  {/* Left: Videos */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div className="video-player-container">
-                      {activeVideoEmbed ? (
-                        <iframe 
-                          src={activeVideoEmbed} 
-                          title={activeVideoTitle}
-                          className="video-iframe"
-                          allowFullScreen
-                        />
-                      ) : (
-                        <div className="video-placeholder">
-                          <Play size={40} style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
-                          <div style={{ fontSize: '0.92rem', fontWeight: 650 }}>Select a lecture video from the list to begin streaming</div>
+                <div>
+                  <div className="lectures-grid">
+                    {/* Left: Videos */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <div className="video-player-container">
+                        {activeVideoEmbed ? (
+                          <iframe 
+                            src={activeVideoEmbed} 
+                            title={activeVideoTitle}
+                            className="video-iframe"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <div className="video-placeholder">
+                            <Play size={40} style={{ color: 'var(--accent-primary)', marginBottom: '0.5rem' }} />
+                            <div style={{ fontSize: '0.92rem', fontWeight: 650 }}>Select a lecture video from the list to begin streaming</div>
+                          </div>
+                        )}
+                      </div>
+                      {activeVideoEmbed && (
+                        <div className="external-youtube-banner">
+                          <span>Streaming: <strong>{activeVideoTitle}</strong></span>
+                          <a href={activeVideoEmbed} target="_blank" rel="noreferrer">Open in YouTube</a>
                         </div>
                       )}
                     </div>
-                    {activeVideoEmbed && (
-                      <div className="external-youtube-banner">
-                        <span>Streaming: <strong>{activeVideoTitle}</strong></span>
-                        <a href={activeVideoEmbed} target="_blank" rel="noreferrer">Open in YouTube</a>
+
+                    {/* Right: Lists */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
+                      {/* Videos Scroller */}
+                      <div>
+                        <div className="scroller-header">Lecture playlist</div>
+                        <div className="playlist-scroller">
+                          {lectureData.videos.map((vid, i) => (
+                            <div 
+                              key={i} 
+                              className={`playlist-item ${activeVideoEmbed === vid.embed ? 'active' : ''}`}
+                              onClick={() => { setActiveVideoEmbed(vid.embed); setActiveVideoTitle(vid.title); }}
+                            >
+                              <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{vid.title}</span>
+                              <span className="playlist-play-icon"><Play size={10} /></span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    )}
+
+                      {/* Cheat Sheets */}
+                      <div>
+                        <div className="scroller-header">cheat sheets & materials</div>
+                        <div className="materials-list">
+                          {lectureData.materials.map((mat, i) => (
+                            <div key={i} className="material-item">
+                              <span style={{ fontSize: '0.82rem', fontWeight: 550 }}>{mat.title}</span>
+                              <a href="#" className="material-download-btn" onClick={e => {e.preventDefault(); alert("Downloading cheat sheet..."); }}>
+                                <Download size={12} style={{ marginRight: '0.2rem' }} />
+                                <span>Download ({mat.size})</span>
+                              </a>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Right: Lists */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
-                    {/* Videos Scroller */}
-                    <div>
-                      <div className="scroller-header">Lecture playlist</div>
-                      <div className="playlist-scroller">
-                        {lectureData.videos.map((vid, i) => (
-                          <div 
-                            key={i} 
-                            className={`playlist-item ${activeVideoEmbed === vid.embed ? 'active' : ''}`}
-                            onClick={() => { setActiveVideoEmbed(vid.embed); setActiveVideoTitle(vid.title); }}
-                          >
-                            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{vid.title}</span>
-                            <span className="playlist-play-icon"><Play size={10} /></span>
+                  {/* SDE Project Blueprints Showcase */}
+                  {plan.projects && plan.projects.length > 0 && (
+                    <div className="glass-card" style={{ marginTop: '24px', padding: '20px', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-secondary)', marginBottom: '12px' }}>
+                        <BookOpen size={18} />
+                        <h3 style={{ margin: '0', fontSize: '1.1rem', fontFamily: 'var(--font-title)' }}>Recommended SDE Project Blueprints</h3>
+                      </div>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
+                        Complete these hand-picked projects to apply the concepts learned in this stage and build a robust SDE placement portfolio:
+                      </p>
+                      
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+                        {plan.projects.map((proj, pIdx) => (
+                          <div key={pIdx} style={{ padding: '16px', background: 'rgba(255,255,255,0.01)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <div>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <h4 style={{ margin: '0', fontSize: '0.95rem', color: 'var(--text-primary)', fontFamily: 'var(--font-title)' }}>{proj.name}</h4>
+                                <span className={`badge-pill ${(proj.difficulty || 'Advanced').toLowerCase() === 'advanced' ? 'adv' : 'int'}`} style={{ fontSize: '0.7rem', padding: '2px 8px' }}>
+                                  {proj.difficulty}
+                                </span>
+                              </div>
+                              <p style={{ margin: '0 0 12px 0', fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>{proj.details}</p>
+                            </div>
+                            
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.03)', paddingTop: '10px' }}>
+                              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Est: {proj.estimated_days || 15} Days</span>
+                              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                {proj.skills && proj.skills.map((s, sIdx) => (
+                                  <span key={sIdx} style={{ fontSize: '0.65rem', padding: '1px 5px', background: 'rgba(255,255,255,0.04)', color: 'var(--accent-primary)', borderRadius: '3px' }}>{s}</span>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         ))}
                       </div>
                     </div>
-
-                    {/* Cheat Sheets */}
-                    <div>
-                      <div className="scroller-header">cheat sheets & materials</div>
-                      <div className="materials-list">
-                        {lectureData.materials.map((mat, i) => (
-                          <div key={i} className="material-item">
-                            <span style={{ fontSize: '0.82rem', fontWeight: 550 }}>{mat.title}</span>
-                            <a href="#" className="material-download-btn" onClick={e => {e.preventDefault(); alert("Downloading cheat sheet..."); }}>
-                              <Download size={12} style={{ marginRight: '0.2rem' }} />
-                              <span>Download ({mat.size})</span>
-                            </a>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
 
