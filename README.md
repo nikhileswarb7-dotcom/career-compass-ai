@@ -11,7 +11,16 @@
 
 ## 🖥️ Platform Showcase
 
-![CareerCompass AI Dashboard](./docs/images/dashboard_mockup.png)
+Below are actual screenshots of the CareerCompass AI application in action:
+
+| **Main Workspace Dashboard** | **Detailed Career Report & Similarity** |
+| :---: | :---: |
+| ![Workspace Dashboard](./docs/images/workspace_page.png) | ![Career Report](./docs/images/career_report_page.png) |
+
+| **ATS Resume Builder** | **Profile Builder & Skill Normalization** |
+| :---: | :---: |
+| ![ATS Resume Builder](./docs/images/ats_resume_builder.png) | ![Profile Onboarding](./docs/images/profile_builder_page.png) |
+
 
 ---
 
