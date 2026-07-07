@@ -220,21 +220,39 @@ def get_company_id_by_name(company_name: str):
 
 
 def get_role_id_by_name(role_name: str):
+    # Normalize common role aliases to match canonical names in the database
+    role_clean = role_name.strip().lower()
+    aliases = {
+        "software development engineer": "software development engineer (sde)",
+        "sde": "software development engineer (sde)",
+        "backend engineer": "backend developer",
+        "frontend engineer": "frontend developer",
+        "full stack engineer": "full stack developer",
+        "site reliability engineer": "site reliability engineer (sre)",
+        "sre": "site reliability engineer (sre)",
+        "sdet": "sdet (software development engineer in test)",
+        "software development engineer in test": "sdet (software development engineer in test)",
+        "apm": "associate product manager (apm)",
+        "associate product manager": "associate product manager (apm)"
+    }
+    canonical_role_name = aliases.get(role_clean, role_clean)
+
     conn = get_db_connection()
     if not conn:
         raise RuntimeError("Database connection is unavailable for get_role_id_by_name.")
     try:
         cur = conn.cursor()
-        cur.execute("SELECT role_id FROM roles WHERE LOWER(role_name) = %s", (role_name.lower().strip(),))
+        cur.execute("SELECT role_id FROM roles WHERE LOWER(role_name) = %s", (canonical_role_name.lower().strip(),))
         row = cur.fetchone()
         cur.close()
         conn.close()
         if row:
             return row[0]
-        raise ValueError(f"Role '{role_name}' not found in database.")
+        raise ValueError(f"Role '{role_name}' (canonical: '{canonical_role_name}') not found in database.")
     except Exception as e:
         if conn: conn.close()
         raise RuntimeError(f"Database query failed in get_role_id_by_name: {str(e)}")
+
 
 
 def get_company_job_description(company_name: str, role_name: str):
