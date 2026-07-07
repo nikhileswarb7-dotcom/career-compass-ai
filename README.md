@@ -1,120 +1,101 @@
-# CareerCompass AI
-### NLP-Based Career Navigation System for Industry-Specific Roles
+# CareerCompass AI 🧭
+### NLP-Based Career Navigation & Preparation System for Industry-Specific Roles
 
-
-## Problem Statement
-
-Students often know their dream company and role but lack a structured, personalized roadmap based on their current qualification level and skill set. Generic career advice doesn't account for time urgency — a 1st-year student needs a different strategy than a final-year student targeting the same role.
-
----
-
-## Solution
-
-CareerCompass AI is a **Career Navigation System** that takes a student's current qualification and known skills, and generates a **personalized, stage-by-stage career roadmap** to become a Software Development Engineer at Blinkit.
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18.0+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 ---
 
-## Target (Phase 1)
+## 📖 Project Overview
 
-| Field | Value |
-|-------|-------|
-| Company | Blinkit |
-| Role | Software Development Engineer (SDE) |
-| Qualifications Supported | 1st Year, 2nd Year, 3rd Year, 4th Year, Fresh Graduate, Trainee Engineer, Junior Software Engineer |
+**CareerCompass AI** is a personalized career navigation and preparation platform designed to guide students from their current qualification level to industry readiness for specific software development roles (e.g., SDE at target companies like Blinkit). 
+
+Instead of general career advice, CareerCompass AI runs qualification-aware gap analyses and builds tailored, time-sensitive roadmaps. Whether a student is in their 1st year of college or a final-year graduate, the system adjusts milestones, projects, interview questions, and prep tasks to match their specific timeline.
 
 ---
 
-## System Architecture
+## 🚀 Key Features
+
+*   **Dynamic Profile Parsing**: Ingests and processes resume text, LinkedIn profile text, and GitHub handles to build a comprehensive map of a candidate's background.
+*   **NLP Entity Extraction**: Uses Google Gemini LLM API (with rule-based heuristics as a fail-safe) to parse candidate profiles and target roles from natural language query submissions.
+*   **Time-Sensitive Roadmaps**: Dynamically partitions SDE prep tracks into sequential stages (e.g., Foundations, Advanced backend/frontend development, Systems Design) tailored to candidate qualification.
+*   **Readiness Scoring Engine**: Computes a detailed readiness score mapping the student's skills against target role requirements.
+*   **Curated Learning Tracks & Assessments**: Matches each roadmap stage with specific video playlist training content, cheat sheets, MCQs, and coding challenges.
+*   **Interactive AI Mentor**: Provides real-time guidance on resumes, portfolio projects, LinkedIn setup, and GitHub presence.
+*   **Premium Glassmorphic UI**: Single-Page Application (SPA) dashboard containing interactive metrics, gap analysis visualizations, chat drawers, and step-by-step roadmaps.
+
+---
+
+## 🏗️ System Architecture
+
+CareerCompass AI is structured with a decoupled client-server architecture:
 
 ```
-User Query (Text / Form)
-        │
-        ▼
-  NLP Processor
-  (nlp_processor.py)
-  Extracts: qualification, skills, company, role
-        │
-        ▼
-  Recommendation Engine
-  (recommendation_engine.py)
-  Gap Analysis + Roadmap Generation
-        │
-        ▼
-  PostgreSQL Database
-  (career_compass)
-  Fetches: roadmap stages, resources, projects, guidance
-        │
-        ▼
-  Personalized Career Plan
-  - Readiness Score
-  - Missing Skills (priority-ordered)
-  - Stage-by-Stage Roadmap
-  - Projects to Build
-  - Resources to Use
-  - Resume / LinkedIn / GitHub Guidance
-  - 30-Day Action Plan
-  - Estimated Time to Ready
+┌─────────────────────────────────────────────────────────┐
+│                     React Frontend                      │
+│     (Glassmorphic dashboard, roadmap views, chat)       │
+└────────────────────────────┬────────────────────────────┘
+                             │ REST HTTP
+                             ▼
+┌─────────────────────────────────────────────────────────┐
+│                    FastAPI Web Server                   │
+│          (Endpoints, routes, and controllers)           │
+└──────┬─────────────────────┬─────────────────────┬──────┘
+       │                     │                     │
+       ▼                     ▼                     ▼
+┌──────────────┐      ┌──────────────┐      ┌──────────────┐
+│  AI Engine   │      │  ML Pipeline │      │  PostgreSQL  │
+│  (Gemini +   │      │  (Affinity   │      │   Database   │
+│  Heuristics) │      │  Clustering) │      │  (Core SOT)  │
+└──────────────┘      └──────────────┘      └──────────────┘
 ```
+
+The system uses **PostgreSQL** as the single source of truth (SOT) for storing companies, roles, roadmaps, checkpoints, and candidates' session histories.
 
 ---
 
-## Project Structure
+## 🤖 AI Architecture (NLP Processor)
 
-```
-career-compass-ai/
-│
-├── api/
-│   ├── app.py                  ← FastAPI web server entry point
-│   └── database_connector.py   ← Dual PostgreSQL & CSV fallback layer
-│
-├── database/
-│   ├── schema.sql              ← All core PostgreSQL tables
-│   ├── seed_data.sql           ← Seed scripts for companies, roles, and stages
-│   └── learning_layer/         ← CSV fallback datasets (e.g. stage_training_content.csv)
-│
-├── datasets/                   ← Static JSON templates
-│   ├── companies/
-│   ├── roles/
-│   ├── qualifications/
-│   ├── roadmaps/
-│   ├── projects/
-│   ├── resources/
-│   ├── interview_questions/
-│   └── guidance/
-│
-├── frontend-react/             ← Premium React SPA (Vite + Tailwind/Vanilla CSS)
-│   ├── src/
-│   │   ├── components/         ← Reusable layout & drawer modules
-│   │   ├── pages/              ← Dynamic page views (Dashboard, Roadmap, etc.)
-│   │   ├── App.jsx             ← React routes & state providers
-│   │   └── index.css           ← Global glassmorphic design tokens
-│   ├── package.json
-│   └── vite.config.js
-│
-├── model/                      ← NLP & Recommendation Core Engines
-│   ├── nlp_classifier.py       ← Entity extractor for student form inputs
-│   └── readiness_score.py      ← Readiness metric calculation engines
-│
-├── profile_analysis/           ← Resume and social extraction modules
-├── services/                   ← Application services
-├── testing/                    ← Integration & unit test suite
-│   ├── run_tests.py            ← Run rule-based validation tests
-│   ├── verify_session_flow.py  ← Verify API session workflow transitions
-│   └── verify_session_isolation.py  ← Verify candidate session sandbox isolation
-│
-├── README.md
-└── .gitignore                  ← Configured repository ignore file
-```
+The system features an **NLP Classification Pipeline** (`ai_engine/nlp/nlp_processor.py`) that parses natural language queries:
+1. **Model**: Google Gemini SDK model (`gemini-2.5` or `gemini-1.5-flash`).
+2. **Intent Parsing**: Extracts candidate parameters: `qualification`, `skills`, `target_company`, and `target_role`.
+3. **Robust Fallback**: If LLM API limits are reached, the system falls back to a deterministic regex-based entity keyword classifier.
 
 ---
 
-## Setup & Running Instructions
+## 📈 ML Architecture (Affinities & Classifiers)
 
-### 1. Install PostgreSQL
-Ensure a local PostgreSQL instance is running on your machine.
+Candidate skills are analyzed through a series of local **ML pipelines** (`ai_engine/similarity/`):
+*   **Profile Vectorization**: Transforms candidate skills into numerical feature representations using a TF-IDF bag-of-words schema.
+*   **Affinity Pipelines**: Scikit-learn pipelines load pre-trained `.joblib` affinity models to calculate role alignment across different engineering paths (Frontend, Backend, General SDE).
+*   **Skill Assessor**: Maps candidate competencies against target requirements to calculate priority-ordered gaps.
 
-### 2. Database Creation & Seeding
-Initialize the schema and seed data using PostgreSQL command line or a GUI tool:
+---
+
+## 🗄️ Knowledge Layer
+
+The database schema (`database/schema.sql`) represents a multi-tiered knowledge base:
+*   **Career Layer**: Holds role skill requirements and skill frequency distributions.
+*   **Hiring Layer**: Stores target company parameters, job descriptions, and user interview experiences.
+*   **Learning Layer**: Defines stages, learning goals, milestones, mcqs, coding templates, and curated resources.
+
+---
+
+## 🛠️ Technology Stack
+
+*   **Frontend**: React (JS/JSX), Vite, Chart.js / Canvas, Vanilla CSS (Premium responsive custom style sheet).
+*   **Backend**: Python 3.10+, FastAPI, Uvicorn.
+*   **Database**: PostgreSQL 14+, Psycopg2.
+*   **AI/ML**: Google Generative AI SDK, Scikit-learn, Joblib.
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Database Creation & Seeding
+Ensure you have a local PostgreSQL instance running. Initialize the schema and seed data:
 ```sql
 CREATE DATABASE career_compass_ai;
 \c career_compass_ai
@@ -122,36 +103,36 @@ CREATE DATABASE career_compass_ai;
 \i database/seed_data.sql
 ```
 
-### 3. Setup Environment Variables
+### 2. Setup Environment Variables
 Copy `.env.example` to `.env` in the root of the project:
 ```bash
 cp .env.example .env
 ```
-Open the `.env` file and fill in your Gemini API key, local database password, and Quiz API key:
-- `GEMINI_API_KEY`: Obtain from Google AI Studio.
-- `DB_PASSWORD`: Your local PostgreSQL postgres user password.
-- `QUIZ_API_KEY`: Obtain from QuizAPI.io.
+Open the `.env` file and fill in your details:
+*   `GEMINI_API_KEY`: Your Google Gemini API key.
+*   `DB_PASSWORD`: Your local PostgreSQL password.
+*   `QUIZ_API_KEY`: Your QuizAPI key (optional).
 
-### 4. Setup Backend Environment & Dependencies
-Create a virtual environment and install dependencies:
+### 3. Setup Backend Environment & Dependencies
+Create a virtual environment and install backend requirements:
 ```bash
-# In project root
+# From project root
 python -m venv .venv
-.venv\Scripts\activate      # For Windows
+.venv\Scripts\activate      # For Windows Powershell/CMD
 source .venv/bin/activate    # For macOS/Linux
 
 pip install fastapi uvicorn psycopg2-binary pydantic python-dotenv
 ```
 
-### 5. Launch Backend Web Server
-Run the FastAPI application:
+### 4. Run Backend FastAPI Server
+Start the backend web server:
 ```bash
 python api/app.py
 ```
-The server will start up at `http://127.0.0.1:8000`.
+The backend server will run at `http://127.0.0.1:8000`.
 
-### 6. Setup React Frontend
-Navigate to the React project folder, install packages, and launch the Vite development server:
+### 5. Setup React Frontend
+Navigate to the frontend folder, install dependencies, and run Vite:
 ```bash
 cd frontend-react
 npm install
@@ -159,43 +140,32 @@ npm run dev
 ```
 The web application will open at `http://localhost:5173`.
 
-### 7. Run Integration Test Suite
-To verify the DB connector, classification accuracy, and session sandboxing:
+---
+
+## 🧪 Testing & Verification
+
+Run the integration and regression test suites to verify system modules:
 ```bash
-# Run NLP classifier validations
+# Run NLP classifier & gap validation tests
 python testing/run_tests.py
 
 # Run API session state transition tests
 python testing/verify_session_flow.py
 
-# Run candidate sandbox isolation checks
+# Run database schema sandbox isolation checks
 python testing/verify_session_isolation.py
 ```
 
 ---
 
-## Team Responsibilities
+## 🗺️ Future Roadmap
 
-| Member | Ownership |
-|--------|-----------|
-| Member 1 (Database Lead) | schema.sql, seed_data.sql, all datasets in /datasets/, import_data.py |
-| Member 2 (NLP + Recommendation Lead) | nlp_processor.py, recommendation_engine.py, test_cases.json, run_tests.py |
-
----
-
-## Future Scope
-
-- Add Google SDE, Amazon SDE, Flipkart SDE (same DB structure, new data)
-- Add more roles: Data Scientist, DevOps Engineer, Embedded Engineer
-- FastAPI backend with REST API endpoints
-- React / Next.js frontend with dashboard
-- pgvector integration for semantic search
-- RAG-based AI assistant on top of this knowledge base
+*   **Expanded Role Indexing**: Add support for DevOps, Site Reliability, and Product Management tracks.
+*   **Semantic Matching**: Integrate `pgvector` in PostgreSQL for vector similarity searches over projects and resume profiles.
+*   **Real-time Coding Playgrounds**: Introduce interactive in-browser compiler endpoints for SDE checkpoint challenges.
 
 ---
 
-## Project Title Options
+## 📄 License
 
-1. **CareerCompass AI** — NLP-Based Career Navigation System for Industry-Specific Roles *(recommended)*
-2. **DreamPath** — Personalized Career Roadmap Generator
-3. **RoleReady AI** — Qualification-Aware Career Preparation System
+This project is licensed under the MIT License. See the `LICENSE` file for details.
