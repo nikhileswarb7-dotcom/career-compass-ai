@@ -3,6 +3,18 @@
 
 ---
 
+### 🌟 Submission Documentation & Gate Artifacts
+Please review the complete internship submission documents located in the agent environment workspace:
+*   [Unified Submission Gate (FINAL_SUBMISSION_GATE.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/FINAL_SUBMISSION_GATE.md) — Verdict: **GO**
+*   [Submission Report (SUBMISSION_REPORT.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/SUBMISSION_REPORT.md) — Accomplishments overview
+*   [Model Card (MODEL_CARD.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/MODEL_CARD.md) — OvR classifiers, PR-AUC and calibration metrics
+*   [Data Card (DATA_CARD.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/DATA_CARD.md) — Schema statistics and row counts
+*   [System Architecture (SYSTEM_ARCHITECTURE.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/SYSTEM_ARCHITECTURE.md) — Hybrid pipeline and positive stage filters
+*   [Demonstration Script (DEMO_SCRIPT.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/DEMO_SCRIPT.md) — 5–7 min live demo guide using 3 reproducible personas
+*   [Known Limitations (KNOWN_LIMITATIONS.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/KNOWN_LIMITATIONS.md) — Class imbalances and schema boundaries
+
+---
+
 ## Problem Statement
 
 Students often know their dream company and role but lack a structured, personalized roadmap based on their current qualification level and skill set. Generic career advice doesn't account for time urgency — a 1st-year student needs a different strategy than a final-year student targeting the same role.

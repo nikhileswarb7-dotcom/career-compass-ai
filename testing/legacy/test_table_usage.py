@@ -1,6 +1,10 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+from api.database_connector import DB_CONFIG
 import psycopg2
 try:
-    conn = psycopg2.connect(host='localhost', port=5432, dbname='career_compass_ai', user='postgres', password='Nikhil@2824')
+    conn = psycopg2.connect(**DB_CONFIG)
     cur = conn.cursor()
     
     for table in ['companies', 'roles', 'employee_profiles']:

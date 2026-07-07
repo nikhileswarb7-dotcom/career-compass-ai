@@ -2,20 +2,23 @@
   max-width: 1000px;
   margin: 0 auto;
   padding: 1rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
 }
 
 .welcome-banner-row {
-  margin-bottom: 2rem;
   text-align: left;
 }
 
 .welcome-banner-row h1 {
   font-family: var(--font-title);
   font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
+  font-weight: 850;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  margin-bottom: 0.35rem;
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -29,7 +32,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
 }
 
 .section-header-title {
@@ -38,12 +40,12 @@
   gap: 0.75rem;
   font-family: var(--font-title);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-main);
 }
 
 .source-db-badge {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
   color: var(--primary);
   padding: 0.25rem 0.75rem;
@@ -61,13 +63,9 @@
 }
 
 .question-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 1.5rem;
-}
-
-.question-card:hover {
-  border-color: rgba(var(--primary-rgb), 0.25);
-  box-shadow: 0 10px 25px var(--card-shadow);
+  border-radius: var(--radius-md);
+  text-align: left;
 }
 
 .question-header {
@@ -80,9 +78,8 @@
 .question-title {
   font-family: var(--font-title);
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: 750;
   color: var(--text-main);
-  text-align: left;
   line-height: 1.4;
 }
 
@@ -115,18 +112,18 @@
 
 .badge.difficulty-medium {
   background: rgba(245, 158, 11, 0.1);
-  color: var(--amber);
+  color: var(--warning);
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .badge.difficulty-hard {
-  background: rgba(244, 63, 94, 0.1);
+  background: rgba(239, 68, 68, 0.1);
   color: var(--rose);
-  border: 1px solid rgba(244, 63, 94, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .badge.frequency {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   color: var(--text-muted);
   border: 1px solid var(--border-glass);
 }
@@ -136,58 +133,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
   padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   color: var(--text-main);
   font-family: var(--font-title);
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .accordion-trigger:hover {
   background: var(--card-sub-bg-hover);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.light-theme .accordion-trigger:hover {
-  border-color: rgba(15, 23, 42, 0.15);
-}
-
-.accordion-arrow {
-  font-size: 0.8rem;
-  transition: transform 0.3s ease;
-}
-
-.question-card.open .accordion-arrow {
-  transform: rotate(180deg);
-}
-
-.accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin-top 0.3s ease;
-  opacity: 0;
-  text-align: left;
-}
-
-.question-card.open .accordion-content {
-  max-height: 500px;
-  opacity: 1;
-  margin-top: 1rem;
+  border-color: var(--border-glass-hover);
 }
 
 .solution-description {
   font-size: 0.92rem;
   line-height: 1.6;
   color: var(--text-main);
-  background: rgba(255, 255, 255, 0.01);
+  background: var(--bg-main);
   padding: 1.25rem;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-glass);
+  margin-top: 1rem;
 }
 
 .complexity-box {
@@ -195,8 +166,8 @@
   gap: 1.5rem;
   margin-top: 0.75rem;
   padding: 0.75rem 1.25rem;
-  background: var(--card-sub-bg);
-  border-radius: 8px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
   font-size: 0.82rem;
   color: var(--text-muted);
 }

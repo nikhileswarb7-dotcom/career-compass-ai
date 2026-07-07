@@ -4,6 +4,32 @@ import { TrendingUp, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Analytics.css';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.02, delayChildren: 0.02 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 25, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: 'spring', stiffness: 350, damping: 25 }
+  }
+};
+
+const rowVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: i * 0.01, type: 'spring', stiffness: 350, damping: 25 }
+  })
+};
+
 export default function Analytics() {
   const [loading, setLoading] = useState(true);
   const [signals, setSignals] = useState([]);
@@ -53,20 +79,20 @@ export default function Analytics() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
       className="analytics-wrapper"
     >
-      <div className="analytics-header">
+      <motion.div className="analytics-header" variants={itemVariants}>
         <h1>Macro SDE Hiring Signals</h1>
         <p>Calculated representation weights and transitions observed among successful software developers.</p>
-      </div>
+      </motion.div>
 
       <div className="analytics-grid">
         
         {/* Left column: Hiring Signals Table */}
-        <div className="glass-card signals-card">
+        <motion.div className="glass-card signals-card" variants={itemVariants}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.75rem', marginBottom: '1rem' }}>
             <TrendingUp size={16} style={{ color: 'var(--primary)' }} />
             <h3 style={{ margin: 0, fontFamily: 'var(--font-title)', fontWeight: 800 }}>Top Hiring Signals</h3>
@@ -83,7 +109,13 @@ export default function Analytics() {
             </thead>
             <tbody>
               {signals.slice(0, 10).map((sig, idx) => (
-                <tr key={idx}>
+                <motion.tr 
+                  key={idx}
+                  custom={idx}
+                  variants={rowVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
                   <td><strong>{sig.name}</strong></td>
                   <td>
                     <span className={`badge-sig ${sig.type.toLowerCase()}`}>
@@ -96,14 +128,14 @@ export default function Analytics() {
                   <td style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
                     {sig.description}
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>
-        </div>
+        </motion.div>
 
         {/* Right column: Common Career Transitions */}
-        <div className="glass-card transitions-card">
+        <motion.div className="glass-card transitions-card" variants={itemVariants}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.75rem', marginBottom: '1rem' }}>
             <Users size={16} style={{ color: 'var(--primary)' }} />
             <h3 style={{ margin: 0, fontFamily: 'var(--font-title)', fontWeight: 800 }}>Common Transitions</h3>
@@ -113,18 +145,27 @@ export default function Analytics() {
             {transitions.map((trans, idx) => {
               const parts = trans.path.split(' → ');
               return (
-                <div key={idx} className="transition-item">
+                <motion.div 
+                  key={idx} 
+                  className="transition-item"
+                  custom={idx}
+                  variants={rowVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover={{ x: 4, backgroundColor: 'var(--card-sub-bg-hover)' }}
+                  transition={{ duration: 0.1 }}
+                >
                   <div className="path-flow">
                     <span>{parts[0]}</span>
                     <span className="path-arrow">→</span>
                     <span>{parts[1]}</span>
                   </div>
                   <span className="path-count">{trans.count} Profiles</span>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </motion.div>

@@ -25,10 +25,10 @@ def verify_all():
     roles = check_csv_rows("industry_layer", "roles.csv")
     if roles:
         role_ids = {int(r["role_id"]) for r in roles}
-        if len(roles) == 12:
-            print("  -> PASS: roles.csv has exactly 12 unique roles.")
+        if len(roles) == 30:
+            print("  -> PASS: roles.csv has exactly 30 unique roles.")
         else:
-            print(f"  -> FAIL: Expected 12 roles, got {len(roles)}.")
+            print(f"  -> FAIL: Expected 30 roles, got {len(roles)}.")
             
     # 2. Check employee_profiles.csv (Expected 121 rows from parsing)
     profiles = check_csv_rows("industry_layer", "employee_profiles.csv")

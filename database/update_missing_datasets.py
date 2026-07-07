@@ -43,6 +43,24 @@ def fix_stage_assessments():
     write_csv(csv_path, ["stage_id", "mcqs", "coding_challenge"], rows)
 
 # ====================================================================
+# Helper function to classify role names dynamically to skills
+# ====================================================================
+def get_skills_for_role_name(role_name: str) -> list:
+    name_low = role_name.lower()
+    if any(k in name_low for k in ["devops", "sre", "cloud", "reliability", "infrastructure"]):
+        return [1, 3, 7, 8, 13, 14, 24, 25, 26, 6]
+    elif any(k in name_low for k in ["frontend", "ui", "ux", "design"]):
+        return [12, 19, 20, 21, 7, 13, 25, 26, 3, 6]
+    elif any(k in name_low for k in ["mobile", "android", "ios", "flutter", "native"]):
+        return [2, 3, 22, 23, 7, 13, 25, 26, 6]
+    elif any(k in name_low for k in ["ai", "ml", "machine", "deep", "nlp", "vision", "scientist", "analyst", "data"]):
+        return [3, 17, 25, 26, 1, 6, 7, 13, 14, 15]
+    elif "security" in name_low:
+        return [1, 3, 7, 8, 13, 24, 25, 26, 6]
+    else:
+        return [2, 1, 3, 4, 5, 6, 9, 10, 11, 12, 13, 15, 16, 17, 18, 25, 26]
+
+# ====================================================================
 # 2. employee_skills.csv Expansion
 # ====================================================================
 def expand_employee_skills():
@@ -50,29 +68,12 @@ def expand_employee_skills():
     skills_path = os.path.join(INDUSTRY_DIR, "employee_skills.csv")
     roles_path = os.path.join(INDUSTRY_DIR, "roles.csv")
     
-    # Load roles map to find role names
     roles_map = {}
     with open(roles_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for r in reader:
             roles_map[int(r["role_id"])] = r["role_name"]
             
-    # Define role-specific skill pools from skills_master (IDs 1-26)
-    role_skills_map = {
-        "SDE Intern": [1, 2, 3, 6, 7, 25, 26],
-        "SDE I": [1, 2, 3, 6, 7, 13, 25, 26, 10, 16],
-        "SDE II": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 25, 26],
-        "SDE III": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 25, 26],
-        "Senior Software Engineer": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 25, 26],
-        "Tech Lead": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 24, 25, 26],
-        "Engineering Manager": [1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 24, 25, 26],
-        "Backend Engineer": [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 15, 16, 17, 18, 25, 26],
-        "Frontend Engineer": [12, 19, 20, 21, 7, 13, 25, 26, 3, 6],
-        "SRE / DevOps Engineer": [1, 3, 7, 8, 13, 14, 24, 25, 26, 6],
-        "Mobile Engineer": [2, 3, 22, 23, 7, 13, 25, 26, 6],
-        "AI / ML Engineer": [3, 17, 25, 26, 1, 6, 7, 13, 14, 15]
-    }
-    
     all_skills = list(range(1, 27))
     rows = []
     
@@ -80,16 +81,12 @@ def expand_employee_skills():
         reader = csv.DictReader(f)
         for profile in reader:
             p_id = int(profile["profile_id"])
-            role_id = int(profile["role_id"]) if profile["role_id"] else 2
-            role_name = roles_map.get(role_id, "SDE I")
+            role_id = int(profile["role_id"]) if profile["role_id"] else 1
+            role_name = roles_map.get(role_id, "Software Development Engineer (SDE)")
             
-            # Pool skills
-            pool = role_skills_map.get(role_name, [1, 2, 3, 6, 25, 26])
-            
-            # Determine number of skills (8-15)
+            pool = get_skills_for_role_name(role_name)
             num_skills = random.randint(8, 15)
             
-            # Ensure unique selection by mixing with general skills
             selected = list(pool)
             while len(selected) < num_skills:
                 extra = random.choice(all_skills)
@@ -110,29 +107,20 @@ def expand_employee_skills():
 # ====================================================================
 def expand_role_skill_requirements():
     csv_path = os.path.join(CAREER_DIR, "role_skill_requirements.csv")
+    roles_path = os.path.join(INDUSTRY_DIR, "roles.csv")
     
-    role_skills_matrix = {
-        1: [2, 1, 6, 7, 25, 26, 3, 16], # SDE Intern
-        2: [2, 1, 6, 7, 13, 25, 26, 10, 16, 3], # SDE I
-        3: [2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 13, 25, 26, 17], # SDE II
-        4: [2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 25, 26], # SDE III
-        5: [2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 25, 26], # Senior SDE
-        6: [2, 1, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 17, 24, 25, 26], # Tech Lead
-        7: [2, 1, 4, 5, 6, 7, 8, 10, 13, 24, 25, 26], # Engineering Manager
-        8: [2, 1, 3, 4, 5, 6, 9, 10, 11, 12, 13, 15, 16, 17, 18, 25, 26], # Backend Engineer
-        9: [12, 19, 20, 21, 7, 13, 25, 26, 3, 6], # Frontend Engineer
-        10: [1, 3, 7, 8, 13, 14, 24, 25, 26, 6], # SRE / DevOps Engineer
-        11: [2, 3, 22, 23, 7, 13, 25, 26, 6], # Mobile Engineer
-        12: [3, 17, 25, 26, 1, 6, 7, 13, 14, 15] # AI / ML Engineer
-    }
-    
+    roles = []
+    with open(roles_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            roles.append((int(r["role_id"]), r["role_name"]))
+            
     rows = []
     rs_id = 1
     
-    # Map each company_role_id (1 to 12) to relevant skills
-    for company_role_id, skills in role_skills_matrix.items():
+    for role_id, role_name in roles:
+        skills = get_skills_for_role_name(role_name)
         for s_idx, s_id in enumerate(skills):
-            # First few skills are High priority, middle are Medium, rest are Low
             if s_idx < len(skills) // 3:
                 priority = "High"
             elif s_idx < 2 * len(skills) // 3:
@@ -142,7 +130,7 @@ def expand_role_skill_requirements():
                 
             rows.append({
                 "role_skill_id": rs_id,
-                "company_role_id": company_role_id,
+                "company_role_id": role_id,
                 "skill_id": s_id,
                 "priority": priority
             })
@@ -156,36 +144,32 @@ def expand_role_skill_requirements():
 def expand_company_interview_patterns():
     csv_path = os.path.join(HIRING_DIR, "company_interview_patterns.csv")
     companies_path = os.path.join(INDUSTRY_DIR, "companies.csv")
+    roles_path = os.path.join(INDUSTRY_DIR, "roles.csv")
     
-    # Load companies from companies.csv
     companies = []
     with open(companies_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for r in reader:
             companies.append((int(r["company_id"]), r["company_name"]))
             
-    # Target Roles (IDs: 1 = Intern, 2 = SDE I, 3 = SDE II, 8 = Backend, 9 = Frontend)
-    target_roles = [
-        (1, "Intern", 3, 5),
-        (2, "SDE I", 4, 7),
-        (3, "SDE II", 5, 9),
-        (8, "Backend Engineer", 4, 8),
-        (9, "Frontend Engineer", 4, 8)
-    ]
-    
+    roles_map = {}
+    with open(roles_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            roles_map[int(r["role_id"])] = r["role_name"]
+            
     interview_topics = ["DSA", "System Design", "Database Design", "Concurrency", "OOP", "Caching", "Queues", "Leadership Principles"]
     
     rows = []
     pattern_id = 1
     
-    # Generate patterns combining companies and target roles
     for comp_id, comp_name in companies:
-        # Each company gets 2 to 3 role pattern profiles
-        roles_to_generate = random.sample(target_roles, k=random.randint(2, 3))
-        for role_id, role_name, base_rounds, base_diff in roles_to_generate:
-            rounds = base_rounds + random.choice([-1, 0, 1])
-            diff = base_diff + random.choice([-1, 0, 1])
-            diff = max(1, min(10, diff))
+        available_role_ids = list(roles_map.keys())
+        roles_to_generate = random.sample(available_role_ids, k=random.randint(2, 3))
+        for role_id in roles_to_generate:
+            role_name = roles_map[role_id]
+            rounds = random.randint(3, 6)
+            diff = random.randint(5, 9)
             
             topics = random.sample(interview_topics, k=random.randint(2, 3))
             topics_str = " and ".join(topics)
@@ -209,8 +193,8 @@ def expand_company_interview_patterns():
 # ====================================================================
 def expand_roadmap_templates():
     csv_path = os.path.join(LEARNING_DIR, "roadmap_templates.csv")
+    roles_path = os.path.join(INDUSTRY_DIR, "roles.csv")
     
-    # Qualifications mapping
     qualifications = [
         (1, 48, "1st Year Student"),
         (2, 36, "2nd Year Student"),
@@ -221,20 +205,15 @@ def expand_roadmap_templates():
         (7, 12, "Junior Software Engineer")
     ]
     
-    # SDE Roles
-    roles = [
-        (2, "SDE I"),
-        (8, "Backend Engineer"),
-        (9, "Frontend Engineer"),
-        (10, "SRE / DevOps Engineer"),
-        (11, "Mobile Engineer"),
-        (12, "AI / ML Engineer")
-    ]
-    
+    roles = []
+    with open(roles_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            roles.append((int(r["role_id"]), r["role_name"]))
+            
     rows = []
     template_id = 1
     
-    # Map all combinations
     for qual_id, duration, qual_name in qualifications:
         for role_id, role_name in roles:
             overview = f"{qual_name} custom roadmap template targeting {role_name} over {duration} months. Covers essential programming, specialization skills, system design, and placement prep milestones."

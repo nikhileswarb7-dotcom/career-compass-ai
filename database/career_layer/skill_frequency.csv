@@ -1,29 +1,54 @@
 skill_id,skill_name,frequency,importance_score
-1,C Programming,12,4
-2,C++,19,4
-3,Java,34,7
-4,Python,27,6
-5,SQL,10,4
-6,Data Structures,10,4
-7,Algorithms,3,4
+1,C Programming,31,4
+2,C++,30,4
+3,Java,105,10
+4,Python,53,5
+5,SQL,38,4
+6,Data Structures,13,4
+7,Algorithms,4,4
 8,DSA (Combined),0,4
 9,DBMS,0,4
-10,Operating Systems,1,4
+10,Operating Systems,2,4
 11,Computer Networks,0,4
-12,Object Oriented Programming,0,4
-13,Spring Boot,10,4
-14,REST APIs,8,4
-15,Microservices,11,4
-16,Message Queues (Kafka),0,4
-17,MySQL,4,4
-18,PostgreSQL,3,4
-19,Redis,9,4
-20,Git & GitHub,8,4
-21,Docker,10,4
-22,AWS Basics,0,4
+12,Object Oriented Programming,1,4
+13,Spring Boot,38,4
+14,REST APIs,23,4
+15,Microservices,37,4
+16,Message Queues (Kafka),20,4
+17,MySQL,29,4
+18,PostgreSQL,14,4
+19,Redis,24,4
+20,Git & GitHub,18,4
+21,Docker,22,4
+22,AWS Basics,31,4
 23,Linux Basics,1,4
 24,Low Level Design,1,4
 25,High Level Design,1,4
-26,System Design,0,4
-27,Go,44,10
-28,Kubernetes,10,4
+26,System Design,12,4
+27,Go,63,6
+28,Kubernetes,16,4
+29,JavaScript,18,4
+30,TypeScript,17,4
+31,HTML & CSS,28,4
+32,React,50,4
+33,NodeJS,23,4
+34,Angular,4,4
+35,Vue.js,3,4
+36,Express.js,7,4
+37,FastAPI,7,4
+38,Django,19,4
+39,MongoDB,13,4
+40,DynamoDB,12,4
+41,JUnit,4,4
+42,Selenium,0,4
+43,Playwright,0,4
+44,Android,14,4
+45,iOS,4,4
+46,Flutter,3,4
+47,Terraform,2,4
+48,Prometheus,3,4
+49,Grafana,2,4
+50,PyTorch,2,4
+51,TensorFlow,0,4
+52,Pandas,0,4
+53,Scikit-Learn,1,4

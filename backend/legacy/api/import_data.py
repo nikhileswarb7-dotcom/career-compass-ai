@@ -20,13 +20,9 @@ from psycopg2.extras import Json
 # ----------------------------------------------------------------
 # Database connection config — update before running
 # ----------------------------------------------------------------
-DB_CONFIG = {
-    "host":     "localhost",
-    "port":     5432,
-    "dbname":   "career_compass_ai",
-    "user":     "postgres",
-    "password": "Nikhil@2824",   # <-- change this
-}
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
+from api.database_connector import DB_CONFIG
 
 DATASETS_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "datasets")
 

@@ -52,7 +52,8 @@ export default function Recommendations() {
       };
 
       try {
-        const response = await fetch(`${API_BASE}/api/recommendations/${sessionId}`);
+        const skipLlm = localStorage.getItem('skip_llm') === 'true' ? '?skip_llm=true' : '';
+        const response = await fetch(`${API_BASE}/api/recommendations/${sessionId}${skipLlm}`);
         updateStep(0, 'completed');
         updateStep(1, 'active');
         if (response.ok) {
@@ -98,19 +99,29 @@ export default function Recommendations() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.05
+        staggerChildren: 0.02,
+        delayChildren: 0.01
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 25, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 16 }
+      transition: { type: 'spring', stiffness: 350, damping: 25 }
     }
+  };
+
+  const cardVariants = {
+    hidden: { y: 20, opacity: 0, scale: 0.97 },
+    visible: (i) => ({
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: { delay: i * 0.02, type: 'spring', stiffness: 350, damping: 25 }
+    })
   };
 
   if (loading) {
@@ -161,7 +172,15 @@ export default function Recommendations() {
           data.projects.map((p, idx) => {
             const isAdv = (p.difficulty || 'Advanced').toLowerCase() === 'advanced';
             return (
-              <div key={idx} className="glass-card project-recommend-card">
+              <motion.div 
+                key={idx} 
+                className="glass-card project-recommend-card"
+                custom={idx}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={{ y: -4, transition: { duration: 0.1 } }}
+              >
                 <div className="project-header-meta">
                   <h4 className="project-card-title">{p.name}</h4>
                   <span className={`badge-pill ${isAdv ? 'adv' : 'int'}`}>
@@ -178,7 +197,7 @@ export default function Recommendations() {
                     Designed to resolve matching gaps. Scaled to handle high concurrency using thread worker pools, relational index normalization, and caching.
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })
         ) : (
@@ -199,7 +218,15 @@ export default function Recommendations() {
       <motion.div className="recommendations-resources-grid" variants={itemVariants}>
         {data.resources && data.resources.length > 0 ? (
           data.resources.map((r, idx) => (
-            <div key={idx} className="glass-card resource-recommend-card">
+            <motion.div 
+              key={idx} 
+              className="glass-card resource-recommend-card"
+              custom={idx}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ y: -4, transition: { duration: 0.1 } }}
+            >
               <div className="resource-meta-info">
                 <h4 className="resource-title-text" title={r.title}>{r.title}</h4>
                 <div className="resource-badges-row">
@@ -216,7 +243,7 @@ export default function Recommendations() {
                 <span>Study</span>
                 <ExternalLink size={12} />
               </a>
-            </div>
+            </motion.div>
           ))
         ) : (
           <div className="no-data-card glass-card">

@@ -1,0 +1,44 @@
+[
+    {
+        "test_suite": "Database & Schema Integrity",
+        "filepath": "testing/verify_expanded_db.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "Phase 2 Roadmap Correctness & Prerequisites",
+        "filepath": "testing/verify_roadmap_correctness.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "Phase 3B Hybrid & ML Inference Fallbacks",
+        "filepath": "testing/test_hybrid_integration.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "Session Flow Validation",
+        "filepath": "testing/verify_session_flow.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "Session Isolation & Concurrency",
+        "filepath": "testing/verify_session_isolation.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "API Endpoint Validation",
+        "filepath": "testing/verify_endpoints.py",
+        "status": "PASS",
+        "exit_code": 0
+    },
+    {
+        "test_suite": "Legacy Test Cases (TC001 - TC014)",
+        "filepath": "testing/run_tests.py",
+        "status": "PASS",
+        "exit_code": 0
+    }
+]

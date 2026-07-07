@@ -1,32 +1,35 @@
 .form-card-container {
   padding: 1rem 0;
+  width: 100%;
 }
 
 .form-title-section {
   text-align: left;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 .form-title-section h1 {
   font-family: var(--font-title);
-  font-size: 2.3rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  font-size: 2.25rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
   color: var(--text-muted);
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 .student-intake-form {
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  text-align: left;
 }
 
 .form-row {
@@ -37,16 +40,15 @@
 
 .flex-1 {
   flex: 1;
-  min-width: 200px;
+  min-width: 240px;
 }
 
-/* Checkbox alignment */
+/* Checkbox Alignment */
 .form-checkbox-group {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  margin: 0.5rem 0 1rem 0;
-  text-align: left;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
 }
 
 .custom-checkbox {
@@ -54,9 +56,9 @@
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid var(--checkbox-border);
+  border: 1px solid var(--checkbox-border);
   border-radius: 4px;
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   cursor: pointer;
   position: relative;
   display: inline-flex;
@@ -74,27 +76,27 @@
 .custom-checkbox:checked::after {
   content: '✓';
   color: var(--text-on-accent);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
   position: absolute;
 }
 
 .checkbox-label {
-  font-size: 0.9rem;
-  color: var(--text-main);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
   cursor: pointer;
   user-select: none;
 }
 
 /* File Drop Zone */
 .file-drop-zone {
-  border: 2px dashed var(--border-glass);
-  border-radius: 12px;
-  padding: 2rem;
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 2rem;
   text-align: center;
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .file-drop-zone:hover,
@@ -107,7 +109,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
   cursor: pointer;
   color: var(--text-muted);
 }
@@ -115,8 +117,13 @@
 .upload-icon {
   width: 32px;
   height: 32px;
-  color: var(--primary);
+  color: var(--accent-primary);
   margin-bottom: 0.25rem;
+  transition: transform 0.2s ease;
+}
+
+.file-drop-zone:hover .upload-icon {
+  transform: translateY(-2px);
 }
 
 .trigger-text {
@@ -124,7 +131,8 @@
 }
 
 .drop-zone-hint {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
 }
 
 .drop-zone-loader {
@@ -139,9 +147,10 @@
 .loader-circle {
   width: 24px;
   height: 24px;
-  border: 2.5px solid var(--border-glass);
+  border: 2px solid var(--border-glass);
   border-top-color: var(--primary);
   border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .drop-zone-success {
@@ -173,7 +182,7 @@
   background: transparent;
   border: 1px solid var(--rose);
   color: var(--rose);
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -182,8 +191,7 @@
 }
 
 .remove-file-btn:hover {
-  background: var(--rose-glow);
-  border-color: var(--rose-border);
+  background: rgba(239, 68, 68, 0.05);
 }
 
 .upload-status-alert {
@@ -199,7 +207,7 @@
 .status-success { color: var(--emerald); }
 .status-error { color: var(--rose); }
 
-/* Textarea customization */
+/* Textarea Customization */
 .custom-textarea {
   resize: vertical;
   min-height: 100px;
@@ -209,20 +217,20 @@
 .skills-tags-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
 .skill-tag-badge {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 1rem;
   border-radius: 30px;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: var(--text-main);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
   user-select: none;
   font-family: inherit;
 }
@@ -230,18 +238,19 @@
 .skill-tag-badge:hover {
   background: var(--card-sub-bg-hover);
   border-color: var(--border-glass-hover);
+  color: var(--text-main);
 }
 
 .skill-tag-badge.selected {
-  background: var(--primary);
+  background: rgba(var(--primary-rgb), 0.15);
   border-color: var(--primary);
-  color: var(--text-on-accent);
-  box-shadow: 0 0 10px var(--primary-glow);
+  color: var(--primary);
+  box-shadow: 0 0 10px var(--primary-glow) inset;
 }
 
 .form-submit-btn {
   width: 100%;
-  padding: 1rem;
+  padding: 0.95rem;
   margin-top: 1rem;
 }
 

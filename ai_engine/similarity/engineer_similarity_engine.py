@@ -3,12 +3,15 @@
 import os
 import sys
 import csv
+import logging
 from typing import List, Dict, Any
 
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from api.database_connector import get_db_connection
 from ai_engine.similarity.profile_vectorizer import vectorize_profile, compute_cosine_similarity
+
+logger = logging.getLogger("EngineerSimilarityEngine")
 
 def load_employee_profiles() -> List[Dict[str, Any]]:
     """
@@ -46,7 +49,7 @@ def load_employee_profiles() -> List[Dict[str, Any]]:
                     "name": row[1],
                     "current_company": row[2] or "Blinkit",
                     "company_name": row[2] or "Blinkit", # Safe duplicate for front-end rendering
-                    "role_name": row[3] or "Software Development Engineer",
+                    "role_name": row[3] or "Software Development Engineer (SDE)",
                     "experience_years": float(row[4] or 0.0),
                     "college": row[5] or "",
                     "degree": row[6] or "",
@@ -59,75 +62,11 @@ def load_employee_profiles() -> List[Dict[str, Any]]:
                 return profiles
         except Exception as e:
             if conn: conn.close()
-            print("PostgreSQL error in load_employee_profiles, falling back to CSV:", e)
+            logger.error(f"PostgreSQL error in load_employee_profiles: {e}")
+            raise RuntimeError(f"Database error in load_employee_profiles: {e}")
 
-    # Fallback to CSV files
-    try:
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        db_dir = os.path.join(base_dir, "database")
-        
-        profiles_csv = os.path.join(db_dir, "industry_layer", "employee_profiles.csv")
-        skills_csv = os.path.join(db_dir, "industry_layer", "employee_skills.csv")
-        skills_master_csv = os.path.join(db_dir, "career_layer", "skills_master.csv")
-        roles_csv = os.path.join(db_dir, "industry_layer", "roles.csv")
-
-        # 1. Map skill ID to skill name
-        skill_id_to_name = {}
-        if os.path.exists(skills_master_csv):
-            with open(skills_master_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    skill_id_to_name[int(row["skill_id"])] = row["skill_name"]
-
-        # 2. Map role ID to role name
-        role_id_to_name = {}
-        if os.path.exists(roles_csv):
-            with open(roles_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    role_id_to_name[int(row["role_id"])] = row["role_name"]
-
-        # 3. Map profile ID to their list of skill names
-        profile_skills = {}
-        if os.path.exists(skills_csv):
-            with open(skills_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    p_id = int(row["profile_id"])
-                    s_id = int(row["skill_id"])
-                    s_name = skill_id_to_name.get(s_id)
-                    if s_name:
-                        if p_id not in profile_skills:
-                            profile_skills[p_id] = []
-                        profile_skills[p_id].append(s_name)
-
-        # 4. Load profiles
-        if os.path.exists(profiles_csv):
-            with open(profiles_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    p_id = int(row["profile_id"])
-                    r_id = int(row["role_id"]) if row.get("role_id") else None
-                    role_name = role_id_to_name.get(r_id, "Software Development Engineer")
-                    
-                    path_str = row.get("career_path", "")
-                    career_path_list = [step.strip() for step in path_str.split("->") if step.strip()]
-                    if not career_path_list:
-                        career_path_list = ["Intern", "SDE-1", "SDE-2"]
-                        
-                    profiles.append({
-                        "profile_id": p_id,
-                        "name": row.get("name", "SDE Peer"),
-                        "current_company": row.get("current_company", "Blinkit"),
-                        "company_name": row.get("current_company", "Blinkit"),
-                        "role_name": role_name,
-                        "experience_years": float(row.get("experience_years", 0.0) or 0.0),
-                        "college": row.get("college", ""),
-                        "degree": row.get("degree", ""),
-                        "previous_company": row.get("previous_company", ""),
-                        "career_path": career_path_list,
-                        "career_path_str": path_str,
-                        "skills": profile_skills.get(p_id, [])
-                    })
-    except Exception as err:
-        print("CSV fallback error in load_employee_profiles:", err)
-
+    if not profiles:
+        raise RuntimeError("No employee profiles available in PostgreSQL database!")
     return profiles
 
 class EngineerSimilarityEngine:

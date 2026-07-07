@@ -8,9 +8,9 @@ class SkillExtractor:
     
     SKILL_MAPPING = {
         "dsa": "DSA (Combined)",
-        "data structures": "DSA (Combined)",
-        "algorithms": "DSA (Combined)",
-        "data structure": "DSA (Combined)",
+        "data structures": "Data Structures",
+        "algorithms": "Algorithms",
+        "data structure": "Data Structures",
         "os": "Operating Systems",
         "operating system": "Operating Systems",
         "operating systems": "Operating Systems",
@@ -42,19 +42,24 @@ class SkillExtractor:
         "postgresql": "PostgreSQL",
         "postgres": "PostgreSQL",
         "redis": "Redis",
-        "kafka": "Kafka",
+        "kafka": "Message Queues (Kafka)",
+        "message queues (kafka)": "Message Queues (Kafka)",
         "docker": "Docker",
         "microservices": "Microservices",
         "microservice": "Microservices",
         "kubernetes": "Kubernetes",
-        "grpc": "gRPC",
-        "nodejs": "NodeJS",
-        "node": "NodeJS",
+        "k8s": "Kubernetes",
         "java": "Java",
         "go": "Go",
         "golang": "Go",
         "python": "Python",
-        "aws": "AWS"
+        "aws": "AWS Basics",
+        "aws basics": "AWS Basics",
+        "linux": "Linux Basics",
+        "linux basics": "Linux Basics",
+        "c programming": "C Programming",
+        "c": "C Programming",
+        "c++": "C++"
     }
 
     @classmethod

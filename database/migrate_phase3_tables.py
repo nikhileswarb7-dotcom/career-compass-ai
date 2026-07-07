@@ -10,13 +10,7 @@ from psycopg2.extras import Json
 # Add parent directory to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-DB_CONFIG = {
-    "host":     "localhost",
-    "port":     5432,
-    "dbname":   "career_compass_ai",
-    "user":     "postgres",
-    "password": "Nikhil@2824"
-}
+from api.database_connector import DB_CONFIG
 
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)

@@ -111,8 +111,14 @@ def load_env_keys():
     Dynamically loads the .env file if it exists, updating os.environ.
     This ensures API key changes are picked up in real-time without server restarts.
     """
-    dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
-    if os.path.exists(dotenv_path):
+    dotenv_path = None
+    for level in [".", "..", "../..", "../../.."]:
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), level, ".env"))
+        if os.path.exists(path):
+            dotenv_path = path
+            break
+            
+    if dotenv_path and os.path.exists(dotenv_path):
         try:
             with open(dotenv_path, "r", encoding="utf-8") as f:
                 for line in f:
@@ -139,7 +145,7 @@ def classify_and_respond(user_message, dream_company="Blinkit", active_stage="ac
     
     if student_context:
         name_str = student_context.get("name", "Candidate")
-        role_str = student_context.get("target_role", "Software Development Engineer")
+        role_str = student_context.get("target_role", "Software Development Engineer (SDE)")
         branch = student_context.get("branch", "")
         cgpa = student_context.get("cgpa", "")
         gaps = student_context.get("missing_skills", [])

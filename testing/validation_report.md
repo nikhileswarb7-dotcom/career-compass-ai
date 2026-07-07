@@ -1,6 +1,6 @@
 # CareerCompass AI — Intelligence Verification & Personalization Validation Report
 
-This report validates that CareerCompass AI's recommendation and roadmap engines are fully dynamic, isolated, and highly responsive to different student profiles. Each candidate targets **Google** (**Software Development Engineer**).
+This report validates that CareerCompass AI's recommendation and roadmap engines are fully dynamic, isolated, and highly responsive to different student profiles. Each candidate targets **Google** (**Software Development Engineer (SDE)**).
 
 ## 1. Profiles & Input Parameters
 
@@ -14,8 +14,8 @@ This report validates that CareerCompass AI's recommendation and roadmap engines
 
 | Profile | Mapped Career Stage | Stage Status | Company Fit Score | Company Fit Category | Overall Readiness |
 | --- | --- | --- | --- | --- | --- |
-| **Beginner** | Foundational / Early Explorer | **Needs Acceleration** | 18.5% | Gap Remediation Required | **9%** |
-| **Intermediate** | Advanced / Pre-Placement | **Needs Acceleration** | 34.1% | Gap Remediation Required | **52%** |
+| **Beginner** | Foundational / Early Explorer | **Needs Acceleration** | 18.5% | Gap Remediation Required | **8%** |
+| **Intermediate** | Advanced / Pre-Placement | **Needs Acceleration** | 34.1% | Gap Remediation Required | **50%** |
 | **Advanced** | Transitioning Professional | **Needs Acceleration** | 58.7% | Potential Match (Needs Prep) | **100%** |
 
 ## 3. Comparative Deep-Dive
@@ -23,132 +23,111 @@ This report validates that CareerCompass AI's recommendation and roadmap engines
 ### Beginner Candidate Details
 
 - **Pillar Strengths**: Skills: 7.2%, Projects: 30.0%, Interview: 44.6%, Profile: 0.0%
-- **Timeline Duration**: 8 Months (Critical (Needs Acceleration) Pace)
+- **Timeline Duration**: 48 Months (Low Pace)
 - **Study Intensity**: 12 hours/week
-- **Urgency Message**: *"You're at 9% readiness. You have time — build systematically. Don't rush. Estimated 8 months on your roadmap."*
+- **Urgency Message**: *"Based on your profile, you have an SDE readiness score of 8%. Focus on closing key skill gaps."*
 
 #### Top 3 SDE Peer Similarities Matched:
-  1. **Myntra** — Senior Software Engineer (Similarity: 63.7%)
-  2. **Blinkit** — SDE I (Similarity: 59.7%)
-  3. **Salesforce** — Senior Software Engineer (Similarity: 58.4%)
+  1. **Google** — Software Development Engineer (SDE) (Similarity: 100.0%)
+  2. **Google** — Software Development Engineer (SDE) (Similarity: 88.1%)
+  3. **No Experience (Fresher)** — Software Development Engineer (SDE) (Similarity: 85.2%)
 
 #### Recommended Projects:
-- **Personal Finance Tracker Dashboard** (Easy): Build a dashboard showing income, expenses, monthly budgets, and chart visualizations using Django and React.
-- **Production SDE Project #28: Spring Boot Application** (Intermediate): Build a production-ready application demonstrating advanced patterns in Spring Boot and MySQL integration.
-- **Real-Time Leaderboard System** (Easy): Build a high-performance gaming scoreboard using Redis Sorted Sets (ZSET) updating 10,000 ranks per second.
-- **Production SDE Project #42: System Design Application** (Intermediate): Build a production-ready application demonstrating advanced patterns in System Design and Kafka integration.
+- **Version Controlled Syntax Sandbox** (Beginner): Build a modular utility using Python or Java, and track changes using Git branches.
+- **Custom Data Structure Library** (Intermediate): Implement a balanced binary search tree or custom HashMap class using OOP principles.
 
 #### Prioritized Skill Gaps & Coach Evidence:
-- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
+- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
 
 #### Personalized Roadmap Timeline Stages:
-- **Stage 1: Stage 1: Languages & Foundations (Object Oriented Programming, Git & GitHub) - 3 weeks** (3 weeks)
-  - Focus: Acquire SDE competencies in: Object Oriented Programming, Git & GitHub
-  - 📚 Learning Resources: Understand core paradigms of Object Oriented Programming, Git & GitHub.
-- **Stage 2: Stage 2: Data Structures & Algorithms (DSA (Combined)) - 3 weeks** (3 weeks)
-  - Focus: Acquire SDE competencies in: DSA (Combined)
-  - 📚 Learning Resources: Understand core paradigms of DSA (Combined).
-- **Stage 3: Stage 3: Databases & Core CS (DBMS, Operating Systems, Computer Networks, etc.) - 11 weeks** (11 weeks)
-  - Focus: Acquire SDE competencies in: DBMS, Operating Systems, Computer Networks, SQL, MySQL. Recommended Project: Personal Finance Tracker Dashboard
-  - 📚 Learning Resources: Understand core paradigms of DBMS, Operating Systems, Computer Networks, SQL, MySQL.; Learn MySQL: Complete MySQL Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=mysql+tutorial; Learn MySQL: MySQL Reference Manual and Best Practices (Documentation) - https://devdocs.io/mysql
-- **Stage 4: Stage 4: Backend API Foundations (Spring Boot, REST APIs) - 4 weeks** (4 weeks)
-  - Focus: Acquire SDE competencies in: Spring Boot, REST APIs. Recommended Project: Production SDE Project #28: Spring Boot Application
-  - 📚 Learning Resources: Understand core paradigms of Spring Boot, REST APIs.; Learn Spring Boot: Complete Spring Boot Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=spring+boot+tutorial; Learn Spring Boot: Spring Boot Reference Manual and Best Practices (Documentation) - https://devdocs.io/spring-boot
-- **Stage 5: Stage 5: Distributed Systems & Caching (Microservices, Redis, Docker) - 4 weeks** (4 weeks)
-  - Focus: Acquire SDE competencies in: Microservices, Redis, Docker. Recommended Project: Real-Time Leaderboard System
-  - 📚 Learning Resources: Understand core paradigms of Microservices, Redis, Docker.; Learn Redis: Complete Redis Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=redis+tutorial; Learn Redis: Redis Reference Manual and Best Practices (Documentation) - https://devdocs.io/redis
-- **Stage 6: Stage 6: System Design & Architecture (System Design, Low Level Design, High Level Design) - 8 weeks** (8 weeks)
-  - Focus: Acquire SDE competencies in: System Design, Low Level Design, High Level Design. Recommended Project: Production SDE Project #42: System Design Application
-  - 📚 Learning Resources: Understand core paradigms of System Design, Low Level Design, High Level Design.; Learn System Design: Complete System Design Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=system+design+tutorial; Learn System Design: System Design Reference Manual and Best Practices (Documentation) - https://devdocs.io/system-design
+- **Stage 1: Stage 1 (Spaced Foundation): Programming Foundations & Git (Git & GitHub) - 23 weeks** (23 weeks)
+  - Focus: Establish fundamental SDE programming capabilities and version control tracking. Focus on SDE competencies in: Git & GitHub. Recommended Project: Version Controlled Syntax Sandbox.
+  - 📚 Learning Resources: Understand core paradigms of Git & GitHub.; Learn Java: Java Programming for Beginners (FreeCodeCamp) (YouTube) - https://www.youtube.com/embed/A74TOX803D0; Learn Git: Git & GitHub Version Control Tutorial (FreeCodeCamp) (YouTube) - https://www.youtube.com/embed/YS4e4q9oBaU
+- **Stage 2: Stage 2 (Spaced Foundation): Data Structures & OOP (DSA (Combined), Operating Systems, Computer Networks, etc.) - 115 weeks** (115 weeks)
+  - Focus: Understand object-oriented paradigms and analyze algorithm time/space complexities. Focus on SDE competencies in: DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming. Recommended Project: Custom Data Structure Library.
+  - 📚 Learning Resources: Understand core paradigms of DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming.; Learn DSA: Data Structures & Algorithms Course for SDEs (YouTube) - https://www.youtube.com/embed/RGOj5yH7evk; Learn OOP: Object Oriented Programming (OOP) Crash Course (YouTube) - https://www.youtube.com/embed/zOjov-2OZ0E
+- **Stage 3: Stage 3 (Spaced Foundation): Databases & Web APIs (DBMS, SQL) - 46 weeks** (46 weeks)
+  - Focus: Build database schemas, normalizations, and deploy secure backend REST services. Focus on SDE competencies in: DBMS, SQL. Recommended Project: RESTful Web Store Catalog Backend.
+  - 📚 Learning Resources: Understand core paradigms of DBMS, SQL.; Learn SQL: SQL Tutorial - Full Database Course for Beginners (YouTube) - https://www.youtube.com/embed/HXV3zeQKqGY; Learn Spring Boot: Spring Boot Backend Development Tutorial (YouTube) - https://www.youtube.com/embed/35EQXmHKZYs
+- **Stage 4: Stage 4 (Spaced Foundation): System Design, Scale & Cloud (Docker) - 23 weeks** (23 weeks)
+  - Focus: Design fault-tolerant high-concurrency systems using caches, message streams, and containers. Focus on SDE competencies in: Docker. Recommended Project: Real-Time Leaderboard System.
+  - 📚 Learning Resources: Understand core paradigms of Docker.; Learn Docker: Complete Docker Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=docker+tutorial; Learn Docker: Complete Docker Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=docker+tutorial
 
 ---
 
 ### Intermediate Candidate Details
 
-- **Pillar Strengths**: Skills: 17.3%, Projects: 30.0%, Interview: 63.1%, Profile: 77.2%
-- **Timeline Duration**: 3 Months (Critical (Needs Acceleration) Pace)
+- **Pillar Strengths**: Skills: 17.3%, Projects: 30.0%, Interview: 63.1%, Profile: 59.8%
+- **Timeline Duration**: 18 Months (High Pace)
 - **Study Intensity**: 30 hours/week
-- **Urgency Message**: *"You're 52% ready. Follow the roadmap consistently. Estimated 3 month(s) needed."*
+- **Urgency Message**: *"Based on your profile, you have an SDE readiness score of 50%. Focus on closing key skill gaps."*
 
 #### Top 3 SDE Peer Similarities Matched:
-  1. **Microsoft** — SDE I (Similarity: 60.1%)
-  2. **PayPal** — Backend Engineer (Similarity: 56.3%)
-  3. **Myntra** — Senior Software Engineer (Similarity: 55.5%)
+  1. **Raj Digital Solutions** — Software Development Engineer (SDE) (Similarity: 93.4%)
+  2. **Blinkit** — Software Development Engineer (SDE) (Similarity: 89.6%)
+  3. **PayPal** — Software Development Engineer (SDE) (Similarity: 89.2%)
 
 #### Recommended Projects:
+- **Custom Data Structure Library** (Intermediate): Implement a balanced binary search tree or custom HashMap class using OOP principles.
 - **Production SDE Project #28: Spring Boot Application** (Intermediate): Build a production-ready application demonstrating advanced patterns in Spring Boot and MySQL integration.
-- **Production SDE Project #28: Spring Boot Application** (Intermediate): Build a production-ready application demonstrating advanced patterns in Spring Boot and MySQL integration.
-- **API Gateway with Dynamic Rate Limiting** (Intermediate): Implement a reverse proxy engine that routes requests and throttles requests using token bucket algorithm in Redis.
-- **Production SDE Project #42: System Design Application** (Intermediate): Build a production-ready application demonstrating advanced patterns in System Design and Kafka integration.
 
 #### Prioritized Skill Gaps & Coach Evidence:
-- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
+- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
 
 #### Personalized Roadmap Timeline Stages:
-- **Stage 1: Stage 1: Languages & Foundations (Object Oriented Programming) - 2 weeks** (2 weeks)
-  - Focus: Acquire SDE competencies in: Object Oriented Programming
-  - 📚 Learning Resources: Understand core paradigms of Object Oriented Programming.
-- **Stage 2: Stage 2: Data Structures & Algorithms (DSA (Combined)) - 2 weeks** (2 weeks)
-  - Focus: Acquire SDE competencies in: DSA (Combined)
-  - 📚 Learning Resources: Understand core paradigms of DSA (Combined).
-- **Stage 3: Stage 3: Databases & Core CS (DBMS, Operating Systems, Computer Networks, etc.) - 4 weeks** (4 weeks)
-  - Focus: Acquire SDE competencies in: DBMS, Operating Systems, Computer Networks, MySQL. Recommended Project: Production SDE Project #28: Spring Boot Application
-  - 📚 Learning Resources: Understand core paradigms of DBMS, Operating Systems, Computer Networks, MySQL.; Learn MySQL: Mastering MySQL Hands-On Exercises (GitHub) - https://github.com/topics/mysql-exercises; Learn MySQL: Top 50 MySQL Interview Questions & Answers (GeeksForGeeks) - https://geeksforgeeks.org/mysql-interview-prep
-- **Stage 4: Stage 4: Backend API Foundations (Spring Boot, REST APIs) - 2 weeks** (2 weeks)
-  - Focus: Acquire SDE competencies in: Spring Boot, REST APIs. Recommended Project: Production SDE Project #28: Spring Boot Application
-  - 📚 Learning Resources: Understand core paradigms of Spring Boot, REST APIs.; Learn Spring Boot: Mastering Spring Boot Hands-On Exercises (GitHub) - https://github.com/topics/spring-boot-exercises; Learn Spring Boot: Top 50 Spring Boot Interview Questions & Answers (GeeksForGeeks) - https://geeksforgeeks.org/spring-boot-interview-prep
-- **Stage 5: Stage 5: Distributed Systems & Caching (Microservices, Redis, Docker) - 2 weeks** (2 weeks)
-  - Focus: Acquire SDE competencies in: Microservices, Redis, Docker. Recommended Project: API Gateway with Dynamic Rate Limiting
-  - 📚 Learning Resources: Understand core paradigms of Microservices, Redis, Docker.; Learn Redis: Mastering Redis Hands-On Exercises (GitHub) - https://github.com/topics/redis-exercises; Learn Redis: Top 50 Redis Interview Questions & Answers (GeeksForGeeks) - https://geeksforgeeks.org/redis-interview-prep
-- **Stage 6: Stage 6: System Design & Architecture (System Design, Low Level Design, High Level Design) - 3 weeks** (3 weeks)
-  - Focus: Acquire SDE competencies in: System Design, Low Level Design, High Level Design. Recommended Project: Production SDE Project #42: System Design Application
-  - 📚 Learning Resources: Understand core paradigms of System Design, Low Level Design, High Level Design.; Learn System Design: Mastering System Design Hands-On Exercises (GitHub) - https://github.com/topics/system-design-exercises; Learn System Design: Top 50 System Design Interview Questions & Answers (GeeksForGeeks) - https://geeksforgeeks.org/system-design-interview-prep
+- **Stage 1: Stage 1 (Placement Prep): Data Structures & OOP (DSA (Combined), Operating Systems, Computer Networks, etc.) - 24 weeks** (24 weeks)
+  - Focus: Understand object-oriented paradigms and analyze algorithm time/space complexities. Focus on SDE competencies in: DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming. Recommended Project: Custom Data Structure Library.
+  - 📚 Learning Resources: Understand core paradigms of DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming.; Learn DSA: Data Structures & Algorithms Course for SDEs (YouTube) - https://www.youtube.com/embed/RGOj5yH7evk; Learn OOP: Object Oriented Programming (OOP) Crash Course (YouTube) - https://www.youtube.com/embed/zOjov-2OZ0E
+- **Stage 2: Stage 2 (Placement Prep): Databases & Web APIs (DBMS, Spring Boot, REST APIs, etc.) - 24 weeks** (24 weeks)
+  - Focus: Build database schemas, normalizations, and deploy secure backend REST services. Focus on SDE competencies in: DBMS, Spring Boot, REST APIs, MySQL. Recommended Project: Production SDE Project #28: Spring Boot Application.
+  - 📚 Learning Resources: Understand core paradigms of DBMS, Spring Boot, REST APIs, MySQL.; Learn Spring Boot: Complete Spring Boot Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=spring+boot+tutorial; Learn MySQL: Complete MySQL Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=mysql+tutorial
+- **Stage 3: Stage 3 (Placement Prep): System Design, Scale & Cloud (System Design, Low Level Design, High Level Design, etc.) - 30 weeks** (30 weeks)
+  - Focus: Design fault-tolerant high-concurrency systems using caches, message streams, and containers. Focus on SDE competencies in: System Design, Low Level Design, High Level Design, Microservices, Redis, Docker. Recommended Project: Distributed Web Crawler.
+  - 📚 Learning Resources: Understand core paradigms of System Design, Low Level Design, High Level Design, Microservices, Redis, Docker.; Learn Redis: Complete Redis Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=redis+tutorial; Learn Docker: Complete Docker Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=docker+tutorial
 
 ---
 
 ### Advanced Candidate Details
 
 - **Pillar Strengths**: Skills: 48.6%, Projects: 30.0%, Interview: 83.5%, Profile: 91.8%
-- **Timeline Duration**: 5 Months (Critical (Needs Acceleration) Pace)
+- **Timeline Duration**: 12 Months (Medium Pace)
 - **Study Intensity**: 14 hours/week
-- **Urgency Message**: *"You're nearly interview-ready for Google Software Development Engineer! Focus on mock interviews and system design polish. Estimated 5 month(s) to be fully ready."*
+- **Urgency Message**: *"Based on your profile, you have an SDE readiness score of 100%. Focus on closing key skill gaps."*
 
 #### Top 3 SDE Peer Similarities Matched:
-  1. **Blinkit** — SDE I (Similarity: 60.3%)
-  2. **Google** — SDE I (Similarity: 55.0%)
-  3. **Blinkit** — Backend Engineer (Similarity: 51.2%)
+  1. **Swiggy** — Software Development Engineer (SDE) (Similarity: 88.8%)
+  2. **Swiggy** — Software Development Engineer (SDE) (Similarity: 86.2%)
+  3. **Blinkit** — Software Development Engineer (SDE) (Similarity: 84.4%)
 
 #### Recommended Projects:
-- **Production SDE Project #33: MySQL Application** (Advanced): Build a production-ready application demonstrating advanced patterns in MySQL and NextJS integration.
+- **Version Controlled Syntax Sandbox** (Beginner): Build a modular utility using Python or Java, and track changes using Git branches.
+- **Custom Data Structure Library** (Intermediate): Implement a balanced binary search tree or custom HashMap class using OOP principles.
 
 #### Prioritized Skill Gaps & Coach Evidence:
-- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
-- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer candidates. (+4.6% Readiness).
+- **DSA (Combined)** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **DBMS** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Operating Systems** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
+- **Computer Networks** (Priority: 5.7 | Impact: **Medium**): Required SDE competency ('High' priority) for Google Software Development Engineer (SDE) candidates. (+4.6% Readiness).
 
 #### Personalized Roadmap Timeline Stages:
-- **Stage 1: Stage 1: Languages & Foundations (Object Oriented Programming, Git & GitHub) - 3 weeks** (3 weeks)
-  - Focus: Acquire SDE competencies in: Object Oriented Programming, Git & GitHub
-  - 📚 Learning Resources: Understand core paradigms of Object Oriented Programming, Git & GitHub.
-- **Stage 2: Stage 2: Data Structures & Algorithms (DSA (Combined)) - 3 weeks** (3 weeks)
-  - Focus: Acquire SDE competencies in: DSA (Combined)
-  - 📚 Learning Resources: Understand core paradigms of DSA (Combined).
-- **Stage 3: Stage 3: Databases & Core CS (DBMS, Operating Systems, Computer Networks, etc.) - 8 weeks** (8 weeks)
-  - Focus: Acquire SDE competencies in: DBMS, Operating Systems, Computer Networks, MySQL. Recommended Project: Production SDE Project #33: MySQL Application
-  - 📚 Learning Resources: Understand core paradigms of DBMS, Operating Systems, Computer Networks, MySQL.; Learn MySQL: MySQL Certification & Production Architecture (Coursera) - https://www.coursera.org/search?query=mysql; Learn MySQL: MySQL Certification & Production Architecture (Coursera) - https://www.coursera.org/search?query=mysql
-- **Stage 4: Stage 4: Backend API Foundations (REST APIs) - 2 weeks** (2 weeks)
-  - Focus: Acquire SDE competencies in: REST APIs
-  - 📚 Learning Resources: Understand core paradigms of REST APIs.
-- **Stage 5: Stage 5: System Design & Architecture (Low Level Design, High Level Design) - 4 weeks** (4 weeks)
-  - Focus: Acquire SDE competencies in: Low Level Design, High Level Design
-  - 📚 Learning Resources: Understand core paradigms of Low Level Design, High Level Design.
+- **Stage 1: Stage 1 (Professional Track): Programming Foundations & Git (Git & GitHub) - 5 weeks** (5 weeks)
+  - Focus: Establish fundamental SDE programming capabilities and version control tracking. Focus on SDE competencies in: Git & GitHub. Recommended Project: Version Controlled Syntax Sandbox.
+  - 📚 Learning Resources: Understand core paradigms of Git & GitHub.; Learn Java: Java Programming for Beginners (FreeCodeCamp) (YouTube) - https://www.youtube.com/embed/A74TOX803D0; Learn Git: Git & GitHub Version Control Tutorial (FreeCodeCamp) (YouTube) - https://www.youtube.com/embed/YS4e4q9oBaU
+- **Stage 2: Stage 2 (Professional Track): Data Structures & OOP (DSA (Combined), Operating Systems, Computer Networks, etc.) - 23 weeks** (23 weeks)
+  - Focus: Understand object-oriented paradigms and analyze algorithm time/space complexities. Focus on SDE competencies in: DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming. Recommended Project: Custom Data Structure Library.
+  - 📚 Learning Resources: Understand core paradigms of DSA (Combined), Operating Systems, Computer Networks, Object Oriented Programming.; Learn DSA: Data Structures & Algorithms Course for SDEs (YouTube) - https://www.youtube.com/embed/RGOj5yH7evk; Learn OOP: Object Oriented Programming (OOP) Crash Course (YouTube) - https://www.youtube.com/embed/zOjov-2OZ0E
+- **Stage 3: Stage 3 (Professional Track): Databases & Web APIs (DBMS, REST APIs, MySQL) - 13 weeks** (13 weeks)
+  - Focus: Build database schemas, normalizations, and deploy secure backend REST services. Focus on SDE competencies in: DBMS, REST APIs, MySQL. Recommended Project: Production SDE Project #33: MySQL Application.
+  - 📚 Learning Resources: Understand core paradigms of DBMS, REST APIs, MySQL.; Learn MySQL: Complete MySQL Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=mysql+tutorial; Learn MySQL: Complete MySQL Beginner's Playlist 2026 (YouTube) - https://youtube.com/results?search_query=mysql+tutorial
+- **Stage 4: Stage 4 (Professional Track): System Design, Scale & Cloud (Low Level Design, High Level Design) - 10 weeks** (10 weeks)
+  - Focus: Design fault-tolerant high-concurrency systems using caches, message streams, and containers. Focus on SDE competencies in: Low Level Design, High Level Design. Recommended Project: High-Concurrency Order Dispatching Engine.
+  - 📚 Learning Resources: Understand core paradigms of Low Level Design, High Level Design.; Learn System Design: System Design Primer - High Level Architecture (YouTube) - https://www.youtube.com/embed/m8I0esEK6so; Learn Kafka: Apache Kafka for System Design & Queues (ByteByteGo) (YouTube) - https://www.youtube.com/embed/R87354hyY2E
 
 ---
 
@@ -158,14 +137,14 @@ To ensure recommendation quality, different career stages and qualifications mus
 
 | Comparison Pair | Missing Skill Overlap | Project Overlap | Resource Overlap | Coach Skill Overlap | Combined Recommendation Overlap | Roadmap Stage Overlap |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Beginner vs Intermediate** | 87.5% | 40.0% | 0.0% | 87.5% | **55.2%** | **0.0%** |
-| **Intermediate vs Advanced** | 60.0% | 0.0% | 33.3% | 60.0% | **44.0%** | **0.0%** |
-| **Beginner vs Advanced** | 62.5% | 0.0% | 14.3% | 62.5% | **39.3%** | **22.2%** |
+| **Beginner vs Intermediate** | 87.5% | 33.3% | 14.3% | 87.5% | **61.5%** | **0.0%** |
+| **Intermediate vs Advanced** | 60.0% | 33.3% | 14.3% | 60.0% | **44.0%** | **0.0%** |
+| **Beginner vs Advanced** | 62.5% | 100.0% | 100.0% | 62.5% | **72.7%** | **0.0%** |
 
 ### Personalization Verification Checklist
 
 #### Comparison: **Beginner vs Intermediate**
-- ✅ **[PASSED] Recommendation overlap is 55.2%** (Safely below 60.0% limit. Items are successfully personalized!)
+- ❌ **[FLAGGED] Recommendation overlap is 61.5%** (Exceeds maximum allowable limit of 60.0% overlap. Personalization warning!)
 - ✅ **[PASSED] Roadmap overlap is 0.0%** (Safely below 50.0% limit. Roadmaps are successfully custom-tailored!)
 
 #### Comparison: **Intermediate vs Advanced**
@@ -173,8 +152,8 @@ To ensure recommendation quality, different career stages and qualifications mus
 - ✅ **[PASSED] Roadmap overlap is 0.0%** (Safely below 50.0% limit. Roadmaps are successfully custom-tailored!)
 
 #### Comparison: **Beginner vs Advanced**
-- ✅ **[PASSED] Recommendation overlap is 39.3%** (Safely below 60.0% limit. Items are successfully personalized!)
-- ✅ **[PASSED] Roadmap overlap is 22.2%** (Safely below 50.0% limit. Roadmaps are successfully custom-tailored!)
+- ❌ **[FLAGGED] Recommendation overlap is 72.7%** (Exceeds maximum allowable limit of 60.0% overlap. Personalization warning!)
+- ✅ **[PASSED] Roadmap overlap is 0.0%** (Safely below 50.0% limit. Roadmaps are successfully custom-tailored!)
 
 ## 5. Conclusion
 

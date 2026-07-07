@@ -6,13 +6,8 @@ import sys
 import json
 import psycopg2
 
-DB_CONFIG = {
-    "host":     "localhost",
-    "port":     5432,
-    "dbname":   "career_compass_ai",
-    "user":     "postgres",
-    "password": "Nikhil@2824"
-}
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from api.database_connector import DB_CONFIG
 
 def get_connection():
     return psycopg2.connect(**DB_CONFIG)
@@ -237,16 +232,36 @@ COMPANIES_DATA = [
 ]
 
 ROLES_DATA = [
-    {"name": "Software Development Engineer", "desc": "Designs and builds backend microservices, handles DSA algorithms, and works on system scale."},
-    {"name": "Software Development Engineer I (SDE-1)", "desc": "Entry-level SDE role. Focuses on writing clean code, modular components, and solving DSA problems."},
-    {"name": "Junior Software Engineer", "desc": "Assists in component development, bug fixing, database setups, and API testing under mentorship."},
-    {"name": "Trainee Engineer", "desc": "Apprenticeship SDE role. Learns programming syntax, OOP foundations, basic git controls, and system logs."},
-    {"name": "QA Automation Engineer", "desc": "Writes browser automation test scripts (Playwright/Selenium), test cases, and asserts API endpoints."},
-    {"name": "Backend Engineer", "desc": "Focuses on backend architectures, high-performance database queries, caching layers, and messaging pipelines."},
-    {"name": "Frontend Engineer", "desc": "Focuses on user interfaces, state managers, React, TypeScript, NextJS, CSS animations, and browser rendering."},
-    {"name": "SRE / DevOps Engineer", "desc": "Handles cloud infrastructure, Docker container registries, CI/CD pipelines, Kubernetes, and log observability dashboards."},
-    {"name": "Mobile Engineer", "desc": "Builds mobile applications using Swift (iOS) or Kotlin (Android), mobile architectures, and app store deployment workflows."},
-    {"name": "AI / ML Engineer", "desc": "Focuses on mathematical stats, machine learning pipelines, deep learning networks (PyTorch/TensorFlow), and MLOps serving APIs."}
+    {"name": "Software Development Engineer (SDE)", "desc": "Designs, builds, and maintains backend services and APIs at scale."},
+    {"name": "Backend Developer", "desc": "Focuses on backend architectures, high-performance database queries, caching layers, and messaging pipelines."},
+    {"name": "Frontend Developer", "desc": "Focuses on user interfaces, state managers, React, TypeScript, NextJS, CSS animations, and browser rendering."},
+    {"name": "Full Stack Developer", "desc": "Handles both frontend and backend development lifecycle, integrating services and client applications."},
+    {"name": "Software Engineer", "desc": "General software engineering role focusing on modular application design, features, and algorithmic optimization."},
+    {"name": "Mobile App Developer (Android)", "desc": "Builds mobile applications using Kotlin or Java on the Android SDK."},
+    {"name": "Mobile App Developer (iOS)", "desc": "Builds mobile applications using Swift or Objective-C on the iOS SDK."},
+    {"name": "Flutter Developer", "desc": "Develops cross-platform mobile applications using Flutter and Dart."},
+    {"name": "React Native Developer", "desc": "Develops cross-platform mobile applications using React Native and JavaScript/TypeScript."},
+    {"name": "DevOps Engineer", "desc": "Automates deployment pipelines, CI/CD, and manages cloud platform services."},
+    {"name": "Cloud Engineer", "desc": "Designs, provisions, and maintains multi-tier public/private cloud infrastructure."},
+    {"name": "Site Reliability Engineer (SRE)", "desc": "Focuses on infrastructure reliability, scalability, incident response, and performance tuning."},
+    {"name": "Data Analyst", "desc": "Analyzes large datasets, extracts insights, designs SQL reports, and maintains BI dashboards."},
+    {"name": "Data Engineer", "desc": "Builds ETL pipelines, distributed data stores, and handles data lakes and warehouses."},
+    {"name": "Data Scientist", "desc": "Applies statistical modeling, regression, hypothesis testing, and analytics to predict user outcomes."},
+    {"name": "AI Engineer", "desc": "Integrates LLM models, agents, vector databases, and cognitive services into applications."},
+    {"name": "Machine Learning Engineer", "desc": "Trains, tunes, and deploys predictive classifiers and regressors using ML pipelines."},
+    {"name": "Deep Learning Engineer", "desc": "Designs and trains artificial neural networks, CNNs, RNNs, and Transformers."},
+    {"name": "NLP Engineer", "desc": "Focuses on natural language processing, entity extraction, sentiment analysis, and tag classification."},
+    {"name": "Computer Vision Engineer", "desc": "Focuses on image/video processing, object detection, segmentation, and visual classification."},
+    {"name": "MLOps Engineer", "desc": "Automates machine learning model tracking, versioning, deployment, and monitoring metrics."},
+    {"name": "Cyber Security Engineer", "desc": "Secures server environments, networks, endpoints, and audits authentication workflows."},
+    {"name": "Security Analyst", "desc": "Monitors traffic, logs, alerts, detects vulnerabilities, and ensures system compliance."},
+    {"name": "SDET (Software Development Engineer in Test)", "desc": "Designs automation test frameworks, unit test suites, and mock assertion suites."},
+    {"name": "QA Automation Engineer", "desc": "Writes browser automation scripts (Playwright/Selenium) and asserts API endpoint payloads."},
+    {"name": "Product Manager", "desc": "Defines product roadmaps, requirements, coordinates loops, and manages metrics."},
+    {"name": "Associate Product Manager (APM)", "desc": "Assists product management in building user stories, feature specs, and tracking analytics."},
+    {"name": "Business Analyst", "desc": "Translates business requirements into technical specs and conducts data-driven feasibility analysis."},
+    {"name": "UI/UX Designer", "desc": "Designs user journeys, wireframes, vector assets, layouts, and interactive visual designs."},
+    {"name": "Embedded Software Engineer", "desc": "Writes low-level firmware, real-time operating systems code, and interfaces with hardware controllers."}
 ]
 
 def seed_database():
@@ -323,26 +338,19 @@ def seed_database():
     # Reset companies sequence to max + 1
     cur.execute("SELECT setval('companies_company_id_seq', COALESCE((SELECT MAX(company_id)+1 FROM companies), 1), false);")
 
-    # Reset roles sequence first to avoid unique key conflicts with roles 1-12
-    cur.execute("SELECT setval('roles_role_id_seq', COALESCE((SELECT MAX(role_id)+1 FROM roles), 1), false);")
+    print("Clearing roles table...")
+    cur.execute("TRUNCATE TABLE roles CASCADE;")
 
     print("Seeding Roles...")
     roles_map = {}
-    for r in ROLES_DATA:
-        if r["name"] == "Software Development Engineer":
-            cur.execute("""
-                INSERT INTO roles (role_id, role_name, description, responsibilities, experience_levels, career_level)
-                VALUES (99, %s, %s, '[]', '[]', 'Mid')
-                ON CONFLICT (role_name) DO UPDATE SET description = EXCLUDED.description, career_level = EXCLUDED.career_level
-                RETURNING role_id;
-            """, (r["name"], r["desc"]))
-        else:
-            cur.execute("""
-                INSERT INTO roles (role_name, description, responsibilities, experience_levels, career_level)
-                VALUES (%s, %s, '[]', '[]', 'Mid')
-                ON CONFLICT (role_name) DO UPDATE SET description = EXCLUDED.description, career_level = EXCLUDED.career_level
-                RETURNING role_id;
-            """, (r["name"], r["desc"]))
+    for idx, r in enumerate(ROLES_DATA):
+        role_id = idx + 1
+        cur.execute("""
+            INSERT INTO roles (role_id, role_name, description, responsibilities, experience_levels, career_level)
+            VALUES (%s, %s, %s, '[]', '[]', 'Mid')
+            ON CONFLICT (role_name) DO UPDATE SET description = EXCLUDED.description, career_level = EXCLUDED.career_level
+            RETURNING role_id;
+        """, (role_id, r["name"], r["desc"]))
         roles_map[r["name"].lower()] = cur.fetchone()[0]
 
     # Reset roles sequence again
@@ -550,6 +558,33 @@ def seed_database():
                     "milestone": "Integrate test validations in automated server build cycles."
                 }
             ]
+        elif "analyst" in r_low:
+            return [
+                {
+                    "title": "SQL Foundations & Data Exploration",
+                    "focus": f"Mastery of relational databases, query writing, grouping, joins, and aggregates for analytical tasks at {c_name}.",
+                    "goals": ["Write complex SQL join queries", "Analyze data distributions using GROUP BY", "Understand indexes and query optimization"],
+                    "milestone": "Complete 30 SQL challenge problems on HackerRank/LeetCode."
+                },
+                {
+                    "title": "Python Data Analysis (Pandas & NumPy)",
+                    "focus": f"Data cleaning, processing, statistical modeling, and scripting workflows tailored for {c_name}.",
+                    "goals": ["Load and clean noisy datasets using Pandas", "Perform vector operations with NumPy", "Perform exploratory data analysis (EDA)"],
+                    "milestone": "Clean and explore a raw dataset of 10,000 transaction records."
+                },
+                {
+                    "title": "Data Visualization & BI Tools",
+                    "focus": f"Designing interactive dashboards, plotting charts, and communicating metrics/reporting structures.",
+                    "goals": ["Build a complete interactive BI dashboard (Tableau/PowerBI)", "Create charts and heatmaps using Seaborn/Matplotlib", "Define key business performance indicators (KPIs)"],
+                    "milestone": "Publish an interactive analytics dashboard for business stakeholders."
+                },
+                {
+                    "title": "Business Analytics & Predictive Modeling",
+                    "focus": f"Applying statistical bounds, hypothesis testing, and basic regression models to business metrics.",
+                    "goals": ["Perform A/B testing and check significance", "Build a linear/logistic regression predictive model", "Synthesize findings into an executive report"],
+                    "milestone": "Present a validation report predicting user retention outcomes."
+                }
+            ]
         else: # SDE General, SDE-1, Junior SDE, Trainee
             return [
                 {
@@ -624,67 +659,48 @@ def seed_database():
     cur.execute("SELECT skill_id, skill_name FROM skills;")
     skills_db = {r[1]: r[0] for r in cur.fetchall()}
 
-    role_skill_profiles = {
-        "software development engineer": {
-            "High": ["Java", "DSA (Combined)", "DBMS", "Operating Systems", "Computer Networks", "Spring Boot", "System Design"],
-            "Medium": ["SQL", "MySQL", "Git & GitHub", "Low Level Design", "High Level Design", "Object Oriented Programming", "REST APIs"],
-            "Low": ["Docker", "Redis", "Microservices"]
-        },
-        "software development engineer i (sde-1)": {
-            "High": ["Java", "DSA (Combined)", "DBMS"],
-            "Medium": ["SQL", "MySQL", "Git & GitHub", "Object Oriented Programming", "REST APIs"],
-            "Low": ["Operating Systems", "Computer Networks", "Docker"]
-        },
-        "junior software engineer": {
-            "High": ["Java", "DSA (Combined)"],
-            "Medium": ["SQL", "Git & GitHub", "Object Oriented Programming"],
-            "Low": ["DBMS", "REST APIs"]
-        },
-        "trainee engineer": {
-            "High": ["C Programming", "Java"],
-            "Medium": ["Data Structures", "Object Oriented Programming", "Git & GitHub"],
-            "Low": ["Linux Basics"]
-        },
-        "qa automation engineer": {
-            "High": ["Python", "Git & GitHub"],
-            "Medium": ["Java", "SQL", "Object Oriented Programming"],
-            "Low": ["REST APIs"]
-        },
-        "backend engineer": {
-            "High": ["Python", "SQL", "PostgreSQL", "Redis", "Microservices"],
-            "Medium": ["Java", "Spring Boot", "REST APIs", "Message Queues (Kafka)", "Low Level Design", "Git & GitHub"],
-            "Low": ["Docker", "AWS Basics", "System Design"]
-        },
-        "frontend engineer": {
-            "High": ["Git & GitHub", "Object Oriented Programming"],
-            "Medium": ["SQL", "Data Structures", "Algorithms", "REST APIs"],
-            "Low": ["Docker", "System Design"]
-        },
-        "sre / devops engineer": {
-            "High": ["Docker", "AWS Basics", "Linux Basics", "Git & GitHub"],
-            "Medium": ["Python", "Computer Networks", "Operating Systems", "Message Queues (Kafka)"],
-            "Low": ["System Design", "PostgreSQL", "Redis"]
-        },
-        "mobile engineer": {
-            "High": ["Java", "Git & GitHub", "Object Oriented Programming"],
-            "Medium": ["Data Structures", "Algorithms", "REST APIs"],
-            "Low": ["DBMS"]
-        },
-        "ai / ml engineer": {
-            "High": ["Python", "Algorithms", "Data Structures"],
-            "Medium": ["SQL", "PostgreSQL", "Git & GitHub"],
-            "Low": ["AWS Basics", "Linux Basics"]
-        }
-    }
-
     role_skills_seeded = 0
     for (c_id, r_id), company_role_id in company_roles_map.items():
         cur.execute("SELECT role_name FROM roles WHERE role_id = %s;", (r_id,))
         role_name = cur.fetchone()[0].lower().strip()
         
-        profile = role_skill_profiles.get(role_name)
-        if not profile:
-            profile = role_skill_profiles["software development engineer"]
+        # Dynamically determine the profile priority skills based on specialization/role_name
+        if any(k in role_name for k in ["devops", "sre", "cloud", "reliability", "infrastructure"]):
+            profile = {
+                "High": ["Docker", "AWS Basics", "Linux Basics", "Git & GitHub"],
+                "Medium": ["Python", "Computer Networks", "Operating Systems", "Message Queues (Kafka)"],
+                "Low": ["System Design", "PostgreSQL", "Redis"]
+            }
+        elif any(k in role_name for k in ["frontend", "ui", "ux", "design"]):
+            profile = {
+                "High": ["React", "TypeScript", "NextJS", "Git & GitHub"],
+                "Medium": ["JavaScript Foundations", "CSS Grid & Flexbox", "REST APIs", "NodeJS"],
+                "Low": ["Docker", "System Design"]
+            }
+        elif any(k in role_name for k in ["mobile", "android", "ios", "flutter", "native"]):
+            profile = {
+                "High": ["Java", "Git & GitHub", "Object Oriented Programming"],
+                "Medium": ["Data Structures", "Algorithms", "REST APIs"],
+                "Low": ["DBMS"]
+            }
+        elif any(k in role_name for k in ["ai", "ml", "machine", "deep", "nlp", "vision", "scientist", "analyst", "data"]):
+            profile = {
+                "High": ["Python", "Algorithms", "Data Structures"],
+                "Medium": ["SQL", "PostgreSQL", "Git & GitHub"],
+                "Low": ["AWS Basics", "Linux Basics"]
+            }
+        elif "security" in role_name:
+            profile = {
+                "High": ["Linux Basics", "Computer Networks", "Git & GitHub"],
+                "Medium": ["Python", "Operating Systems", "AWS Basics"],
+                "Low": ["System Design"]
+            }
+        else: # SDE, Software Engineer, Full Stack, Product, Embedded, SDET, QA
+            profile = {
+                "High": ["Java", "DSA (Combined)", "DBMS", "Operating Systems", "Computer Networks", "Spring Boot", "System Design"],
+                "Medium": ["SQL", "MySQL", "Git & GitHub", "Low Level Design", "High Level Design", "Object Oriented Programming", "REST APIs"],
+                "Low": ["Docker", "Redis", "Microservices"]
+            }
             
         for priority, skill_names in profile.items():
             for s_name in skill_names:

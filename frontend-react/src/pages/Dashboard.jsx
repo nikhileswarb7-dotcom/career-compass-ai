@@ -5,17 +5,39 @@ import { BarChart3, Users, Award, Shield, BookOpen, AlertCircle, Compass, CheckC
 import { motion } from 'framer-motion';
 import './Dashboard.css';
 
+// Animated counter hook for readiness score
+function useAnimatedCounter(target, duration = 400) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (target <= 0) return;
+    let start = 0;
+    const startTime = performance.now();
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }, [target, duration]);
+  return count;
+}
+
 export default function Dashboard() {
   const { sessionId, careerPlan, setCareerPlan, updateSessionStatus } = useApp();
+  const plan = careerPlan || {};
+  const score = plan.readiness_score || 35;
+  const animatedScore = useAnimatedCounter(score);
   const [loading, setLoading] = useState(true);
   const [statsData, setStatsData] = useState(null);
   const [error, setError] = useState(null);
   const [loaderSteps, setLoaderSteps] = useState([
-    { label: 'Loading candidate profile', status: 'active' },
-    { label: 'Computing readiness score', status: 'pending' },
-    { label: 'Matching similar engineers', status: 'pending' },
-    { label: 'Analyzing hiring intelligence', status: 'pending' },
-    { label: 'Preparing dashboard', status: 'pending' }
+    { label: 'Loading candidate profile indices', status: 'active' },
+    { label: 'Computing target readiness rating', status: 'pending' },
+    { label: 'Matching successful career twins', status: 'pending' },
+    { label: 'Formulating command dashboard', status: 'pending' }
   ]);
   const navigate = useNavigate();
 
@@ -43,8 +65,9 @@ export default function Dashboard() {
       updateStep(1, 'active');
 
       try {
+        const skipLlm = localStorage.getItem('skip_llm') === 'true' ? '?skip_llm=true' : '';
         const [readinessRes, statsRes] = await Promise.all([
-          fetch(`${API_BASE}/api/readiness/${sessionId}`).then(res => res.ok ? res.json() : null),
+          fetch(`${API_BASE}/api/readiness/${sessionId}${skipLlm}`).then(res => res.ok ? res.json() : null),
           fetch(`${API_BASE}/api/dashboard/stats`).then(res => res.ok ? res.json() : null)
         ]);
 
@@ -64,7 +87,7 @@ export default function Dashboard() {
             planData = JSON.parse(cached);
             setCareerPlan(planData);
           } else {
-            setError("No active placement session found. Please complete onboarding first.");
+            setError("No active career workspace found. Please configure targets first.");
             setLoading(false);
             return;
           }
@@ -98,7 +121,6 @@ export default function Dashboard() {
 
         setStatsData(stats);
         updateStep(3, 'completed');
-        updateStep(4, 'active');
 
         try {
           await fetch(`${API_BASE}/api/session/${sessionId}/progress`, {
@@ -111,8 +133,6 @@ export default function Dashboard() {
           console.warn("Failed to set dashboard unlocked status:", e);
           updateSessionStatus('dashboard_unlocked');
         }
-
-        updateStep(4, 'completed');
       } catch (err) {
         console.error("Dashboard fetching error:", err);
         setError("Error loading dashboard data. Server might be offline.");
@@ -127,15 +147,15 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh' }}>
-        <div className="informative-loader-container glass-panel">
+        <div className="informative-loader-container glass-panel animate-fade-in">
           <div className="loader-header">
-            <div className="loader-spinner animate-spin"></div>
-            <h3>Preparing Dashboard</h3>
+            <div className="loader-spinner"></div>
+            <h3>Formulating OS Dashboard</h3>
           </div>
           <div className="loader-steps">
             {loaderSteps.map((step, idx) => (
               <div key={idx} className={`loader-step-item ${step.status}`}>
-                <span className="step-icon">
+                <span className="step-icon" style={{ marginRight: '0.5rem' }}>
                   {step.status === 'completed' ? '✓' : step.status === 'active' ? '●' : '○'}
                 </span>
                 <span>{step.label}</span>
@@ -157,93 +177,64 @@ export default function Dashboard() {
     );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.05
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 16 }
-    }
-  };
-
-  const plan = careerPlan || {};
-  const score = plan.readiness_score || 35;
   const gaps = Array.from(new Set([
     ...(plan.gaps?.high_priority_missing || []),
     ...(plan.gaps?.medium_priority_missing || [])
   ]));
 
-  // AI Coach advice generator
   const getCoachSummary = () => {
     const name = plan.name || "Candidate";
     const company = plan.dream_company || "Blinkit";
-    const role = plan.target_role || "SDE-1";
+    const role = plan.target_role || "Software Development Engineer";
     const g = plan.gaps?.high_priority_missing || [];
     
     if (score < 40) {
-      return `Welcome, ${name}! Your profile aligns at ${score}% readiness for ${company}'s ${role} criteria. The similarity engine indicates strong gaps in critical high-throughput SDE skills, specifically ${g.join(', ') || 'distributed systems and message brokers'}. Your immediate focus should be finishing Stage 1 (Core Alignment) and executing the hands-on microservices blueprints.`;
+      return `Welcome, ${name}! Your profile aligns at ${score}% readiness for ${company}'s SDE criteria. The similarity matching engine indicates strong gaps in critical high-concurrency skills, specifically ${g.join(', ') || 'distributed systems and message brokers'}. Your immediate focus should be finishing Stage 1 (Core Alignment) and executing the SDE learning blueprints.`;
     } else if (score < 70) {
-      return `Excellent start, ${name}! You have achieved ${score}% readiness. The vector matcher shows you have aligned key core SDE layers, but you need to refine low-latency data structures and distributed indexing databases to lock down your target at ${company}. Keep practicing real company experiences inside your interview plan.`;
+      return `Excellent progress, ${name}! You have achieved ${score}% readiness rating. The database matcher shows you have aligned SDE core layers, but you need to refine low-latency data structures and distributed databases to lock down your target at ${company}. Keep practicing real company experiences inside your practice plan.`;
     } else {
-      return `Outstanding, ${name}! You are in the top tier with ${score}% placement probability for ${company}'s hiring bar. Most matching engineers transitioned within 3 weeks after executing our mock interviews. Review the last deployment sprint to lock your alignment.`;
+      return `Outstanding, ${name}! You are in the top tier with ${score}% placement probability for ${company}'s hiring bar. Review the latest SDE blueprints to maintain alignment.`;
     }
   };
 
-  // Extract Career Twin (top matching peer from similar_engineers)
   const peersList = plan.similar_engineers || [];
   const careerTwin = peersList.length > 0 ? peersList[0] : null;
-  const otherPeers = peersList.slice(1, 5);
-
-  const maxFreq = statsData?.skills?.[0]?.frequency || 1000;
 
   return (
     <motion.div 
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
       className="dashboard-wrapper"
     >
-      {/* Title */}
-      <motion.div className="welcome-banner-row" variants={itemVariants}>
-        <h1>Welcome, {plan.name || 'Candidate'}!</h1>
-        <p>Here is your SDE placement readiness assessment and corporate alignment metrics.</p>
-      </motion.div>
+      <div className="welcome-banner-row">
+        <h1>Workspace Command Center</h1>
+        <p>Real-time candidate profile alignment indexes and corporate SDE readiness analytics.</p>
+      </div>
 
-      {/* Row 1: Estimated Timeline & Target Info */}
-      <motion.div className="dashboard-metrics-grid" variants={itemVariants}>
+      {/* Row 1: Timeline Parameters */}
+      <div className="dashboard-metrics-grid">
         <div className="glass-card metric-item">
-          <div className="metric-lbl">Target Company & Role</div>
+          <div className="metric-lbl">Target Role & Company</div>
           <div className="metric-val">{plan.dream_company || 'Blinkit'}</div>
-          <div className="metric-sub" style={{ color: 'var(--primary)' }}>{plan.target_role || 'Junior SDE'}</div>
+          <div className="metric-sub" style={{ color: 'var(--accent-primary)' }}>{plan.target_role || 'Software Development Engineer'}</div>
         </div>
 
         <div className="glass-card metric-item">
-          <div className="metric-lbl">Estimated Timeline</div>
+          <div className="metric-lbl">Roadmap Duration</div>
           <div className="metric-val">{plan.timeline?.months_remaining || 18} Months</div>
-          <div className="metric-sub">{plan.timeline?.weekly_hours_recommended || 25} weekly study hours</div>
+          <div className="metric-sub">Recommended: {plan.timeline?.weekly_hours_recommended || 25} weekly study hours</div>
         </div>
 
         <div className="glass-card metric-item">
-          <div className="metric-lbl">Target Target Sector</div>
+          <div className="metric-lbl">Sector & Cut-off Target</div>
           <div className="metric-val">{plan.dream_sector || 'Quick-Commerce'}</div>
-          <div className="metric-sub">Cut-off CGPA: 8.0</div>
+          <div className="metric-sub">CGPA Threshold: 8.00</div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Row 2: Readiness Score + Coach Summary */}
-      <motion.div className="dashboard-row-split-2" variants={itemVariants}>
-        {/* Readiness Dial Card */}
+      {/* Row 2: Readiness score & advice */}
+      <div className="dashboard-row-split-2">
         <div className="glass-card score-dial-card">
           <div className="dial-container">
             <div className="dial-svg-box">
@@ -257,32 +248,70 @@ export default function Dashboard() {
                   style={{ strokeDasharray: 377, strokeDashoffset: 377 - (377 * score) / 100 }}
                 />
               </svg>
-              <div className="dial-value-text">{score}%</div>
+              <div className="dial-value-text">{animatedScore}%</div>
             </div>
             <div className="dial-info-text">
               <h3>Readiness Score</h3>
-              <p>Match probability rating computed against SDE developer benchmarks.</p>
+              <p>Placement match index computed against hiring bar criteria.</p>
             </div>
           </div>
         </div>
 
-        {/* AI Coach Summary Card */}
         <div className="glass-card ai-coach-summary-card">
           <div className="ai-summary-header">
             <Shield className="ai-icon" />
-            <h3>Placement Coach Insights</h3>
+            <h3>Placement Advisor Insights</h3>
           </div>
           <p className="ai-summary-text">{getCoachSummary()}</p>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Row 3: Career Twin & Top Skill Gaps */}
-      <motion.div className="dashboard-row-split-2" variants={itemVariants}>
+      {/* Expandable ML Specialization Affinity (Experimental) */}
+      {plan.ml_affinity && plan.ml_affinity.supported && (
+        <div className="glass-card ml-affinity-card" style={{ marginBottom: '24px', padding: '16px' }}>
+          <details style={{ width: '100%' }}>
+            <summary style={{ cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
+              <Shield size={16} style={{ color: 'var(--accent-primary)' }} />
+              <span>Data-Driven Profile Signals (Experimental ML)</span>
+            </summary>
+            <div style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+              <div className="affinity-item" style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>General Software Engineering Foundation</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '4px', color: plan.ml_affinity.general_engineering_score > 0.7 ? '#4caf50' : (plan.ml_affinity.general_engineering_score > 0.4 ? '#ff9800' : '#f44336') }}>
+                  {plan.ml_affinity.general_engineering_score > 0.7 ? 'Strong' : (plan.ml_affinity.general_engineering_score > 0.4 ? 'Moderate' : 'Low')}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>Score: {plan.ml_affinity.general_engineering_score.toFixed(4)}</div>
+              </div>
+              <div className="affinity-item" style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Backend Specialization Affinity</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '4px', color: plan.ml_affinity.backend_affinity_score > 0.6 ? '#4caf50' : (plan.ml_affinity.backend_affinity_score > 0.3 ? '#ff9800' : '#f44336') }}>
+                  {plan.ml_affinity.backend_affinity_score > 0.6 ? 'High' : (plan.ml_affinity.backend_affinity_score > 0.3 ? 'Moderate' : 'Low')}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>Score: {plan.ml_affinity.backend_affinity_score.toFixed(4)}</div>
+              </div>
+              <div className="affinity-item" style={{ padding: '12px', background: 'rgba(255, 255, 255, 0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Frontend Specialization Affinity</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginTop: '4px', color: plan.ml_affinity.frontend_affinity_score > 0.6 ? '#4caf50' : (plan.ml_affinity.frontend_affinity_score > 0.3 ? '#ff9800' : '#f44336') }}>
+                  {plan.ml_affinity.frontend_affinity_score > 0.6 ? 'High' : (plan.ml_affinity.frontend_affinity_score > 0.3 ? 'Moderate' : 'Low')}
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' }}>Score: {plan.ml_affinity.frontend_affinity_score.toFixed(4)}</div>
+              </div>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '8px' }}>
+              Based on patterns learned from versioned professional-profile data (Model: {plan.ml_affinity.model_version}, Dataset Hash: {plan.ml_affinity.dataset_version}). 
+              Used as experimental supporting evidence alongside skill gaps, hiring evidence, career similarity, and year-aware planning.
+            </div>
+          </details>
+        </div>
+      )}
+
+      {/* Row 3: Career twins & weak skills */}
+      <div className="dashboard-row-split-2">
         {/* Career Twin Profile */}
         <div className="glass-card career-twin-card">
           <h3 className="card-heading-title">
-            <Users size={16} />
-            <span>Matched Career Twin</span>
+            <Users size={16} style={{ color: 'var(--accent-primary)' }} />
+            <span>Matched SDE Career Twin</span>
           </h3>
           {careerTwin ? (
             <div className="career-twin-body">
@@ -295,52 +324,62 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="twin-career-path-flow">
-                <div className="flow-title">Successful Corporate Pathway:</div>
+                <div className="flow-title">Successful Path Flow:</div>
                 <div className="flow-nodes">
-                  {(careerTwin.career_path || ['Intern', 'SDE-1', 'SDE-2']).map((node, index) => (
-                    <React.Fragment key={index}>
-                      <span className="flow-node-badge">{node}</span>
-                      {index < (careerTwin.career_path || []).length - 1 && (
-                        <ArrowRight size={14} style={{ color: 'var(--text-muted)', margin: '0 0.25rem' }} />
-                      )}
-                    </React.Fragment>
-                  ))}
+                  {(() => {
+                    const pathNodes = Array.isArray(careerTwin.career_path)
+                      ? careerTwin.career_path
+                      : (typeof careerTwin.career_path === 'string'
+                        ? careerTwin.career_path.split('->').map(s => s.trim()).filter(Boolean)
+                        : ['Intern', 'SDE-1', 'SDE-2']);
+                    return pathNodes.map((node, index) => (
+                      <React.Fragment key={index}>
+                        <span className="flow-node-badge">{node}</span>
+                        {index < pathNodes.length - 1 && (
+                          <span className="flow-arrow">&rarr;</span>
+                        )}
+                      </React.Fragment>
+                    ));
+                  })()}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="no-data-msg">No similar peer profile resolved in PostgreSQL.</div>
+            <div className="no-data-msg">No similar peer profile resolved in database.</div>
           )}
         </div>
 
-        {/* Top Skill Gaps Card */}
+        {/* Top Gaps */}
         <div className="glass-card skill-gaps-card">
           <h3 className="card-heading-title">
-            <Award size={16} />
-            <span>Top Skill Gaps</span>
+            <Award size={16} style={{ color: 'var(--accent-secondary)' }} />
+            <span>Identified Skill Gaps</span>
           </h3>
-          <p className="card-desc-text">Closing these knowledge gaps aligns your profile with the target hiring bar.</p>
+          <p className="card-desc-text">Acquiring these key missing skills aligns your profile with the target hiring bar.</p>
           <div className="gaps-badges-list">
             {gaps.length > 0 ? (
               gaps.map(g => <span key={g} className="dashboard-gap-badge">{g}</span>)
             ) : (
-              <span className="dashboard-gap-badge success">✓ No Gaps! Ready for target.</span>
+              <span className="dashboard-gap-badge success">✓ No skill gaps! Ready for SDE evaluation.</span>
             )}
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Navigation CTA banner (Continue Preparation) */}
-      <motion.div className="dashboard-cta-banner" variants={itemVariants}>
+      {/* Continue CTA */}
+      <div className="dashboard-cta-banner">
         <div className="cta-left">
-          <h3>Your Placement Plan is Active!</h3>
-          <p>Ready to start closing your gaps and practicing interactive mock coding sandboxes?</p>
+          <h3>Your SDE Workspace is Active!</h3>
+          <p>Ready to close your remaining skill gaps and study selective coding blueprints?</p>
         </div>
-        <button className="cta-nav-button" onClick={() => navigate('/roadmap')}>
-          <span>Continue Preparation</span>
+        <button 
+          className="cta-nav-button" 
+          onClick={() => navigate('/roadmap')}
+        >
+          <span>Continue Journey</span>
           <ArrowRight size={18} />
         </button>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

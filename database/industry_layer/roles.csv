@@ -1,13 +1,31 @@
 role_id,role_name,career_level
-1,SDE Intern,Intern
-2,SDE I,Entry
-3,SDE II,Mid
-4,SDE III,Senior
-5,Senior Software Engineer,Senior
-6,Tech Lead,Lead
-7,Engineering Manager,Management
-8,Backend Engineer,Mid
-9,Frontend Engineer,Mid
-10,SRE / DevOps Engineer,Mid
-11,Mobile Engineer,Mid
-12,AI / ML Engineer,Mid
+1,Software Development Engineer (SDE),Mid
+2,Backend Developer,Mid
+3,Frontend Developer,Mid
+4,Full Stack Developer,Mid
+5,Software Engineer,Mid
+6,Mobile App Developer (Android),Mid
+7,Mobile App Developer (iOS),Mid
+8,Flutter Developer,Mid
+9,React Native Developer,Mid
+10,DevOps Engineer,Mid
+11,Cloud Engineer,Mid
+12,Site Reliability Engineer (SRE),Mid
+13,Data Analyst,Mid
+14,Data Engineer,Mid
+15,Data Scientist,Mid
+16,AI Engineer,Mid
+17,Machine Learning Engineer,Mid
+18,Deep Learning Engineer,Mid
+19,NLP Engineer,Mid
+20,Computer Vision Engineer,Mid
+21,MLOps Engineer,Mid
+22,Cyber Security Engineer,Mid
+23,Security Analyst,Mid
+24,SDET (Software Development Engineer in Test),Mid
+25,QA Automation Engineer,Mid
+26,Product Manager,Mid
+27,Associate Product Manager (APM),Entry
+28,Business Analyst,Mid
+29,UI/UX Designer,Mid
+30,Embedded Software Engineer,Mid

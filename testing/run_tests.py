@@ -65,7 +65,8 @@ def run_tests():
         elif "input" in tc:
             rec = generate_recommendation(
                 qualification=tc["input"]["qualification"],
-                known_skills=tc["input"]["known_skills"]
+                known_skills=tc["input"]["known_skills"],
+                skip_llm=True
             )
             expected = tc["expected"]
 
@@ -75,7 +76,8 @@ def run_tests():
             if not (score_range[0] <= score <= score_range[1]):
                 errors.append(f"score {score} not in expected range {score_range}")
 
-            high_missing = rec["gaps"]["high_priority_missing"]
+            gaps_data = rec.get("gaps_legacy", rec["gaps"])
+            high_missing = gaps_data["high_priority_missing"]
             for skill in expected.get("high_priority_skills_should_include", []):
                 if skill not in high_missing:
                     errors.append(f"expected '{skill}' in high priority missing, but not found")
@@ -95,7 +97,7 @@ def run_tests():
                     "readiness_score": score,
                     "urgency": rec["urgency_level"],
                     "months_to_ready": rec["next_steps"]["estimated_months_to_ready"],
-                    "top_missing": rec["gaps"]["high_priority_missing"],
+                    "top_missing": high_missing,
                     "message": rec["message"],
                 }
             }

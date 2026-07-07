@@ -19,8 +19,8 @@ def verify_all():
     with open(role_spec_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         roles = list(reader)
-    print(f"[OK] roles.csv exists: {len(roles)} master roles found (expected 10-20).")
-    assert 10 <= len(roles) <= 20, f"Expected 10-20 roles, got {len(roles)}"
+    print(f"[OK] roles.csv exists: {len(roles)} master roles found (expected 30).")
+    assert len(roles) == 30, f"Expected 30 roles, got {len(roles)}"
     
     # 2. Verify employee_profiles.csv
     profiles_path = os.path.join(BASE_DIR, "database", "industry_layer", "employee_profiles.csv")
@@ -100,7 +100,7 @@ def verify_all():
     assert len(sa_json) == 4, f"Expected 4 stages, got {len(sa_json)}"
     for s in sa_json:
         assert "stage_id" in s and "mcqs" in s and "coding_challenge" in s
-        assert len(s["mcqs"]) == 3, f"Expected 3 MCQs per stage, got {len(s['mcqs'])}"
+        assert len(s["mcqs"]) >= 10, f"Expected at least 10 MCQs per stage, got {len(s['mcqs'])}"
     print("[OK] All stage assessments structures are valid.")
     
     # 7. Run recommendation engine test
@@ -111,7 +111,8 @@ def verify_all():
         known_skills=test_skills,
         dream_company="Blinkit",
         dream_sector="Quick-Commerce",
-        target_role="Software Development Engineer"
+        target_role="Software Development Engineer (SDE)",
+        skip_llm=True
     )
     
     print("[OK] Recommendation engine generated output successfully.")

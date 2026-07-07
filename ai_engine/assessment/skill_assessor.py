@@ -1,37 +1,18 @@
 # Technical Skill Strength Assessor - CareerCompass AI
 
 import os
-import csv
 import sys
+import logging
 
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from api.database_connector import get_db_connection
 
-FALLBACK_REQUIREMENTS = {
-    "Java": "High",
-    "DSA (Combined)": "High",
-    "DBMS": "High",
-    "Operating Systems": "High",
-    "Computer Networks": "High",
-    "Spring Boot": "High",
-    "System Design": "High",
-    "SQL": "Medium",
-    "MySQL": "Medium",
-    "Git & GitHub": "Medium",
-    "Low Level Design": "Medium",
-    "High Level Design": "Medium",
-    "Object Oriented Programming": "Medium",
-    "REST APIs": "Medium",
-    "Docker": "Low",
-    "Redis": "Low",
-    "Microservices": "Low"
-}
+logger = logging.getLogger("SkillAssessor")
 
 def get_role_skills_requirements(company_name: str, role_name: str) -> dict:
     """
-    Fetches required skills and their priorities for a target company and role.
-    Attempts PostgreSQL first, then falls back to CSV files.
+    Fetches required skills and their priorities for a target company and role from PostgreSQL.
     """
     requirements = {}
     conn = get_db_connection()
@@ -54,69 +35,12 @@ def get_role_skills_requirements(company_name: str, role_name: str) -> dict:
                 for row in rows:
                     requirements[row[0]] = row[1]
                 return requirements
-        except Exception:
+        except Exception as e:
             if conn: conn.close()
+            logger.error(f"Error querying role requirements from DB: {e}")
 
-    # Fallback to CSV files
-    try:
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        db_dir = os.path.join(base_dir, "database")
-        
-        # Load companies mapping
-        companies_csv = os.path.join(db_dir, "industry_layer", "companies.csv")
-        company_id = None
-        if os.path.exists(companies_csv):
-            with open(companies_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if row["company_name"].lower().strip() == company_name.lower().strip():
-                        company_id = int(row["company_id"])
-                        break
-        
-        # Load roles mapping
-        roles_csv = os.path.join(db_dir, "industry_layer", "roles.csv")
-        role_id = None
-        if os.path.exists(roles_csv):
-            with open(roles_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if row["role_name"].lower().strip() == role_name.lower().strip():
-                        role_id = int(row["role_id"])
-                        break
-        
-        # Load company_roles
-        croles_csv = os.path.join(db_dir, "industry_layer", "company_roles.csv")
-        company_role_id = None
-        if company_id and role_id and os.path.exists(croles_csv):
-            with open(croles_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if int(row["company_id"]) == company_id and int(row["role_id"]) == role_id:
-                        company_role_id = int(row["company_role_id"])
-                        break
-        
-        # Load role_skill_requirements
-        req_csv = os.path.join(db_dir, "career_layer", "role_skill_requirements.csv")
-        skills_csv = os.path.join(db_dir, "career_layer", "skills_master.csv")
-        
-        # Map skill IDs to names
-        skill_id_to_name = {}
-        if os.path.exists(skills_csv):
-            with open(skills_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    skill_id_to_name[int(row["skill_id"])] = row["skill_name"]
-                    
-        if company_role_id and os.path.exists(req_csv):
-            with open(req_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if int(row["company_role_id"]) == company_role_id:
-                        s_id = int(row["skill_id"])
-                        s_name = skill_id_to_name.get(s_id)
-                        if s_name:
-                            requirements[s_name] = row["priority"]
-            if requirements:
-                return requirements
-    except Exception:
-        pass
-
-    return FALLBACK_REQUIREMENTS
+    # Throw error if DB is unavailable
+    raise RuntimeError(f"PostgreSQL database unavailable to fetch SDE requirements for company '{company_name}' and role '{role_name}'!")
 
 def assess_skills(student_skills, company_name: str, role_name: str) -> float:
     """

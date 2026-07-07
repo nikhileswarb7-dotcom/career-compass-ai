@@ -12,12 +12,13 @@ try:
 except ImportError:
     def get_db_connection():
         try:
+            import os
             return psycopg2.connect(
-                host="localhost",
-                port=5432,
-                dbname="career_compass_ai",
-                user="postgres",
-                password="Nikhil@2824"
+                host=os.environ.get("DB_HOST", "localhost"),
+                port=int(os.environ.get("DB_PORT", 5432)),
+                dbname=os.environ.get("DB_NAME", "career_compass_ai"),
+                user=os.environ.get("DB_USER", "postgres"),
+                password=os.environ.get("DB_PASSWORD", "")
             )
         except Exception:
             return None
@@ -51,7 +52,7 @@ class LinkedInParser:
         return ResumeParser.get_all_db_skills()
 
     @staticmethod
-    def parse_profile(url_or_text: str) -> dict:
+    def parse_profile(url_or_text: str, target_role: str = None, qualification: str = None) -> dict:
         if not url_or_text:
             return {}
             
@@ -118,70 +119,6 @@ class LinkedInParser:
                 if conn: conn.close()
                 print(f"Error querying LinkedIn profile in database: {e}")
 
-        # 2. Try CSV Fallback lookup for existing employee profiles
-        try:
-            base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-            profiles_csv = os.path.join(base_dir, "database", "industry_layer", "employee_profiles.csv")
-            skills_csv = os.path.join(base_dir, "database", "industry_layer", "employee_skills.csv")
-            skills_master_csv = os.path.join(base_dir, "database", "career_layer", "skills_master.csv")
-            if not os.path.exists(skills_master_csv):
-                skills_master_csv = os.path.join(base_dir, "database", "career_layer", "skills_master.csv")
-                
-            if os.path.exists(profiles_csv) and handle:
-                with open(profiles_csv, mode='r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    matched_profile = None
-                    for row in reader:
-                        r_handle = LinkedInParser.extract_handle(row.get('linkedin_url', ''))
-                        if r_handle and (r_handle in handle or handle in r_handle):
-                            matched_profile = row
-                            break
-                            
-                if matched_profile:
-                    profile_id = matched_profile['profile_id']
-                    name = matched_profile['name']
-                    company = matched_profile['current_company']
-                    
-                    skill_ids = []
-                    if os.path.exists(skills_csv):
-                        with open(skills_csv, mode='r', encoding='utf-8') as f_es:
-                            reader_es = csv.DictReader(f_es)
-                            for row_es in reader_es:
-                                if row_es['profile_id'] == profile_id:
-                                    skill_ids.append(row_es['skill_id'])
-                                    
-                    skills = []
-                    if skill_ids and os.path.exists(skills_master_csv):
-                        with open(skills_master_csv, mode='r', encoding='utf-8') as f_sm:
-                            reader_sm = csv.DictReader(f_sm)
-                            for row_sm in reader_sm:
-                                if row_sm['skill_id'] in skill_ids:
-                                    skills.append(row_sm['skill_name'])
-                                    
-                    path_str = matched_profile.get("career_path", "")
-                    path_steps = [p.strip() for p in path_str.split("->") if p.strip()]
-                    experience = []
-                    for idx, step in enumerate(path_steps):
-                        experience.append({
-                            "role": step,
-                            "company": company if idx == 0 else "Previous Company",
-                            "duration": "N/A",
-                            "description": f"Real SDE profile step: {step}"
-                        })
-                        
-                    return {
-                        "name": name,
-                        "headline": f"Software Engineer at {company}" if company else "Software Engineer",
-                        "current_company": company,
-                        "summary": f"Professional profile matching employee in local CSV.",
-                        "experience": experience,
-                        "skills_raw": [s for s in skills if s in db_skills],
-                        "connections": "500+",
-                        "source": "LinkedIn CSV Match"
-                    }
-        except Exception as e:
-            print(f"Error in LinkedIn CSV fallback: {e}")
-
         # 3. Parse Raw Text Transcript
         # No placeholders or fabricated Amazon/Google profiles under "Real Data Only" directive.
         text = url_or_text
@@ -192,7 +129,7 @@ class LinkedInParser:
         experience = []
         education = "B.Tech Computer Science"
 
-        # If it's a URL but didn't match any DB/CSV profiles
+        # If it's a URL but didn't match any DB profiles
         if is_url and handle:
             clean_handle = re.sub(r'-\d+$', '', handle) # Remove numeric suffix
             name_parts = [p.capitalize() for p in clean_handle.split('-') if p]
@@ -275,7 +212,7 @@ class LinkedInParser:
                 competencies = []
                 for skill in db_skills:
                     # check match in job context
-                    if re.search(r'\b' + re.escape(skill.lower()) + r'\b', job.lower()):
+                    if ResumeParser.match_skill_in_text(skill, job):
                         competencies.append(skill)
                         
                 experience.append({
@@ -289,7 +226,7 @@ class LinkedInParser:
         # Extract Skills dynamically from the text
         skills_raw = []
         for skill in db_skills:
-            if re.search(r'\b' + re.escape(skill.lower()) + r'\b', text.lower()):
+            if ResumeParser.match_skill_in_text(skill, text):
                 skills_raw.append(skill)
 
         # Extract connections count from text transcript

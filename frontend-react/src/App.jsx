@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Layout from './components/Layout';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
@@ -11,6 +12,8 @@ import InterviewPlan from './pages/InterviewPlan';
 import Roadmap from './pages/Roadmap';
 import CareerReport from './pages/CareerReport';
 import Analytics from './pages/Analytics';
+import ProfileBuilder from './pages/ProfileBuilder';
+import AIMentor from './pages/AIMentor';
 
 // Create App Context for Shared State
 export const AppContext = createContext();
@@ -193,7 +196,7 @@ function RequireSession({ children, requiredLevel }) {
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem', background: 'var(--bg-dark)' }}>
-        <div className="animate-spin" style={{ width: '40px', height: '40px', border: '3px solid var(--border-glass)', borderTop: '3px solid var(--primary)', borderRadius: '50%' }}></div>
+        <div className="loader-spinner animate-spin" style={{ margin: '0 auto' }}></div>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontFamily: 'var(--font-title)' }}>Verifying active intelligence session...</p>
       </div>
     );
@@ -206,60 +209,105 @@ function RequireSession({ children, requiredLevel }) {
   return children;
 }
 
+// Page transition variants
+const pageTransition = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.18, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.1, ease: 'easeIn' } }
+};
+
+export function PageTransition({ children }) {
+  return (
+    <motion.div
+      variants={pageTransition}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="page-transition-wrapper"
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* Guest Public routes */}
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/analytics" element={<PageTransition><Layout><Analytics /></Layout></PageTransition>} />
+
+        {/* Authenticated routes */}
+        <Route path="/" element={<RequireAuth><PageTransition><Welcome /></PageTransition></RequireAuth>} />
+        <Route path="/student-form" element={<RequireAuth><PageTransition><Layout><StudentForm /></Layout></PageTransition></RequireAuth>} />
+        <Route path="/profile-analysis" element={<RequireAuth><PageTransition><Layout><ProfileAnalysis /></Layout></PageTransition></RequireAuth>} />
+        
+        {/* Onboarding Session gated routes */}
+        <Route path="/dashboard" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><Dashboard /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/recommendations" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><Recommendations /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/interview-plan" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><InterviewPlan /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/roadmap" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><Roadmap /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/career-report" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><CareerReport /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/profile-builder" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><ProfileBuilder /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+        <Route path="/ai-mentor" element={
+          <RequireAuth>
+            <RequireSession requiredLevel={3}>
+              <PageTransition><Layout><AIMentor /></Layout></PageTransition>
+            </RequireSession>
+          </RequireAuth>
+        } />
+
+        {/* Catch-all fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   return (
     <AppProvider>
       <HashRouter>
-        <Routes>
-          {/* Guest Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
-
-          {/* Authenticated routes */}
-          <Route path="/" element={<RequireAuth><Welcome /></RequireAuth>} />
-          <Route path="/student-form" element={<RequireAuth><Layout><StudentForm /></Layout></RequireAuth>} />
-          <Route path="/profile-analysis" element={<RequireAuth><Layout><ProfileAnalysis /></Layout></RequireAuth>} />
-          
-          {/* Onboarding Session gated routes */}
-          <Route path="/dashboard" element={
-            <RequireAuth>
-              <RequireSession requiredLevel={3}>
-                <Layout><Dashboard /></Layout>
-              </RequireSession>
-            </RequireAuth>
-          } />
-          <Route path="/recommendations" element={
-            <RequireAuth>
-              <RequireSession requiredLevel={3}>
-                <Layout><Recommendations /></Layout>
-              </RequireSession>
-            </RequireAuth>
-          } />
-          <Route path="/interview-plan" element={
-            <RequireAuth>
-              <RequireSession requiredLevel={3}>
-                <Layout><InterviewPlan /></Layout>
-              </RequireSession>
-            </RequireAuth>
-          } />
-          <Route path="/roadmap" element={
-            <RequireAuth>
-              <RequireSession requiredLevel={3}>
-                <Layout><Roadmap /></Layout>
-              </RequireSession>
-            </RequireAuth>
-          } />
-          <Route path="/career-report" element={
-            <RequireAuth>
-              <RequireSession requiredLevel={3}>
-                <Layout><CareerReport /></Layout>
-              </RequireSession>
-            </RequireAuth>
-          } />
-
-          {/* Catch-all fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <AnimatedRoutes />
       </HashRouter>
     </AppProvider>
   );

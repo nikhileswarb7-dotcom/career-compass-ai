@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, API_BASE } from '../App';
 import { Check, Compass, AlertCircle, Sparkles, Shield, Cpu, RefreshCw, Terminal, Layers, Plus, Clock, Briefcase, Code, FileText, Star, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './ProfileAnalysis.css';
 
 export default function ProfileAnalysis() {
   const { sessionId, updateSession, updateSessionStatus } = useApp();
   const [pipelineStep, setPipelineStep] = useState(0); // 0 to 8
-  const [statusText, setStatusText] = useState('Initializing AI Career Compass pipeline...');
+  const [statusText, setStatusText] = useState('Initializing AI Career Operating System...');
   const [analysisResults, setAnalysisResults] = useState(null);
   const [confirmedSkills, setConfirmedSkills] = useState(new Set());
   const [detectedSkills, setDetectedSkills] = useState([]);
@@ -16,19 +16,23 @@ export default function ProfileAnalysis() {
   const [loading, setLoading] = useState(true);
   const [onboardingData, setOnboardingData] = useState(null);
   const navigate = useNavigate();
+  const hasCalledAnalyze = useRef(false);
 
   const pipeline = [
-    { name: 'Resume Parsing', desc: 'Extracting text structure and qualifications from PDF...' },
-    { name: 'Skills Extraction', desc: 'Matching skills against standard SDE placement syllabus...' },
-    { name: 'GitHub Analysis', desc: 'Analyzing repository commits, counts, and languages...' },
-    { name: 'Career Matching', desc: 'Aligning career stage to industry sectors and tiers...' },
-    { name: 'Peer Matching', desc: 'Calculating cosine similarity matches against employee profiles...' },
-    { name: 'Readiness Calculation', desc: 'Determining gap weights and corporate readiness rating...' },
-    { name: 'Roadmap Generation', desc: 'Generating learning stages and hands-on SDE projects...' },
-    { name: 'Career Report Generation', desc: 'Compiling circular progress metrics and placement forecasts...' }
+    { name: 'Resume Verification', desc: 'Extracting text vectors and qualifications...' },
+    { name: 'Taxonomy Matcher', desc: 'Cross-referencing skills against standard SDE database...' },
+    { name: 'GitHub Sync', desc: 'Scanning repository insights, commits, and languages...' },
+    { name: 'Sector Alignment', desc: 'Evaluating corporate sectors and dream company bar...' },
+    { name: 'Career Twin Resolution', desc: 'Calculating cosine similarity twin paths in DB...' },
+    { name: 'Readiness Scoring', desc: 'Determining placement preparedness score...' },
+    { name: 'Roadmap Generation', desc: 'Compiling curriculum checklist stages...' },
+    { name: 'Report Formulation', desc: 'Personalizing placement outcome forecast reports...' }
   ];
 
   useEffect(() => {
+    if (hasCalledAnalyze.current) return;
+    hasCalledAnalyze.current = true;
+
     const dataStr = localStorage.getItem('pending_onboarding');
     if (!dataStr) {
       navigate('/student-form');
@@ -40,7 +44,7 @@ export default function ProfileAnalysis() {
   }, []);
 
   const runPipeline = async (onboarding) => {
-    // Step 0: Resume Parsing
+    // Step 0
     setPipelineStep(0);
     setStatusText('Accessing PDF reader bytes stream...');
 
@@ -68,7 +72,7 @@ export default function ProfileAnalysis() {
     for (let i = 0; i < 8; i++) {
       setPipelineStep(i);
       setStatusText(pipeline[i].desc);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 150));
     }
 
     // Finalize
@@ -149,6 +153,7 @@ export default function ProfileAnalysis() {
     };
 
     let responseData = null;
+    let fallbackMode = false;
     try {
       const response = await fetch(`${API_BASE}/api/recommend`, {
         method: 'POST',
@@ -157,9 +162,29 @@ export default function ProfileAnalysis() {
       });
       if (response.ok) {
         responseData = await response.json();
+        localStorage.setItem('skip_llm', 'false');
+      } else {
+        fallbackMode = true;
       }
     } catch (err) {
-      console.warn("Backend recommendation call offline. Generating mock recommendations:", err);
+      console.warn("Backend recommendation call error. Retrying in offline mode...", err);
+      fallbackMode = true;
+    }
+
+    if (fallbackMode) {
+      try {
+        const mockResponse = await fetch(`${API_BASE}/api/recommend`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...reqBody, skip_llm: true })
+        });
+        if (mockResponse.ok) {
+          responseData = await mockResponse.json();
+          localStorage.setItem('skip_llm', 'true');
+        }
+      } catch (mockErr) {
+        console.error("Offline simulated recommendations failed:", mockErr);
+      }
     }
 
     if (!responseData) {
@@ -183,24 +208,24 @@ export default function ProfileAnalysis() {
     updateSession(responseData.session_id, responseData.student_id, responseData);
     updateSessionStatus('skills_confirmed');
     localStorage.removeItem('pending_onboarding');
-    navigate('/dashboard');
+    navigate('/');
   };
 
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={{ duration: 0.15 }}
       className="analysis-page-container"
     >
-      {/* 8-step Pipeline visualization */}
+      {/* Timeline Steps Pipeline Loader */}
       {loading ? (
         <div className="pipeline-screen glass-panel">
           <div className="pipeline-spinner-wrapper">
             <div className="pipeline-spinner-outer"></div>
             <div className="pipeline-spinner-inner"></div>
           </div>
-          <h2 className="pipeline-screen-title">Analyzing Candidate SDE Profile</h2>
+          <h2 className="pipeline-screen-title">Analyzing SDE Profile</h2>
           <div className="pipeline-screen-desc">{statusText}</div>
 
           <div className="pipeline-visual-timeline">
@@ -210,33 +235,43 @@ export default function ProfileAnalysis() {
               const statusClass = active ? 'active' : completed ? 'completed' : 'waiting';
               
               return (
-                <div key={step.name} className={`pipeline-step-node ${statusClass}`}>
+                <motion.div 
+                  key={step.name} 
+                  className={`pipeline-step-node ${statusClass}`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.02, type: 'spring', stiffness: 350 }}
+                >
                   <div className="node-indicator">
-                    {completed ? <Check size={12} /> : active ? <Cpu size={12} className="animate-pulse" /> : <Clock size={12} />}
+                    {completed ? <Check size={14} style={{ color: 'var(--success)' }} /> : active ? <Cpu size={14} className="animate-pulse" style={{ color: 'var(--primary)' }} /> : <Clock size={14} />}
                   </div>
                   <div className="node-label">
                     <span className="node-number">0{idx + 1}.</span>
                     <span className="node-name">{step.name}</span>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
       ) : (
+        /* Results completed verification view */
         <div className="results-container-view animate-fade-in">
           <div className="results-header-view">
-            <h1>SDE Profile Extraction Complete</h1>
-            <p>We've successfully parsed your professional presence. Review details and select your matched placement skills below.</p>
+            <h1>SDE Workspace Formulated</h1>
+            <p>Profile metrics resolved successfully. Verify matched skills to compile your career roadmap plan.</p>
           </div>
 
-          {/* Profile matching grids */}
+          {/* Profile metadata grids */}
           <div className="profile-matching-grid">
             {/* LinkedIn Card */}
-            <div className="profile-data-card glass-panel">
+            <motion.div 
+              className="profile-data-card glass-panel"
+              whileHover={{ y: -3 }}
+            >
               <h3 className="data-card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Briefcase size={16} />
-                <span>LinkedIn Profile</span>
+                <Briefcase size={16} style={{ color: 'var(--primary)' }} />
+                <span>LinkedIn Credentials</span>
               </h3>
               {analysisResults?.linkedin_parsed && Object.keys(analysisResults.linkedin_parsed).length > 0 ? (
                 analysisResults.linkedin_parsed.error ? (
@@ -248,18 +283,21 @@ export default function ProfileAnalysis() {
                   <div className="data-card-body">
                     <div className="data-row"><span className="lbl">Headline:</span><span className="val">{analysisResults.linkedin_parsed.headline || 'Aspiring Engineer'}</span></div>
                     <div className="data-row"><span className="lbl">Connections:</span><span className="val">{analysisResults.linkedin_parsed.connections || '100+'}</span></div>
-                    <div className="data-row"><span className="lbl">Extracted Skills:</span><span className="val skills-color">{(analysisResults.linkedin_parsed.skills_raw || []).join(', ')}</span></div>
+                    <div className="data-row"><span className="lbl">Extracted:</span><span className="val skills-color">{(analysisResults.linkedin_parsed.skills_raw || []).join(', ')}</span></div>
                   </div>
                 )
               ) : (
                 <div className="no-data-msg">No LinkedIn URL provided.</div>
               )}
-            </div>
+            </motion.div>
 
             {/* GitHub Card */}
-            <div className="profile-data-card glass-panel">
+            <motion.div 
+              className="profile-data-card glass-panel"
+              whileHover={{ y: -3 }}
+            >
               <h3 className="data-card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Code size={16} />
+                <Code size={16} style={{ color: 'var(--primary)' }} />
                 <span>GitHub Analytics</span>
               </h3>
               {analysisResults?.github_parsed && Object.keys(analysisResults.github_parsed).length > 0 ? (
@@ -272,7 +310,7 @@ export default function ProfileAnalysis() {
                   <div className="data-card-body">
                     <div className="data-row"><span className="lbl">Username:</span><span className="val">@{analysisResults.github_parsed.username}</span></div>
                     <div className="data-row"><span className="lbl">Repositories:</span><span className="val">{analysisResults.github_parsed.public_repos !== undefined ? analysisResults.github_parsed.public_repos : (analysisResults.github_parsed.repositories || 0)}</span></div>
-                    <div className="data-row"><span className="lbl">Total Stars:</span><span className="val"><Star size={12} style={{ display: 'inline-block', marginRight: '0.25rem', verticalAlign: 'middle' }} /> {analysisResults.github_parsed.stars || 0}</span></div>
+                    <div className="data-row"><span className="lbl">Total Stars:</span><span className="val"><Star size={12} style={{ display: 'inline-block', marginRight: '0.25rem', verticalAlign: 'middle', color: 'var(--warning)' }} /> {analysisResults.github_parsed.stars || 0}</span></div>
                     {analysisResults.github_parsed.languages && Object.keys(analysisResults.github_parsed.languages).length > 0 && (
                       <div className="github-lang-breakdown">
                         {Object.entries(analysisResults.github_parsed.languages).map(([lang, pct]) => (
@@ -288,13 +326,16 @@ export default function ProfileAnalysis() {
               ) : (
                 <div className="no-data-msg">No GitHub username provided.</div>
               )}
-            </div>
+            </motion.div>
 
             {/* Resume Card */}
-            <div className="profile-data-card glass-panel">
+            <motion.div 
+              className="profile-data-card glass-panel"
+              whileHover={{ y: -3 }}
+            >
               <h3 className="data-card-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <FileText size={16} />
-                <span>Resume Details</span>
+                <FileText size={16} style={{ color: 'var(--primary)' }} />
+                <span>Resume Extraction</span>
               </h3>
               {analysisResults?.resume_parsed && Object.keys(analysisResults.resume_parsed).length > 0 ? (
                 analysisResults.resume_parsed.error ? (
@@ -313,27 +354,32 @@ export default function ProfileAnalysis() {
               ) : (
                 <div className="no-data-msg">No resume uploaded.</div>
               )}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Verification section */}
+          {/* Verification checklists */}
           <div className="verification-card glass-panel">
-            <h2>Verify Placement Skills</h2>
-            <p className="verification-desc">Toggle the checkboxes to confirm which skills you want to include in your placement readiness calculation. You can also add custom tags.</p>
+            <h2>Verify Matched Skills</h2>
+            <p className="verification-desc">Toggle the cards to include/exclude parsed tags from SDE readiness indexes. You can also append custom skills.</p>
 
             <div className="skills-checklist-grid">
-              {detectedSkills.map(skill => {
+              {detectedSkills.map((skill, idx) => {
                 const isSelected = confirmedSkills.has(skill.name);
                 return (
-                  <button 
+                  <motion.button 
                     key={skill.name}
                     onClick={() => handleToggleSkill(skill.name)}
                     className={`skills-checklist-badge ${isSelected ? 'selected' : 'unselected'}`}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: idx * 0.015, type: 'spring' }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <div className="badge-header-row">
                       <div className="badge-header-left">
                         <div className="checklist-check">
-                          {isSelected && <Check size={10} />}
+                          {isSelected && <Check size={12} />}
                         </div>
                         <span className="skill-name">{skill.name}</span>
                       </div>
@@ -346,38 +392,39 @@ export default function ProfileAnalysis() {
                         Sources: <span className="sources-val">{(skill.sources || []).join(' + ')}</span>
                       </span>
                     </div>
-                  </button>
+                  </motion.button>
                 );
               })}
               {detectedSkills.length === 0 && (
                 <div className="no-data-msg" style={{ width: '100%', gridColumn: '1 / -1' }}>
-                  No skills detected. Add custom skills below.
+                  No skills matched. Append custom skills below.
                 </div>
               )}
             </div>
 
-            {/* Add Custom Skill */}
+            {/* Custom skill adder */}
             <div className="add-skill-form">
               <input 
                 type="text" 
-                placeholder="e.g. NextJS, Redis, SRE..." 
-                className="form-input custom-skill-input"
+                className="form-input custom-skill-input" 
+                placeholder="Add custom skill (e.g. gRPC, Spark)..."
                 value={customSkill}
                 onChange={e => setCustomSkill(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleAddCustomSkill()}
               />
-              <button onClick={handleAddCustomSkill} className="btn-secondary add-skill-btn">
+              <button type="button" className="btn-secondary add-skill-btn" onClick={handleAddCustomSkill}>
                 <Plus size={16} />
                 <span>Add Skill</span>
               </button>
             </div>
 
+            {/* Actions row */}
             <div className="verification-actions">
               <button className="btn-secondary" onClick={() => navigate('/student-form')}>
-                Back to Form
+                Back to intake form
               </button>
               <button className="btn-primary" onClick={handleGenerateGuidancePlan}>
-                <span>Confirm & Generate SDE Plan</span>
+                <span>Assemble SDE Operating System</span>
                 <ArrowRight size={16} />
               </button>
             </div>

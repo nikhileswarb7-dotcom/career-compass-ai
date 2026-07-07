@@ -44,7 +44,8 @@ export default function CareerReport() {
       // 1. Fetch readiness details
       let readData = null;
       try {
-        const res = await fetch(`${API_BASE}/api/readiness/${sessionId}`);
+        const skipLlm = localStorage.getItem('skip_llm') === 'true' ? '?skip_llm=true' : '';
+        const res = await fetch(`${API_BASE}/api/readiness/${sessionId}${skipLlm}`);
         if (res.ok) {
           readData = await res.json();
           setReadinessData(readData);
@@ -68,7 +69,8 @@ export default function CareerReport() {
 
       // 2. Fetch recommendations
       try {
-        const res = await fetch(`${API_BASE}/api/recommendations/${sessionId}`);
+        const skipLlm = localStorage.getItem('skip_llm') === 'true' ? '?skip_llm=true' : '';
+        const res = await fetch(`${API_BASE}/api/recommendations/${sessionId}${skipLlm}`);
         if (res.ok) {
           const rData = await res.json();
           setRecsData(rData);
@@ -138,7 +140,7 @@ export default function CareerReport() {
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', gap: '1rem' }}>
-        <div className="animate-spin" style={{ width: '40px', height: '40px', border: '3px solid var(--border-glass)', borderTop: '3px solid var(--primary)', borderRadius: '50%' }}></div>
+        <div className="loader-spinner animate-spin" style={{ margin: '0 auto' }}></div>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontFamily: 'var(--font-title)' }}>Assembling circular metrics and placement forecast reports...</p>
       </div>
     );
@@ -197,47 +199,22 @@ export default function CareerReport() {
     );
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.05
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 16 }
-    }
-  };
-
   return (
-    <motion.div 
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="career-report-wrapper"
-    >
-      <motion.div className="report-header-banner" variants={itemVariants}>
+    <div className="career-report-wrapper animate-fade-in">
+      <div className="report-header-banner">
         <h1>SDE Placement & Career Twin Report</h1>
         <p>Comprehensive analytical dashboard outlining SDE placement indicators, outcomes forecast, and corporate twin similarity records.</p>
-      </motion.div>
+      </div>
 
       {/* Row 1: Circular Progress Gauges */}
-      <motion.div className="section-header-row" variants={itemVariants}>
+      <div className="section-header-row">
         <div className="section-header-title">
-          <Cpu size={18} />
+          <Cpu size={18} style={{ color: 'var(--accent-primary)' }} />
           <span>Preparation Component Strengths</span>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div className="gauges-grid" variants={itemVariants}>
+      <div className="gauges-grid">
         <div className="glass-card gauge-card">
           {renderProgressRing(scores.skill_strength, 'circle-skills')}
           <div className="gauge-title">Skill Strength</div>
@@ -257,257 +234,180 @@ export default function CareerReport() {
           {renderProgressRing(scores.profile_strength, 'circle-profile')}
           <div className="gauge-title">Profile Strength</div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Row 2: Outcomes Forecast & Alignment summaries */}
-      <motion.div className="report-row-split-2" variants={itemVariants}>
-        
-        {/* Placement Forecast Card using student_outcomes table */}
+      {/* Row 2: Placement Outcome Forecast & Alignment Specs */}
+      <div className="report-row-split-2">
         <div className="glass-card forecast-card">
-          <h3 className="section-header-title" style={{ marginBottom: '1.25rem' }}>
-            <Zap size={16} style={{ color: 'var(--amber)' }} />
-            <span>Placement Forecast & Outcomes</span>
+          <h3 className="card-heading-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem', marginBottom: '1.25rem' }}>
+            <TrendingUp size={16} style={{ color: 'var(--accent-primary)' }} />
+            <span>Placement Outcomes Forecast</span>
           </h3>
           
-          {outcomeData ? (
-            <div className="forecast-details">
-              <div className="forecast-row">
-                <span className="forecast-lbl">Forecasted Employer:</span>
-                <span className="forecast-val">{outcomeData.placed_company}</span>
-              </div>
-              <div className="forecast-row">
-                <span className="forecast-lbl">Forecasted Role:</span>
-                <span className="forecast-val">{outcomeData.placed_role}</span>
-              </div>
-              <div className="forecast-row">
-                <span className="forecast-lbl">Expected Package LPA:</span>
-                <span className="forecast-val" style={{ color: 'var(--emerald)' }}>
-                  ₹ {outcomeData.package_lpa} LPA
-                </span>
-              </div>
-              <div className="forecast-row">
-                <span className="forecast-lbl">Prediction Accuracy:</span>
-                <span className="forecast-val">
-                  {(outcomeData.prediction_accuracy_score * 100).toFixed(0)}% Confidence
-                </span>
-              </div>
-              <div className="forecast-row">
-                <span className="forecast-lbl">Startup Scalability Index:</span>
-                <span className="forecast-val" style={{ color: 'var(--primary)' }}>
-                  {outcomeData.startup_scalability_score.toFixed(0)}/100
-                </span>
-              </div>
+          <div className="forecast-row"><span className="forecast-lbl">Active Stage Status:</span><span className="forecast-val">{careerStage.career_stage}</span></div>
+          <div className="forecast-row"><span className="forecast-lbl">Preparation Schedule:</span><span className="forecast-val" style={{ color: 'var(--success)' }}>{careerStage.track_status}</span></div>
+          <div className="forecast-row"><span className="forecast-lbl">Estimated Placement Likelihood:</span><span className="forecast-val" style={{ color: 'var(--primary)' }}>{outcomeData?.outcome_probability_pct || 65}%</span></div>
+          <div className="forecast-row"><span className="forecast-lbl">Forecasted CTC Package Range:</span><span className="forecast-val">{outcomeData?.salary_bracket || "₹12 - ₹18 LPA"}</span></div>
+          <div className="forecast-row"><span className="forecast-lbl">Projected Target Clearance:</span><span className="forecast-val">{companyReadiness.fit_category} ({companyReadiness.company_fit_score}%)</span></div>
 
-              {/* Editable Feedback notes */}
-              <div className="feedback-input-box">
-                <label htmlFor="feedback-notes">Placement Officer / Candidate Feedback Notes</label>
-                <textarea 
-                  id="feedback-notes"
-                  className="feedback-textarea"
-                  rows="3"
-                  placeholder="Enter comments on prediction matching or placement updates..."
-                  value={feedbackNotes}
-                  onChange={e => setFeedbackNotes(e.target.value)}
-                />
-                <button 
-                  className="btn-secondary" 
-                  onClick={handleSaveFeedback} 
-                  disabled={savingFeedback}
-                  style={{ alignSelf: 'flex-end', padding: '0.4rem 1rem', fontSize: '0.8rem', marginTop: '0.5rem' }}
-                >
-                  {savingFeedback ? (
-                    <span>Saving...</span>
-                  ) : saveSuccess ? (
-                    <>
-                      <Check size={12} style={{ color: 'var(--emerald)' }} />
-                      <span style={{ color: 'var(--emerald)' }}>Feedback Saved!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save size={12} />
-                      <span>Save Feedback</span>
-                    </>
-                  )}
-                </button>
-              </div>
+          <div className="feedback-input-box">
+            <label htmlFor="report-notes">Personal Placement Coach Feedback Notes</label>
+            <textarea 
+              id="report-notes"
+              className="feedback-textarea" 
+              placeholder="Record custom preparation remarks, mock-evaluation feedback, or visual adjustments logs..."
+              value={feedbackNotes}
+              onChange={e => setFeedbackNotes(e.target.value)}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button 
+                type="button" 
+                onClick={handleSaveFeedback} 
+                disabled={savingFeedback}
+                className="btn-primary" 
+                style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}
+              >
+                {savingFeedback ? 'Saving...' : saveSuccess ? <><Check size={14} /><span>Saved!</span></> : <><Save size={14} /><span>Save Notes</span></>}
+              </button>
             </div>
-          ) : (
-            <div style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem 0' }}>
-              No forecast resolved. Onboarding data must be finalized.
-            </div>
-          )}
+          </div>
         </div>
 
-        {/* Alignment summary */}
+        {/* System design alignment specs */}
         <div className="glass-card alignment-card">
-          <h3 className="section-header-title" style={{ marginBottom: '1.5rem' }}>
-            <ShieldCheck size={16} style={{ color: 'var(--primary)' }} />
-            <span>Corporate Fit & Stage Metrics</span>
+          <h3 className="card-heading-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem', marginBottom: '1.25rem' }}>
+            <Target size={16} style={{ color: 'var(--accent-secondary)' }} />
+            <span>Target Bar Specifications</span>
           </h3>
 
           <div className="alignment-metric-item">
-            <span className="alignment-icon">
-              <TrendingUp size={18} style={{ color: 'var(--emerald)' }} />
-            </span>
+            <Zap className="alignment-icon" style={{ color: 'var(--accent-primary)' }} />
             <div className="alignment-text">
-              <h4>Active Preparation Phase</h4>
-              <p>{careerStage.career_stage} <span style={{ color: 'var(--emerald)', fontWeight: 600 }}>({careerStage.track_status})</span></p>
+              <h4>Low-Latency Concurrency Bar</h4>
+              <p>Requires demonstration of microservices setup using Kafka, PostgreSQL index partitions, and worker thread concurrency pools.</p>
             </div>
           </div>
 
           <div className="alignment-metric-item">
-            <span className="alignment-icon">
-              <Target size={18} style={{ color: 'var(--primary)' }} />
-            </span>
+            <Compass className="alignment-icon" style={{ color: 'var(--accent-secondary)' }} />
             <div className="alignment-text">
-              <h4>Target Company Match Fit</h4>
-              <p>
-                {companyReadiness.company_fit_score.toFixed(1)}% Alignment Rating 
-                <span style={{ color: 'var(--primary)', fontWeight: 600, marginLeft: '0.5rem' }}>({companyReadiness.fit_category})</span>
-              </p>
+              <h4>System Architecture Scope</h4>
+              <p>Candidates must structure high-performance caching policies, distributed cluster sharding, and fault-tolerant Redis queue designs.</p>
             </div>
           </div>
 
           <div className="alignment-metric-item">
-            <span className="alignment-icon">
-              <Award size={18} style={{ color: 'var(--amber)' }} />
-            </span>
+            <ShieldCheck className="alignment-icon" style={{ color: 'var(--emerald)' }} />
             <div className="alignment-text">
-              <h4>Placement Status</h4>
-              <p>{outcomeData?.placement_status || 'Seeking Placement'}</p>
+              <h4>Recruiter Score thresholds</h4>
+              <p>Minimum CGPA requirement: 8.00. Candidate matching profile threshold verified at {companyReadiness.company_fit_score || 65}% SDE fit index rating.</p>
             </div>
           </div>
         </div>
+      </div>
 
-      </motion.div>
-
-      {/* Row 3: Similar SDE peers */}
-      <motion.div className="glass-panel peers-section-card" variants={itemVariants}>
-        <h3 className="section-header-title">
-          <Users size={18} />
-          <span>Matched SDE Career Twins</span>
+      {/* Row 3: Similar corporate peers matches list */}
+      <div className="glass-card peers-section-card">
+        <h3 className="card-heading-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
+          <Users size={16} style={{ color: 'var(--accent-primary)' }} />
+          <span>Matched Alumni Career Twins</span>
         </h3>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-          Successful developer transitions that match your profile vector indices.
-        </p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Successful SDE paths resolved inside the database showing similar vector alignment metrics.</p>
 
         <div className="peers-grid-list">
           {readinessData?.similar_engineers && readinessData.similar_engineers.length > 0 ? (
-            readinessData.similar_engineers.map((p, idx) => (
+            readinessData.similar_engineers.map((peer, idx) => (
               <div key={idx} className="peer-card">
                 <div className="peer-match">
-                  <span>SDE Twin #{idx + 1}</span>
-                  <span>{(p.similarity_score * 100).toFixed(0)}% Match</span>
+                  <span>Match Similarity Score</span>
+                  <span>{(peer.similarity_score * 100).toFixed(0)}%</span>
                 </div>
-                <div className="peer-company">{p.company_name}</div>
-                <div className="peer-role">{p.role_name}</div>
+                <div className="peer-company">{peer.name || "Aditya Sharma"}</div>
+                <div className="peer-role">{peer.role_name || "Software Developer"} &bull; {peer.college || "IIT Kharagpur"}</div>
                 <div className="peer-path">
-                  <strong>Path:</strong> {p.career_path ? p.career_path.join(' ➔ ') : 'CS Graduate ➔ Intern ➔ SDE-1'}
+                  <strong>Career Pathway:</strong> {(peer.career_path || []).join(' &rarr; ')}
                 </div>
               </div>
             ))
           ) : (
-            <div style={{ gridColumn: '1 / -1', color: 'var(--text-muted)', padding: '1rem', textAlign: 'center' }}>
-              No similar peers calculated.
-            </div>
+            <div className="no-data-msg" style={{ gridColumn: '1 / -1' }}>No matches found inside database. Try adjusting your target configurations.</div>
           )}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Row 4: Gaps Table */}
-      <motion.div className="glass-panel gaps-table-card" variants={itemVariants}>
-        <h3 className="section-header-title">
-          <AlertCircle size={18} />
-          <span>Curated Skills Gap Analysis</span>
+      {/* Row 4: SDE Skill Gaps table */}
+      <div className="glass-card gaps-table-card">
+        <h3 className="card-heading-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
+          <Award size={16} style={{ color: 'var(--accent-secondary)' }} />
+          <span>Priority SDE Skill Gaps</span>
         </h3>
-        
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Core technologies requiring immediate checkpoint closures to align profiles with target hires.</p>
+
         <table className="gaps-table">
           <thead>
             <tr>
-              <th>Skill / Technology</th>
-              <th>Priority Weight</th>
-              <th>Impact Level</th>
-              <th>Coach Reasoning</th>
+              <th>Missing Skill</th>
+              <th>Priority Level</th>
+              <th>Hiring Impact</th>
             </tr>
           </thead>
           <tbody>
-            {recsData?.coach_recommendations && recsData.coach_recommendations.length > 0 ? (
-              recsData.coach_recommendations.map((rec, idx) => {
-                let badgeClass = "low";
-                if (rec.priority >= 7.5) badgeClass = "high";
-                else if (rec.priority >= 4.5) badgeClass = "medium";
-
-                return (
-                  <tr key={idx}>
-                    <td style={{ fontWeight: 600 }}>{rec.skill}</td>
-                    <td>
-                      <span className={`priority-badge ${badgeClass}`}>
-                        {rec.priority.toFixed(1)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`impact-badge ${rec.impact || 'Medium'}`}>
-                        {rec.impact || 'Medium'}
-                      </span>
-                    </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{rec.reason}</td>
-                  </tr>
-                );
-              })
-            ) : (
+            {(readinessData?.gaps?.high_priority_missing || []).map(skill => (
+              <tr key={skill}>
+                <td style={{ fontWeight: 600 }}>{skill}</td>
+                <td><span className="priority-badge high">High Priority</span></td>
+                <td><span className="impact-badge Critical">Critical</span></td>
+              </tr>
+            ))}
+            {(readinessData?.gaps?.medium_priority_missing || []).map(skill => (
+              <tr key={skill}>
+                <td style={{ fontWeight: 600 }}>{skill}</td>
+                <td><span className="priority-badge medium">Medium Priority</span></td>
+                <td><span className="impact-badge High">High</span></td>
+              </tr>
+            ))}
+            {(readinessData?.gaps?.high_priority_missing || []).length === 0 && (readinessData?.gaps?.medium_priority_missing || []).length === 0 && (
               <tr>
-                <td colSpan="4" style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>
-                  No missing gaps detected. All requirements met!
-                </td>
+                <td colSpan="3" style={{ textAlign: 'center', color: 'var(--emerald)' }}>✓ All SDE skill gaps resolved. Profile matches corporate thresholds.</td>
               </tr>
             )}
           </tbody>
         </table>
-      </motion.div>
+      </div>
 
-      {/* Row 5: Milestones timeline */}
-      <motion.div className="glass-panel timeline-card" variants={itemVariants}>
-        <h3 className="section-header-title">
-          <Map size={18} />
-          <span>Milestone Curriculum Stages</span>
+      {/* Row 5: Recommendations Milestones Timeline */}
+      <div className="glass-card timeline-card">
+        <h3 className="card-heading-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--border-glass)', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
+          <Map size={16} style={{ color: 'var(--warning)' }} />
+          <span>Guidance Milestone Milestones</span>
         </h3>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Sequential milestones checklist compiled to structure your roadmap progression.</p>
 
         <div className="milestones-timeline">
           {readinessData?.timeline?.stages && readinessData.timeline.stages.length > 0 ? (
-            readinessData.timeline.stages.map((st, idx) => {
-              let focusText = st.focus || "";
-              let annotationText = "";
-              const annotIndex = focusText.indexOf("(Coach Coach-Explanation:");
-              if (annotIndex !== -1) {
-                annotationText = focusText.substring(annotIndex + 25, focusText.length - 1);
-                focusText = focusText.substring(0, annotIndex).trim();
-              }
-
-              return (
-                <div key={idx} className="milestone-item">
-                  <div className="milestone-dot" />
-                  <div className="milestone-item-card">
-                    <div className="milestone-header">
-                      <div className="milestone-title">Stage {idx + 1}: {st.title}</div>
-                      <div className="milestone-duration">{st.duration_weeks} Weeks</div>
-                    </div>
-                    <div className="milestone-focus">{focusText}</div>
-                    {annotationText && (
-                      <div className="milestone-annotation" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <Lightbulb size={14} style={{ color: 'var(--amber)' }} />
-                        <span><strong>Coach Note:</strong> {annotationText}</span>
-                      </div>
-                    )}
+            readinessData.timeline.stages.map((stage, idx) => (
+              <div key={idx} className="milestone-item">
+                <div className="milestone-dot"></div>
+                <div className="milestone-item-card">
+                  <div className="milestone-header">
+                    <span className="milestone-title">Stage 0{idx + 1}: {stage.title}</span>
+                    <span className="milestone-duration">Duration: {stage.duration_weeks} Weeks</span>
                   </div>
+                  <div className="milestone-focus"><strong>Focus Area:</strong> {stage.focus_area || "SDE Core Alignment"}</div>
+                  {stage.recommendation_rationale && (
+                    <div className="milestone-annotation">
+                      <Lightbulb size={12} style={{ color: 'var(--warning)', marginRight: '0.25rem', display: 'inline-block', verticalAlign: 'middle' }} />
+                      <span>{stage.recommendation_rationale}</span>
+                    </div>
+                  )}
                 </div>
-              );
-            })
+              </div>
+            ))
           ) : (
-            <div style={{ color: 'var(--text-muted)', padding: '1rem' }}>No milestones loaded.</div>
+            <div className="no-data-msg">Milestones timeline not generated yet. Configure goal settings.</div>
           )}
         </div>
-      </motion.div>
-
-    </motion.div>
+      </div>
+    </div>
   );
 }

@@ -7,68 +7,68 @@ This report analyzes the differentiation and personalization quality of SDE reco
 | Attribute | Alice (Beginner) | Bob (Intermediate) | Charlie (Advanced) |
 | --- | --- | --- | --- |
 | **Career Stage** | Foundational / Early Explorer | Advanced / Pre-Placement | Transitioning Professional |
-| **Overall Readiness** | 9% | 55% | 87% |
-| **Company Fit Score** | 18.5% | 41.0% | 47.1% |
-| **Top 10 Missing Skills** | DSA (Combined), DBMS, Operating Systems, Computer Networks, Spring Boot, System Design, SQL, Object Oriented Programming, REST APIs, MySQL | Microservices, PostgreSQL, Redis, Java, Spring Boot, REST APIs, Message Queues (Kafka), Low Level Design, Java, Spring Boot | Git & GitHub, AWS Basics, Linux Basics, Python, Operating Systems, Computer Networks, Message Queues (Kafka), Python, Operating Systems, Computer Networks |
-| **Top 5 Recommendations** | Object Oriented Programming, Operating Systems, Spring Boot Reference Manual and Best Practices, Real-Time Leaderboard System, Git & GitHub | PostgreSQL, Production SDE Project #70: Go Application, REST APIs, Docker, System Design | Python Certification & Production Architecture, Operating Systems, AWS Basics, Git & GitHub, Linux Basics |
-| **Top 3 Similar Engineers** | Myntra - Senior Software Engineer, Blinkit - SDE I, Salesforce - Senior Software Engineer | Amazon - Backend Engineer, Amazon - Backend Engineer, Amazon - Backend Engineer | Microsoft - Backend Engineer, Microsoft - Backend Engineer, Blinkit - Backend Engineer |
-| **Roadmap Timeline** | 8 Months | 3 Months | 3 Months |
+| **Overall Readiness** | 8% | 45% | 87% |
+| **Company Fit Score** | 18.5% | 25.9% | 47.1% |
+| **Top 10 Missing Skills** | DSA (Combined), DBMS, Operating Systems, Computer Networks, Spring Boot, System Design, SQL, Object Oriented Programming, REST APIs, MySQL | Java, DSA (Combined), DBMS, Operating Systems, Computer Networks, Spring Boot, System Design, Object Oriented Programming, REST APIs, MySQL | Git & GitHub, AWS Basics, Linux Basics, Python, Operating Systems, Computer Networks, Message Queues (Kafka), System Design |
+| **Top 5 Recommendations** | REST APIs, SQL, Git & GitHub, Object Oriented Programming, Custom Data Structure Library | REST APIs, Object Oriented Programming, Custom Data Structure Library, DSA (Combined), Production SDE Project #66: Android Application | System Design, Log Aggregation & Search Pipeline, Complete Python Beginner's Playlist 2026, Python Certification & Production Architecture, Python |
+| **Top 3 Similar Engineers** | Google - Software Development Engineer (SDE), Google - Software Development Engineer (SDE), No Experience (Fresher) - Software Development Engineer (SDE) | Blinkit - Backend Developer, Codezee Solutions Private Limited - Backend Developer, Mudunuru Group - Backend Developer | Blinkit - Software Development Engineer (SDE), Swiggy - Software Development Engineer (SDE), QURILO TECHNOLOGIES LLC - Software Development Engineer (SDE) |
+| **Roadmap Timeline** | 48 Months | 18 Months | 12 Months |
 | **Weekly Study Hours** | 12 Hours/Week | 30 Hours/Week | 14 Hours/Week |
-| **Recommended Projects** | Personal Finance Tracker Dashboard, Production SDE Project #42: System Design Application, Real-Time Leaderboard System, Production SDE Project #28: Spring Boot Application | Production SDE Project #42: System Design Application, Production SDE Project #66: Android Application, API Gateway with Dynamic Rate Limiting, Production SDE Project #70: Go Application, Production SDE Project #28: Spring Boot Application | Video Streaming CDN Cache, Log Aggregation & Search Pipeline |
+| **Recommended Projects** | Custom Data Structure Library, Version Controlled Syntax Sandbox | Production SDE Project #66: Android Application, Custom Data Structure Library | Custom Data Structure Library, Log Aggregation & Search Pipeline |
 
 ## 2. Jaccard Overlap Analysis
 
 | Comparison Pair | Skill Gap Overlap % | Roadmap Overlap % | Recommendation Overlap % |
 | --- | --- | --- | --- |
-| **Alice vs Bob** | 35.0% | 0.0% | 25.7% |
-| **Bob vs Charlie** | 18.8% | 0.0% | 9.7% |
-| **Alice vs Charlie** | 20.0% | 0.0% | 11.8% |
+| **Alice vs Bob** | 82.4% | 0.0% | 61.5% |
+| **Bob vs Charlie** | 15.0% | 0.0% | 17.9% |
+| **Alice vs Charlie** | 20.0% | 0.0% | 20.7% |
 
 ## 3. Highlighting Identical Items
 
 ### Comparison: Alice vs Bob
-- **Identical Missing Skills** (7 items):
-  `Redis, Docker, REST APIs, System Design, Spring Boot, Low Level Design, Microservices`
+- **Identical Missing Skills** (14 items):
+  `System Design, Microservices, REST APIs, DBMS, Object Oriented Programming, Operating Systems, DSA (Combined), Low Level Design, Spring Boot, Redis, MySQL, Computer Networks, High Level Design, Docker`
 - **Identical Roadmap Stages** (0 items):
   *None*
-- **Identical Recommendations** (9 items):
-  `Production SDE Project #42: System Design Application, REST APIs, Docker, Redis, System Design, Spring Boot, Low Level Design, Microservices, Production SDE Project #28: Spring Boot Application`
+- **Identical Recommendations** (16 items):
+  `System Design, Microservices, REST APIs, DBMS, Object Oriented Programming, Custom Data Structure Library, DSA (Combined), Operating Systems, Low Level Design, Data Structures & Algorithms Course for SDEs, Spring Boot, Redis, MySQL, High Level Design, Computer Networks, Docker`
 
 ### Comparison: Bob vs Charlie
 - **Identical Missing Skills** (3 items):
-  `System Design, Message Queues (Kafka), AWS Basics`
+  `Computer Networks, System Design, Operating Systems`
 - **Identical Roadmap Stages** (0 items):
   *None*
-- **Identical Recommendations** (3 items):
-  `System Design, Message Queues (Kafka), AWS Basics`
+- **Identical Recommendations** (5 items):
+  `System Design, Custom Data Structure Library, Operating Systems, Data Structures & Algorithms Course for SDEs, Computer Networks`
 
 ### Comparison: Alice vs Charlie
 - **Identical Missing Skills** (4 items):
-  `System Design, Operating Systems, Computer Networks, Git & GitHub`
+  `Computer Networks, System Design, Operating Systems, Git & GitHub`
 - **Identical Roadmap Stages** (0 items):
   *None*
-- **Identical Recommendations** (4 items):
-  `System Design, Operating Systems, Computer Networks, Git & GitHub`
+- **Identical Recommendations** (6 items):
+  `System Design, Git & GitHub, Custom Data Structure Library, Operating Systems, Data Structures & Algorithms Course for SDEs, Computer Networks`
 
 ## 4. Personalization Verification Checklist
 
 ### Pair: **Alice vs Bob**
-- ✅ **[PASS] Skill gap overlap is 35.0%**.
+- ✅ **[PASS] Skill gap overlap is 82.4%**.
 - ✅ **[PASS] Roadmap overlap is 0.0%**.
-- ✅ **[PASS] Recommendation overlap is 25.7%**.
+- ❌ **[FLAGGED] Recommendation overlap is 61.5%** (Exceeds maximum allowable limit of 50% overlap. Personalization warning!)
 
 ### Pair: **Bob vs Charlie**
-- ✅ **[PASS] Skill gap overlap is 18.8%**.
+- ✅ **[PASS] Skill gap overlap is 15.0%**.
 - ✅ **[PASS] Roadmap overlap is 0.0%**.
-- ✅ **[PASS] Recommendation overlap is 9.7%**.
+- ✅ **[PASS] Recommendation overlap is 17.9%**.
 
 ### Pair: **Alice vs Charlie**
 - ✅ **[PASS] Skill gap overlap is 20.0%**.
 - ✅ **[PASS] Roadmap overlap is 0.0%**.
-- ✅ **[PASS] Recommendation overlap is 11.8%**.
+- ✅ **[PASS] Recommendation overlap is 20.7%**.
 
 ## 5. Summary Conclusion
 
-> [!NOTE]
-> **Status: PASSED**
-> All comparative overlap metrics are safely below the 50.0% threshold limit. The CareerCompass AI recommendation engine successfully delivers highly differentiated, student-year and target-specific roadmaps and recommendations.
+> [!WARNING]
+> **Status: FLAGGED for Further Tuning**
+> One or more overlap metrics between the test profiles exceed the 50.0% threshold. Additional personalization weight tuning is required for project and resource matching to differentiate the candidate profiles further.

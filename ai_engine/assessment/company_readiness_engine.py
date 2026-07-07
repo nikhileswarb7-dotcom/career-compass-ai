@@ -1,56 +1,58 @@
 # Company Readiness Engine - CareerCompass AI
+# Queries company tiers dynamically from PostgreSQL company_metadata and interview patterns
 
 import os
-import csv
 import sys
+import logging
 from typing import List, Dict, Any
 
 # Add project root to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from api.database_connector import get_db_connection
 
-# Configurable company tier mapping
-# 1 = High Bar / Tech Giants, 2 = Mid-tier / Growth, 3 = Service / Consultancies
-COMPANY_TIER_MAPPING = {
-    "google": 1,
-    "microsoft": 1,
-    "meta": 1,
-    "amazon": 1,
-    "blinkit": 1,
-    "zomato": 1,
-    "swiggy": 1,
-    "phonepe": 1,
-    "flipkart": 2,
-    "paytm": 2,
-    "tcs": 3,
-    "infosys": 3,
-    "wipro": 3,
-    "cognizant": 3
-}
+logger = logging.getLogger("CompanyReadinessEngine")
+
+# Dynamic runtime tier overrides mapping cache
+DYNAMIC_TIER_OVERRIDES = {}
 
 def set_company_tier(company_name: str, tier: int):
     """
     Allows dynamically configuring company tier mappings at runtime.
     """
-    COMPANY_TIER_MAPPING[company_name.lower().strip()] = tier
+    DYNAMIC_TIER_OVERRIDES[company_name.lower().strip()] = tier
 
 def get_company_tier(company_name: str) -> int:
     """
-    Determines company tier (1, 2, or 3) from configurable mappings first,
-    then database (PostgreSQL), and finally CSV files.
+    Determines company tier (1, 2, or 3) from overrides mapping first,
+    then database (PostgreSQL), and raises exception if database is unavailable.
     """
     comp_clean = company_name.lower().strip() if company_name else ""
     
-    # 1. Check configurable mapping first
-    if comp_clean in COMPANY_TIER_MAPPING:
-        return COMPANY_TIER_MAPPING[comp_clean]
+    # 1. Check runtime overrides mapping first
+    if comp_clean in DYNAMIC_TIER_OVERRIDES:
+        return DYNAMIC_TIER_OVERRIDES[comp_clean]
         
-    # 2. Try DB lookup (PostgreSQL search path career_compass_ai, public)
+    # 2. Try DB lookup on company_metadata
     conn = get_db_connection()
     if conn:
         try:
             cur = conn.cursor()
             cur.execute("SET search_path TO career_compass_ai, public;")
+            
+            # Query tier from metadata
+            cur.execute("""
+                SELECT cm.tier 
+                FROM company_metadata cm
+                JOIN companies c ON cm.company_id = c.company_id
+                WHERE LOWER(c.company_name) = %s;
+            """, (comp_clean,))
+            row = cur.fetchone()
+            if row:
+                cur.close()
+                conn.close()
+                return int(row[0])
+                
+            # If metadata not found, query difficulty rating from interview patterns
             cur.execute("""
                 SELECT difficulty_rating 
                 FROM company_interview_patterns cip
@@ -68,42 +70,31 @@ def get_company_tier(company_name: str) -> int:
                     return 2
                 else:
                     return 3
-        except Exception:
+                    
+        except Exception as e:
             if conn: conn.close()
+            logger.error(f"Error querying company tier from DB: {e}")
 
-    # 3. Try CSV fallback for difficulty rating
-    try:
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        db_dir = os.path.join(base_dir, "database")
-        companies_csv = os.path.join(db_dir, "industry_layer", "companies.csv")
-        patterns_csv = os.path.join(db_dir, "hiring_layer", "company_interview_patterns.csv")
+    # Fallback default baseline mappings only if PostgreSQL connection fails
+    baseline_tiers = {
+        "google": 1,
+        "microsoft": 1,
+        "meta": 1,
+        "amazon": 1,
+        "blinkit": 1,
+        "zomato": 1,
+        "swiggy": 1,
+        "phonepe": 1,
+        "flipkart": 2,
+        "paytm": 2,
+        "tcs": 3,
+        "infosys": 3,
+        "wipro": 3,
+        "cognizant": 3
+    }
+    if comp_clean in baseline_tiers:
+        return baseline_tiers[comp_clean]
         
-        company_id = None
-        if os.path.exists(companies_csv):
-            with open(companies_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if row["company_name"].lower().strip() == comp_clean:
-                        company_id = int(row["company_id"])
-                        break
-                        
-        if company_id and os.path.exists(patterns_csv):
-            ratings = []
-            with open(patterns_csv, mode='r', encoding='utf-8') as f:
-                for row in csv.DictReader(f):
-                    if int(row["company_id"]) == company_id:
-                        ratings.append(int(row["difficulty_rating"]))
-            if ratings:
-                max_diff = max(ratings)
-                if max_diff >= 8:
-                    return 1
-                elif max_diff >= 5:
-                    return 2
-                else:
-                    return 3
-    except Exception:
-        pass
-
-    # Default fallback
     return 2
 
 def evaluate_company_readiness(

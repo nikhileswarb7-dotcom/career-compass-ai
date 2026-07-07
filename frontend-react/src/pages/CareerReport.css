@@ -2,21 +2,30 @@
   max-width: 1100px;
   margin: 0 auto;
   padding: 1rem 0 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
 }
 
 .report-header-banner {
-  margin-bottom: 2rem;
   text-align: left;
 }
 
 .report-header-banner h1 {
   font-family: var(--font-title);
   font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.report-header-banner p {
+  color: var(--text-muted);
+  font-size: 1rem;
 }
 
 /* Progress gauges grid */
@@ -24,7 +33,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
 }
 
 .gauge-card {
@@ -33,6 +41,7 @@
   align-items: center;
   justify-content: center;
   padding: 1.75rem;
+  border-radius: var(--radius-md);
 }
 
 .gauge-svg-container {
@@ -44,7 +53,7 @@
 
 .gauge-bg-circle {
   fill: none;
-  stroke: var(--card-sub-bg-hover);
+  stroke: var(--bg-secondary);
   stroke-width: 8;
 }
 
@@ -53,14 +62,14 @@
   stroke-width: 8;
   stroke-linecap: round;
   transform: rotate(-90deg);
-  transform-origin: 50% 50%;
+  transform-origin: 60px 60px;
   transition: stroke-dashoffset 0.8s ease-out;
 }
 
 .circle-skills { stroke: var(--primary); }
 .circle-projects { stroke: var(--secondary); }
 .circle-interview { stroke: var(--emerald); }
-.circle-profile { stroke: var(--amber); }
+.circle-profile { stroke: var(--warning); }
 
 .gauge-percentage {
   position: absolute;
@@ -84,8 +93,7 @@
 .report-row-split-2 {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 768px) {
@@ -97,6 +105,7 @@
 .forecast-card {
   padding: 2rem;
   text-align: left;
+  border-radius: var(--radius-md);
 }
 
 .forecast-row {
@@ -138,9 +147,9 @@
 
 .feedback-textarea {
   width: 100%;
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   color: var(--text-main);
   padding: 0.75rem;
   font-size: 0.88rem;
@@ -155,6 +164,7 @@
 .alignment-card {
   padding: 2rem;
   text-align: left;
+  border-radius: var(--radius-md);
 }
 
 .alignment-metric-item {
@@ -185,8 +195,8 @@
 /* Similar Peer matches */
 .peers-section-card {
   padding: 2rem;
-  margin-bottom: 2rem;
   text-align: left;
+  border-radius: var(--radius-md);
 }
 
 .peers-grid-list {
@@ -197,16 +207,16 @@
 }
 
 .peer-card {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.25rem;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .peer-card:hover {
   background: var(--card-sub-bg-hover);
-  border-color: rgba(var(--primary-rgb), 0.2);
+  border-color: var(--border-glass-hover);
 }
 
 .peer-match {
@@ -240,8 +250,8 @@
 /* Priority Gaps list */
 .gaps-table-card {
   padding: 2rem;
-  margin-bottom: 2rem;
   text-align: left;
+  border-radius: var(--radius-md);
 }
 
 .gaps-table {
@@ -273,9 +283,9 @@
   font-weight: 700;
 }
 
-.priority-badge.high { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
-.priority-badge.medium { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
-.priority-badge.low { background: var(--card-sub-bg-hover); color: var(--text-muted); }
+.priority-badge.high { background: rgba(239, 68, 68, 0.1); color: var(--rose); }
+.priority-badge.medium { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+.priority-badge.low { background: var(--bg-secondary); color: var(--text-muted); }
 
 .impact-badge {
   padding: 0.2rem 0.5rem;
@@ -285,14 +295,15 @@
   text-transform: uppercase;
 }
 
-.impact-badge.Critical { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
-.impact-badge.High { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+.impact-badge.Critical { background: rgba(239, 68, 68, 0.1); color: var(--rose); }
+.impact-badge.High { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
 .impact-badge.Medium { background: var(--primary-glow); color: var(--primary); }
 
 /* Milestones Timeline */
 .timeline-card {
   padding: 2rem;
   text-align: left;
+  border-radius: var(--radius-md);
 }
 
 .milestones-timeline {
@@ -324,16 +335,16 @@
   height: 18px;
   border-radius: 50%;
   background: var(--primary);
-  border: 4px solid var(--bg-dark);
+  border: 4px solid var(--bg-main);
   z-index: 2;
   margin-left: 0px;
   box-shadow: 0 0 10px var(--primary-glow);
 }
 
 .milestone-item-card {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   flex: 1;
 }
@@ -366,7 +377,7 @@
 
 .milestone-annotation {
   margin-top: 0.75rem;
-  background: rgba(10, 10, 15, 0.4);
+  background: var(--bg-main);
   border: 1px solid var(--border-glass);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;

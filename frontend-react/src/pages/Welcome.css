@@ -1,63 +1,66 @@
 .welcome-container {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
+  padding: 1.5rem;
   position: relative;
+  overflow: hidden;
 }
 
 .theme-toggle-welcome {
   position: absolute;
   top: 1.5rem;
-  right: 1.5rem;
-  background: var(--card-sub-bg);
+  right: 6.5rem;
+  background: var(--bg-card);
   border: 1px solid var(--border-glass);
   color: var(--text-main);
-  width: 40px;
-  height: 40px;
+  padding: 0.6rem;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
-  font-size: 1.15rem;
-  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+  z-index: 10;
   box-shadow: 0 4px 12px var(--card-shadow);
 }
 
 .theme-toggle-welcome:hover {
   background: var(--card-sub-bg-hover);
   border-color: var(--border-glass-hover);
-  transform: scale(1.05);
 }
 
 .logout-welcome-btn {
   position: absolute;
   top: 1.5rem;
-  right: 5rem;
-  background: transparent;
+  right: 1.5rem;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
   color: var(--rose);
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-family: var(--font-title);
   font-weight: 600;
-  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  z-index: 10;
 }
 
 .logout-welcome-btn:hover {
-  background: var(--rose-glow);
-  border-color: var(--rose-border);
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.15);
 }
 
+/* Welcome Entrance view */
 .welcome-card {
-  padding: 3.5rem;
-  max-width: 900px;
   width: 100%;
+  max-width: 800px;
+  padding: 3rem;
   text-align: center;
+  z-index: 2;
+  position: relative;
 }
 
 .welcome-brand {
@@ -66,107 +69,360 @@
   justify-content: center;
   gap: 0.75rem;
   font-family: var(--font-title);
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  font-size: 2.25rem;
+  font-weight: 900;
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  letter-spacing: -0.03em;
+  margin-bottom: 0.75rem;
 }
 
 .welcome-logo-icon {
-  width: 48px;
-  height: 48px;
-  color: var(--primary);
+  width: 38px;
+  height: 38px;
+  color: var(--accent-primary);
 }
 
 .welcome-tagline {
   color: var(--text-muted);
-  font-size: 1.2rem;
-  margin-bottom: 3rem;
+  font-size: 1.1rem;
+  max-width: 550px;
+  margin: 0 auto 3rem auto;
+  line-height: 1.6;
 }
 
 .welcome-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
+  width: 100%;
 }
 
 .welcome-btn-card {
-  background: var(--card-sub-bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
   padding: 2rem 1.5rem;
-  border-radius: 16px;
-  color: var(--text-main);
   text-align: left;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  cursor: pointer;
-  outline: none;
-  font-family: inherit;
-}
-
-.welcome-btn-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
   height: 100%;
-  background: linear-gradient(to bottom, var(--primary), var(--secondary));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.welcome-btn-card:hover {
-  background: var(--card-sub-bg-hover);
-  border-color: rgba(var(--primary-rgb), 0.25);
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 35px var(--card-shadow);
-}
-
-.welcome-btn-card:hover::before {
-  opacity: 1;
 }
 
 .welcome-btn-title {
-  font-family: var(--font-title);
-  font-size: 1.25rem;
-  font-weight: 750;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 750;
+  margin-bottom: 0.75rem;
+}
+
+.welcome-btn-title.start-new { color: var(--accent-primary); }
+.welcome-btn-title.continue { color: var(--accent-secondary); }
+.welcome-btn-title.analytics { color: var(--warning); }
+
+.welcome-btn-desc {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Active Personal Workspace Styles */
+.workspace-wrapper {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.workspace-greeting {
+  text-align: left;
+}
+
+.workspace-greeting h1 {
+  font-family: var(--font-title);
+  font-size: 2.25rem;
+  font-weight: 850;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.workspace-greeting p {
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+  font-size: 1rem;
+}
+
+/* Top Dashboard Grid */
+.workspace-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.target-info-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.target-lbl {
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.target-company {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-secondary);
+  margin-top: 0.5rem;
+}
+
+.target-role-badge {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+.target-timeline {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  border-top: 1px dashed var(--border-glass);
+  padding-top: 0.75rem;
+}
+
+/* Workspace Mission Action Card */
+.mission-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.mission-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--primary-glow);
+  color: var(--primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mission-title {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-top: 0.75rem;
+}
+
+.mission-desc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  margin-top: 0.5rem;
+}
+
+.mission-action-row {
+  margin-top: 1.25rem;
+  width: 100%;
+}
+
+.btn-continue-workspace {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Workspace Row 2 Grid */
+.workspace-row-split-2 {
+  display: grid;
+  grid-template-columns: 1.6fr 1.4fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .workspace-row-split-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.workspace-list-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.card-heading-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 0.75rem;
+}
+
+.card-heading-title.weekly { color: var(--accent-primary); }
+.card-heading-title.ai-rec { color: var(--accent-secondary); }
+.card-heading-title.interview-prep { color: var(--warning); }
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.goal-item-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.goal-item-row:hover {
   color: var(--text-main);
 }
 
-.welcome-btn-title.start-new svg { color: var(--secondary); }
-.welcome-btn-title.continue svg { color: var(--primary); }
-.welcome-btn-title.analytics svg { color: var(--emerald); }
-
-.welcome-btn-desc {
-  font-size: 0.85rem;
+.goal-checkbox {
   color: var(--text-muted);
-  line-height: 1.45;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
-@media (max-width: 768px) {
-  .welcome-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .welcome-card {
-    padding: 2rem;
-  }
-  
-  .welcome-brand {
-    font-size: 2.2rem;
-  }
+.goal-checkbox.completed {
+  color: var(--success);
+}
+
+.goal-text.completed {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Recommendations list */
+.rec-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rec-item-pill {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.rec-item-pill:hover {
+  transform: translateX(3px);
+  border-color: var(--border-glass-hover);
+}
+
+.rec-item-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.rec-item-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Score Dial Card Custom styling */
+.score-dial-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.dial-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.dial-svg-box {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+}
+
+.dial-bg-circle {
+  fill: none;
+  stroke: var(--bg-secondary);
+  stroke-width: 8;
+}
+
+.dial-active-circle {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 75px 75px;
+  transition: stroke-dashoffset 0.8s ease-in-out;
+}
+
+.dial-value-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.dial-info-text {
+  text-align: left;
+}
+
+.dial-info-text h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.dial-info-text p {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
 }

@@ -21,10 +21,36 @@ MASTER_COMPANIES = [
 ]
 
 MASTER_ROLES = [
-    "Software Development Engineer", "Software Development Engineer I (SDE-1)", 
-    "Junior Software Engineer", "Trainee Engineer", "QA Automation Engineer", 
-    "Backend Engineer", "Frontend Engineer", "SRE / DevOps Engineer", 
-    "Mobile Engineer", "AI / ML Engineer"
+    "Software Development Engineer (SDE)",
+    "Backend Developer",
+    "Frontend Developer",
+    "Full Stack Developer",
+    "Software Engineer",
+    "Mobile App Developer (Android)",
+    "Mobile App Developer (iOS)",
+    "Flutter Developer",
+    "React Native Developer",
+    "DevOps Engineer",
+    "Cloud Engineer",
+    "Site Reliability Engineer (SRE)",
+    "Data Analyst",
+    "Data Engineer",
+    "Data Scientist",
+    "AI Engineer",
+    "Machine Learning Engineer",
+    "Deep Learning Engineer",
+    "NLP Engineer",
+    "Computer Vision Engineer",
+    "MLOps Engineer",
+    "Cyber Security Engineer",
+    "Security Analyst",
+    "SDET (Software Development Engineer in Test)",
+    "QA Automation Engineer",
+    "Product Manager",
+    "Associate Product Manager (APM)",
+    "Business Analyst",
+    "UI/UX Designer",
+    "Embedded Software Engineer"
 ]
 
 STAGES_LIST = [
@@ -36,26 +62,32 @@ STAGES_LIST = [
 ]
 
 SPECIALIZATIONS = [
-    "backend", "frontend", "sre", "ai_ml", "mobile", "qa", "general"
+    "backend", "frontend", "mobile", "ai_ml", "devops", "security", "testing", "product", "design", "embedded", "general"
 ]
 
 def get_specialization(role: str) -> str:
     """
-    Classifies a role name into a standard SDE specialization.
+    Classifies a role name into a standard engineering specialization dynamically.
     """
     r_low = role.lower().strip() if role else ""
-    if "frontend" in r_low:
+    if "frontend" in r_low or "ui" in r_low or "ux" in r_low or "design" in r_low:
         return "frontend"
-    elif "backend" in r_low:
+    elif "backend" in r_low or "full stack" in r_low or "fullstack" in r_low:
         return "backend"
-    elif "devops" in r_low or "sre" in r_low or "reliability" in r_low:
-        return "sre"
-    elif "ai" in r_low or "ml" in r_low or "machine learning" in r_low or "intelligence" in r_low:
+    elif any(k in r_low for k in ["devops", "sre", "cloud", "reliability", "infrastructure"]):
+        return "devops"
+    elif any(k in r_low for k in ["ai", "ml", "machine", "deep", "nlp", "vision", "scientist", "analyst", "data"]):
         return "ai_ml"
-    elif "mobile" in r_low or "android" in r_low or "ios" in r_low:
+    elif any(k in r_low for k in ["mobile", "android", "ios", "flutter", "native"]):
         return "mobile"
-    elif "qa" in r_low or "test" in r_low or "automation" in r_low:
-        return "qa"
+    elif any(k in r_low for k in ["security", "cyber"]):
+        return "security"
+    elif any(k in r_low for k in ["qa", "test", "automation", "sdet"]):
+        return "testing"
+    elif any(k in r_low for k in ["product", "apm"]):
+        return "product"
+    elif "embedded" in r_low:
+        return "embedded"
     else:
         return "general"
 

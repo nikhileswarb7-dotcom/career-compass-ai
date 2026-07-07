@@ -56,3 +56,15 @@ search_fallbacks.py
 
 # Raw Data
 raw_data/
+
+# LLM Response cache
+.cache/
+
+# Dedup logs
+duplicates_removed_log/
+
+# Scraped url lists containing PII
+source_url_lists/
+
+# Revenue plan Word document
+revenue_plan.docx

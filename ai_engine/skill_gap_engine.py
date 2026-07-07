@@ -1,42 +1,34 @@
 # Skill Gap Engine - CareerCompass AI
+# Queries PostgreSQL for company role requirements and raises exceptions if unavailable
 
-ROLE_REQUIREMENTS = {
-    "Java": "High",
-    "DSA (Combined)": "High",
-    "DBMS": "High",
-    "Operating Systems": "High",
-    "Computer Networks": "High",
-    "Spring Boot": "High",
-    "System Design": "High",
-    "SQL": "Medium",
-    "MySQL": "Medium",
-    "Git & GitHub": "Medium",
-    "Low Level Design": "Medium",
-    "High Level Design": "Medium",
-    "Object Oriented Programming": "Medium",
-    "REST APIs": "Medium",
-    "Docker": "Low",
-    "Redis": "Low",
-    "Microservices": "Low"
-}
+import os
+import sys
+import logging
+
+# Ensure project root is in sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from ai_engine.assessment.skill_assessor import get_role_skills_requirements
+
+logger = logging.getLogger("SkillGapEngine")
 
 def analyze_gaps(known_skills: list[str], dream_company: str = None, target_role: str = None) -> dict:
     """
-    Compares the user's known skills against SDE requirements.
+    Compares the user's known skills against SDE requirements loaded from PostgreSQL.
     Returns categorized lists of missing skills.
     """
-    # Get role requirements dynamically if company and role are provided
-    if dream_company and target_role:
-        try:
-            from ai_engine.assessment.skill_assessor import get_role_skills_requirements
-            role_reqs = get_role_skills_requirements(dream_company, target_role)
-        except Exception:
-            role_reqs = ROLE_REQUIREMENTS
-    else:
-        role_reqs = ROLE_REQUIREMENTS
+    company = dream_company or "Blinkit"
+    role = target_role or "Software Development Engineer (SDE)"
 
+    # Get role requirements dynamically from the database
+    role_reqs = get_role_skills_requirements(company, role)
+    
     if not role_reqs:
-        role_reqs = ROLE_REQUIREMENTS
+        # Try a baseline SDE role query from the database before raising
+        role_reqs = get_role_skills_requirements("Blinkit", "Software Development Engineer (SDE)")
+        
+    if not role_reqs:
+        logger.error(f"No requirements found in PostgreSQL for company '{company}' and role '{role}'!")
+        raise RuntimeError(f"Database requirements unavailable for company '{company}' and role '{role}'.")
 
     # Normalize input
     known_set = {s.strip().lower() for s in known_skills}

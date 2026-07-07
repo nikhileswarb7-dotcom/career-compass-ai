@@ -11,8 +11,8 @@ from pypdf import PdfReader
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 EMPLOYEES_DIR = os.path.join(os.path.dirname(__file__), "industry_layer")
 CAREER_DIR = os.path.join(os.path.dirname(__file__), "career_layer")
-PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_sde_profiles")
-BACKEND_PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_backend_dev_profiles")
+PROFILES_DIR = os.path.join(BASE_DIR, "raw_data", "linkedin_pdf_profiles")
+BACKEND_PROFILES_DIR = ""
 RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 IMPORT_DATA_PATH = os.path.join(os.path.dirname(__file__), "import_data.py")
 
@@ -20,32 +20,58 @@ IMPORT_DATA_PATH = os.path.join(os.path.dirname(__file__), "import_data.py")
 # 1. Database Connection Config loader
 # ----------------------------------------------------------------
 def load_db_config():
-    config = {
-        "host":     "localhost",
-        "port":     5432,
-        "dbname":   "career_compass_ai",
-        "user":     "postgres",
-        "password": "Nikhil@2824"
-    }
-    if os.path.exists(IMPORT_DATA_PATH):
-        try:
-            with open(IMPORT_DATA_PATH, "r", encoding="utf-8") as f:
-                content = f.read()
-            for key in config.keys():
-                match = re.search(r'"' + key + r'"\s*:\s*"(.*?)"', content)
-                if not match:
-                    match = re.search(r"'" + key + r"'\s*:\s*'(.*?)'", content)
-                if match:
-                    config[key] = match.group(1)
-        except Exception as e:
-            print(f"Error loading DB config from import_data.py: {e}")
-    return config
+    import sys
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+    from api.database_connector import DB_CONFIG
+    return DB_CONFIG
 
 # ----------------------------------------------------------------
 # 2. LinkedIn PDF Heuristic Parser
 # ----------------------------------------------------------------
 def clean_text(text):
     return text.replace('\xa0', ' ').replace('\u2011', '-').replace('\u2013', '-').replace('\u2014', '-').strip()
+
+def normalize_skill_name(raw_name):
+    name_low = raw_name.lower().strip()
+    name_low = re.sub(r'\(.*\)', '', name_low).strip()
+    alias_map = {
+        "react.js": "react",
+        "reactjs": "react",
+        "react js": "react",
+        "node.js": "nodejs",
+        "nodejs": "nodejs",
+        "node js": "nodejs",
+        "next.js": "nextjs",
+        "nextjs": "nextjs",
+        "next js": "nextjs",
+        "javascript": "javascript",
+        "js": "javascript",
+        "typescript": "typescript",
+        "ts": "typescript",
+        "html": "html & css",
+        "css": "html & css",
+        "html5": "html & css",
+        "css3": "html & css",
+        "cascading style sheets": "html & css",
+        "amazon web services": "aws basics",
+        "aws": "aws basics",
+        "apache kafka": "message queues (kafka)",
+        "kafka": "message queues (kafka)",
+        "amazon dynamodb": "dynamodb",
+        "dynamodb": "dynamodb",
+        "systems design": "system design",
+        "object oriented programming": "object oriented programming",
+        "oop": "object oriented programming",
+        "oops": "object oriented programming",
+        "postgres": "postgresql",
+        "postgresql": "postgresql",
+        "git": "git & github",
+        "github": "git & github",
+        "git & github": "git & github"
+    }
+    if name_low in alias_map:
+        return alias_map[name_low]
+    return name_low
 
 def parse_profile_pdf(file_path):
     reader = PdfReader(file_path)
@@ -83,13 +109,14 @@ def parse_profile_pdf(file_path):
         best_line = None
         name_idx = -1
         
-        intro_headers = ["Contact", "Top Skills", "Languages", "Certifications", "Publications", "Summary", "Experience", "Education"]
+        intro_headers_lower = ["contact", "top skills", "skills", "key skills", "technical skills", "languages", "certifications", "publications", "summary", "about", "experience", "work experience", "education", "studies"]
         
         for i, line in enumerate(lines[:40]):
             line_strip = line.strip()
-            if any(h in line_strip for h in ["www.linkedin.com", "LinkedIn", "Top Skills", "Certifications", "Languages", "@"]):
+            line_lower = line_strip.lower()
+            if any(h.lower() in line_lower for h in ["www.linkedin.com", "LinkedIn", "Top Skills", "Certifications", "Languages", "@"]):
                 continue
-            if line_strip in intro_headers or line_strip.startswith("Page ") or line_strip.startswith("Contact"):
+            if line_lower in intro_headers_lower or line_strip.startswith("Page ") or line_strip.startswith("Contact"):
                 continue
             
             line_tokens = set(re.findall(r'[a-z0-9]+', line_strip.lower()))
@@ -115,6 +142,7 @@ def parse_profile_pdf(file_path):
         # Fallback regex search
         for i, line in enumerate(lines[:30]):
             line_strip = line.strip()
+            line_lower = line_strip.lower()
             if any(h in line_strip for h in ["www.linkedin.com", "LinkedIn", "Top Skills", "Certifications", "@"]):
                 continue
             words = line_strip.split()
@@ -133,14 +161,16 @@ def parse_profile_pdf(file_path):
     skills = []
     in_skills = False
     for line in lines:
-        if "Top Skills" in line:
+        line_strip = line.strip()
+        line_lower = line_strip.lower()
+        if any(h in line_lower for h in ["top skills", "key skills", "technical skills"]) or line_lower == "skills" or line_lower == "skills & endorsements":
             in_skills = True
             continue
         if in_skills:
-            if any(h in line for h in ["Languages", "Certifications", "Publications", "Summary", "Experience", name or "---"]):
+            if any(h in line_lower for h in ["languages", "certifications", "publications", "summary", "about", "experience", "work experience", "work history", "education", "studies", "projects", "honors"]) or (name and name.lower() in line_lower) or "---" in line_strip:
                 in_skills = False
             else:
-                cleaned_skill = re.sub(r'\(.*\)', '', line).strip()
+                cleaned_skill = re.sub(r'\(.*\)', '', line_strip).strip()
                 if cleaned_skill and cleaned_skill != "" and len(cleaned_skill) < 50:
                     skills.append(cleaned_skill)
 
@@ -154,10 +184,12 @@ def parse_profile_pdf(file_path):
 
     for i, line in enumerate(lines):
         line_strip = line.strip()
-        if line_strip == "Experience":
+        line_lower = line_strip.lower()
+        
+        if line_lower in ["experience", "work experience", "professional experience", "work history", "employment", "employment history"]:
             section = "experience"
             continue
-        elif line_strip in ["Education", "Projects", "Honors-Awards", "Languages", "Certifications"]:
+        elif line_lower in ["education", "studies", "academic history", "academic background", "academics", "projects", "honors-awards", "languages", "certifications", "summary", "about"]:
             if section == "experience":
                 section = None
         
@@ -222,10 +254,11 @@ def parse_profile_pdf(file_path):
     
     for line in lines:
         line_strip = line.strip()
-        if line_strip == "Education":
+        line_lower = line_strip.lower()
+        if line_lower in ["education", "studies", "academic history", "academic background", "academics"]:
             section = "education"
             continue
-        elif line_strip in ["Experience", "Projects", "Honors-Awards", "Languages", "Certifications"]:
+        elif line_lower in ["experience", "work experience", "work history", "projects", "honors", "honors-awards", "languages", "certifications", "summary", "about"]:
             if section == "education":
                 section = None
                 
@@ -263,6 +296,29 @@ def parse_profile_pdf(file_path):
                     "start_year": year_match.group(1),
                     "end_year": year_match.group(2)
                 })
+
+    # Fallback to extract skills from text if none extracted from sections
+    if not skills:
+        predefined_skills = ["java", "go", "python", "kafka", "redis", "postgresql", "docker", "kubernetes", 
+                             "grpc", "microservices", "spring boot", "nodejs", "aws", "gcp", "dynamodb", 
+                             "mysql", "elasticsearch", "django", "react", "typescript", "nextjs", "kotlin", 
+                             "android", "sre", "system design", "distributed systems", "c++", "c", "c#", "dotnet", "git", "sql"]
+        full_text_lower = text.lower()
+        for s in predefined_skills:
+            if re.search(r'\b' + re.escape(s) + r'\b', full_text_lower):
+                # Format properly (e.g. C++ stays C++, Spring Boot stays Spring Boot, etc.)
+                proper_name = s.title()
+                if s == "c++": proper_name = "C++"
+                elif s == "c#": proper_name = "C#"
+                elif s == "grpc": proper_name = "gRPC"
+                elif s == "nodejs": proper_name = "NodeJS"
+                elif s == "nextjs": proper_name = "NextJS"
+                elif s == "postgresql": proper_name = "PostgreSQL"
+                elif s == "elasticsearch": proper_name = "ElasticSearch"
+                elif s == "sre": proper_name = "SRE"
+                elif s == "aws": proper_name = "AWS"
+                elif s == "gcp": proper_name = "GCP"
+                skills.append(proper_name)
 
     return {
         "name": name,
@@ -504,18 +560,36 @@ def process_pipeline():
     career_transitions = []
     
     role_specializations = [
-        {"role_id": 1, "role_name": "SDE Intern", "career_level": "Intern"},
-        {"role_id": 2, "role_name": "SDE I", "career_level": "Entry"},
-        {"role_id": 3, "role_name": "SDE II", "career_level": "Mid"},
-        {"role_id": 4, "role_name": "SDE III", "career_level": "Senior"},
-        {"role_id": 5, "role_name": "Senior Software Engineer", "career_level": "Senior"},
-        {"role_id": 6, "role_name": "Tech Lead", "career_level": "Lead"},
-        {"role_id": 7, "role_name": "Engineering Manager", "career_level": "Management"},
-        {"role_id": 8, "role_name": "Backend Engineer", "career_level": "Mid"},
-        {"role_id": 9, "role_name": "Frontend Engineer", "career_level": "Mid"},
-        {"role_id": 10, "role_name": "SRE / DevOps Engineer", "career_level": "Mid"},
-        {"role_id": 11, "role_name": "Mobile Engineer", "career_level": "Mid"},
-        {"role_id": 12, "role_name": "AI / ML Engineer", "career_level": "Mid"}
+        {"role_id": 1, "role_name": "Software Development Engineer (SDE)", "career_level": "Mid"},
+        {"role_id": 2, "role_name": "Backend Developer", "career_level": "Mid"},
+        {"role_id": 3, "role_name": "Frontend Developer", "career_level": "Mid"},
+        {"role_id": 4, "role_name": "Full Stack Developer", "career_level": "Mid"},
+        {"role_id": 5, "role_name": "Software Engineer", "career_level": "Mid"},
+        {"role_id": 6, "role_name": "Mobile App Developer (Android)", "career_level": "Mid"},
+        {"role_id": 7, "role_name": "Mobile App Developer (iOS)", "career_level": "Mid"},
+        {"role_id": 8, "role_name": "Flutter Developer", "career_level": "Mid"},
+        {"role_id": 9, "role_name": "React Native Developer", "career_level": "Mid"},
+        {"role_id": 10, "role_name": "DevOps Engineer", "career_level": "Mid"},
+        {"role_id": 11, "role_name": "Cloud Engineer", "career_level": "Mid"},
+        {"role_id": 12, "role_name": "Site Reliability Engineer (SRE)", "career_level": "Mid"},
+        {"role_id": 13, "role_name": "Data Analyst", "career_level": "Mid"},
+        {"role_id": 14, "role_name": "Data Engineer", "career_level": "Mid"},
+        {"role_id": 15, "role_name": "Data Scientist", "career_level": "Mid"},
+        {"role_id": 16, "role_name": "AI Engineer", "career_level": "Mid"},
+        {"role_id": 17, "role_name": "Machine Learning Engineer", "career_level": "Mid"},
+        {"role_id": 18, "role_name": "Deep Learning Engineer", "career_level": "Mid"},
+        {"role_id": 19, "role_name": "NLP Engineer", "career_level": "Mid"},
+        {"role_id": 20, "role_name": "Computer Vision Engineer", "career_level": "Mid"},
+        {"role_id": 21, "role_name": "MLOps Engineer", "career_level": "Mid"},
+        {"role_id": 22, "role_name": "Cyber Security Engineer", "career_level": "Mid"},
+        {"role_id": 23, "role_name": "Security Analyst", "career_level": "Mid"},
+        {"role_id": 24, "role_name": "SDET (Software Development Engineer in Test)", "career_level": "Mid"},
+        {"role_id": 25, "role_name": "QA Automation Engineer", "career_level": "Mid"},
+        {"role_id": 26, "role_name": "Product Manager", "career_level": "Mid"},
+        {"role_id": 27, "role_name": "Associate Product Manager (APM)", "career_level": "Entry"},
+        {"role_id": 28, "role_name": "Business Analyst", "career_level": "Mid"},
+        {"role_id": 29, "role_name": "UI/UX Designer", "career_level": "Mid"},
+        {"role_id": 30, "role_name": "Embedded Software Engineer", "career_level": "Mid"}
     ]
     
     # Resolve early company ID conflicts against the DB
@@ -737,29 +811,77 @@ def process_pipeline():
         def map_role_to_id(role_name):
             role_lower = role_name.lower() if role_name else ""
             if "intern" in role_lower:
-                return 1
-            elif "sde-i" in role_lower or "sde i" in role_lower or "software development engineer i" in role_lower or "entry" in role_lower:
-                return 2
-            elif "sde-ii" in role_lower or "sde ii" in role_lower or "software development engineer ii" in role_lower or "sde2" in role_lower:
-                return 3
-            elif "sde-iii" in role_lower or "sde iii" in role_lower or "software development engineer iii" in role_lower or "sde3" in role_lower:
-                return 4
-            elif "senior" in role_lower:
-                return 5
-            elif "lead" in role_lower:
-                return 6
-            elif "manager" in role_lower:
-                return 7
+                return 1 # Software Development Engineer (SDE)
+            elif "sde" in role_lower or "software development engineer" in role_lower:
+                if "test" in role_lower or "sdet" in role_lower:
+                    return 24 # SDET
+                return 1 # Software Development Engineer (SDE)
+            elif "backend" in role_lower:
+                return 2 # Backend Developer
             elif "frontend" in role_lower:
-                return 9
-            elif "sre" in role_lower or "devops" in role_lower or "reliability" in role_lower:
-                return 10
-            elif "android" in role_lower or "ios" in role_lower or "mobile" in role_lower:
-                return 11
-            elif "ai" in role_lower or "machine learning" in role_lower or "ml" in role_lower:
-                return 12
+                return 3 # Frontend Developer
+            elif "full stack" in role_lower or "fullstack" in role_lower:
+                return 4 # Full Stack Developer
+            elif "software engineer" in role_lower or "software developer" in role_lower:
+                if "embedded" in role_lower:
+                    return 30 # Embedded Software Engineer
+                return 5 # Software Engineer
+            elif "android" in role_lower:
+                return 6 # Mobile App Developer (Android)
+            elif "ios" in role_lower:
+                return 7 # Mobile App Developer (iOS)
+            elif "flutter" in role_lower:
+                return 8 # Flutter Developer
+            elif "react native" in role_lower:
+                return 9 # React Native Developer
+            elif "devops" in role_lower:
+                return 10 # DevOps Engineer
+            elif "cloud" in role_lower:
+                return 11 # Cloud Engineer
+            elif "sre" in role_lower or "site reliability" in role_lower:
+                return 12 # Site Reliability Engineer (SRE)
+            elif "data analyst" in role_lower:
+                return 13 # Data Analyst
+            elif "data engineer" in role_lower:
+                return 14 # Data Engineer
+            elif "data scientist" in role_lower:
+                return 15 # Data Scientist
+            elif "ai engineer" in role_lower or "ai developer" in role_lower:
+                return 16 # AI Engineer
+            elif "machine learning" in role_lower or "ml engineer" in role_lower or "ml developer" in role_lower:
+                if "ops" in role_lower or "mlops" in role_lower:
+                    return 21 # MLOps Engineer
+                return 17 # Machine Learning Engineer
+            elif "deep learning" in role_lower:
+                return 18 # Deep Learning Engineer
+            elif "nlp" in role_lower:
+                return 19 # NLP Engineer
+            elif "computer vision" in role_lower:
+                return 20 # Computer Vision Engineer
+            elif "mlops" in role_lower:
+                return 21 # MLOps Engineer
+            elif "cyber security" in role_lower or "security engineer" in role_lower:
+                return 22 # Cyber Security Engineer
+            elif "security analyst" in role_lower:
+                return 23 # Security Analyst
+            elif "sdet" in role_lower:
+                return 24 # SDET
+            elif "qa" in role_lower or "quality assurance" in role_lower or "automation engineer" in role_lower:
+                return 25 # QA Automation Engineer
+            elif "product manager" in role_lower:
+                if "apm" in role_lower or "associate" in role_lower:
+                    return 27 # APM
+                return 26 # Product Manager
+            elif "apm" in role_lower or "associate product manager" in role_lower:
+                return 27 # APM
+            elif "business analyst" in role_lower:
+                return 28 # Business Analyst
+            elif "designer" in role_lower or "ui" in role_lower or "ux" in role_lower:
+                return 29 # UI/UX Designer
+            elif "embedded" in role_lower:
+                return 30 # Embedded Software Engineer
             else:
-                return 8 # Backend Engineer default
+                return 1 # Fallback to Software Development Engineer (SDE)
                 
         role_id = map_role_to_id(current_role)
 
@@ -801,17 +923,18 @@ def process_pipeline():
             "company_tier": company_tier
         })
         
+
         # Skills mapping
         for s_name in p["skills"]:
-            s_name_lower = s_name.lower()
+            s_name_norm = normalize_skill_name(s_name)
             # Match against master list
             matched_id = None
-            if s_name_lower in skills_master:
-                matched_id = skills_master[s_name_lower]
+            if s_name_norm in skills_master:
+                matched_id = skills_master[s_name_norm]
             else:
                 # Check substring match
                 for skill_m, s_id in skills_master.items():
-                    if skill_m in s_name_lower or s_name_lower in skill_m:
+                    if skill_m in s_name_norm or s_name_norm in skill_m:
                         matched_id = s_id
                         break
             if matched_id:
@@ -823,7 +946,7 @@ def process_pipeline():
         # Also check experience description/headline for additional skills if none matched
         matched_profile_skills = {es["skill_id"] for es in employee_skills if es["profile_id"] == profile_id}
         if not matched_profile_skills:
-            full_profile_text = (headline + " " + " ".join([e["role"] for e in exp_list]) + " " + " ".join(p["skills"])).lower()
+            full_profile_text = (headline + " " + " ".join([e["role"] for e in exp_list]) + " " + " ".join([normalize_skill_name(s) for s in p["skills"]])).lower()
             for skill_m, s_id in skills_master.items():
                 if skill_m in full_profile_text:
                     employee_skills.append({
@@ -1237,7 +1360,7 @@ def process_pipeline():
         parsed_jds.append({
             "jd_id": max_jd_id + 1,
             "company_id": comp_id,
-            "role_id": 3,  # SDE II
+            "role_id": 1,  # Software Development Engineer (SDE)
             "experience_required_years": "3-5",
             "salary_range": "25-35 LPA",
             "description": "Software Development Engineer, Device Software Services. Design and architecture (design patterns, reliability and scaling) of new and existing systems.",
@@ -1264,7 +1387,7 @@ def process_pipeline():
         parsed_jds.append({
             "jd_id": max_jd_id + 1,
             "company_id": comp_id,
-            "role_id": 12,  # AI / ML Engineer
+            "role_id": 16,  # AI Engineer
             "experience_required_years": "2-4",
             "salary_range": "30-45 LPA",
             "description": "Research Software Development Engineer. Good understanding of deep learning, LLMs, and large-scale ML systems.",
@@ -1285,7 +1408,7 @@ def process_pipeline():
         parsed_jds.append({
             "jd_id": max_jd_id + 1,
             "company_id": comp_id,
-            "role_id": 3,  # SDE II
+            "role_id": 1,  # Software Development Engineer (SDE)
             "experience_required_years": "3-6",
             "salary_range": "32-48 LPA",
             "description": "Software Engineer 2 (SDE2) in Microsoft Core Platform team.",

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, API_BASE } from '../App';
 import { Upload, FileText, Check, AlertCircle, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './StudentForm.css';
 
 const SKILLS_LIST = [
@@ -13,19 +13,41 @@ const SKILLS_LIST = [
 ];
 
 const COMPANIES = ["Blinkit", "Zomato", "Swiggy", "Paytm", "PhonePe", "Flipkart", "Amazon", "Google", "Microsoft", "Meta", "TCS", "Infosys"];
+
 const ROLES = [
-  "Software Development Engineer", 
-  "Software Development Engineer I (SDE-1)", 
-  "Junior Software Engineer", 
-  "Trainee Engineer", 
-  "QA Automation Engineer", 
-  "Backend Engineer", 
-  "Frontend Engineer", 
-  "SRE / DevOps Engineer", 
-  "Mobile Engineer", 
-  "AI / ML Engineer"
+  "Software Development Engineer (SDE)",
+  "Backend Developer",
+  "Frontend Developer",
+  "Full Stack Developer",
+  "Software Engineer",
+  "Mobile App Developer (Android)",
+  "Mobile App Developer (iOS)",
+  "Flutter Developer",
+  "React Native Developer",
+  "DevOps Engineer",
+  "Cloud Engineer",
+  "Site Reliability Engineer (SRE)",
+  "Data Analyst",
+  "Data Engineer",
+  "Data Scientist",
+  "AI Engineer",
+  "Machine Learning Engineer",
+  "Deep Learning Engineer",
+  "NLP Engineer",
+  "Computer Vision Engineer",
+  "MLOps Engineer",
+  "Cyber Security Engineer",
+  "Security Analyst",
+  "QA Automation Engineer",
+  "Product Manager",
+  "Associate Product Manager (APM)",
+  "Business Analyst",
+  "UI/UX Designer",
+  "Embedded Software Engineer"
 ];
+
 const SECTORS = ["Quick-Commerce", "FoodTech", "Fintech", "E-Commerce", "SaaS", "Service-Based", "SocialMedia"];
+
 const QUALIFICATIONS = [
   "1st Year Student",
   "2nd Year Student",
@@ -43,7 +65,7 @@ export default function StudentForm() {
   // Form states
   const [name, setName] = useState('');
   const [qualification, setQualification] = useState('3rd Year Student');
-  const [targetRole, setTargetRole] = useState('Junior Software Engineer');
+  const [targetRole, setTargetRole] = useState('Software Development Engineer (SDE)');
   const [dreamCompany, setDreamCompany] = useState('Blinkit');
   const [dreamSector, setDreamSector] = useState('Quick-Commerce');
   const [freshPassout, setFreshPassout] = useState(false);
@@ -111,7 +133,6 @@ export default function StudentForm() {
       const parsedSkills = new Set(selectedSkills);
       if (data.skills_raw) {
         data.skills_raw.forEach(s => {
-          // Find case-insensitive matches in our taxonomy
           const matched = SKILLS_LIST.find(k => k.toLowerCase() === s.toLowerCase());
           if (matched) parsedSkills.add(matched);
         });
@@ -176,12 +197,12 @@ export default function StudentForm() {
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={{ duration: 0.15 }}
       className="form-card-container"
     >
       <div className="form-title-section">
-        <h1>Create SDE Roadmap</h1>
-        <p className="subtitle">Enter your profile details to generate a customized placement action plan.</p>
+        <h1>Career Goal Configuration</h1>
+        <p className="subtitle">Initiate onboarding parameters to formulate your customized career roadmap path.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="student-intake-form glass-panel">
@@ -217,7 +238,7 @@ export default function StudentForm() {
         {/* Row 2: Target Targets */}
         <div className="form-row">
           <div className="form-group flex-1">
-            <label className="form-label" htmlFor="target_role">Target SDE Role</label>
+            <label className="form-label" htmlFor="target_role">Target Role</label>
             <select 
               id="target_role" 
               className="form-input" 
@@ -263,7 +284,7 @@ export default function StudentForm() {
             className="custom-checkbox"
           />
           <label htmlFor="fresh_passout" className="checkbox-label">
-            I am a Fresh Passout looking for immediate jobs (Fast-Track Prep)
+            I am a Fresh Passout looking for immediate jobs (Fast-Track Prep Mode)
           </label>
         </div>
 
@@ -291,7 +312,7 @@ export default function StudentForm() {
               min="0" 
               max="10" 
               required 
-              placeholder="e.g. 8.5" 
+              placeholder="e.g. 8.50" 
               className="form-input"
               value={cgpa}
               onChange={e => setCgpa(e.target.value)}
@@ -301,7 +322,7 @@ export default function StudentForm() {
 
         {/* Drag and Drop Resume PDF zone */}
         <div className="form-group">
-          <label className="form-label">Resume PDF Upload (Fast Auto-fill)</label>
+          <label className="form-label">Resume PDF Upload (Auto-fill profile)</label>
           <div 
             className={`file-drop-zone ${dragOver ? 'dragover' : ''} ${pdfFile ? 'has-file' : ''}`}
             onDragOver={handleDragOver}
@@ -310,8 +331,8 @@ export default function StudentForm() {
           >
             {parsing ? (
               <div className="drop-zone-loader">
-                <div className="animate-spin loader-circle"></div>
-                <span>Analyzing and vectorizing SDE credentials...</span>
+                <div className="loader-circle animate-spin"></div>
+                <span>Analyzing and extracting resume skills...</span>
               </div>
             ) : pdfFile ? (
               <div className="drop-zone-success">
@@ -324,7 +345,7 @@ export default function StudentForm() {
               <label htmlFor="pdf-upload" className="drop-zone-label-trigger">
                 <Upload className="upload-icon" />
                 <span>Drag & drop your Resume PDF here or <strong className="trigger-text">browse files</strong></span>
-                <span className="drop-zone-hint">Support PDF up to 5MB</span>
+                <span className="drop-zone-hint">Supports standard PDFs up to 5MB</span>
                 <input 
                   type="file" 
                   id="pdf-upload" 
@@ -363,7 +384,7 @@ export default function StudentForm() {
             <input 
               type="text" 
               id="github_username" 
-              placeholder="e.g. octocat" 
+              placeholder="e.g. username" 
               className="form-input"
               value={githubUsername}
               onChange={e => setGithubUsername(e.target.value)}
@@ -371,31 +392,30 @@ export default function StudentForm() {
           </div>
         </div>
 
-        {/* Resume Text transcript (shows PDF extraction or manual paste) */}
+        {/* Resume Text transcript content (for analysis overrides) */}
         <div className="form-group">
-          <label className="form-label" htmlFor="resume_text">Paste Resume Text Transcript (Optional)</label>
+          <label className="form-label" htmlFor="resume_text">Extracted Resume Transcript Content (Optional)</label>
           <textarea 
             id="resume_text" 
-            rows="4" 
-            placeholder="Paste your experience details, certificates, projects, or education history..." 
-            className="form-input custom-textarea"
+            className="form-input custom-textarea" 
+            placeholder="Paste your resume transcript content details here to align vector mappings manually..."
             value={resumeText}
             onChange={e => setResumeText(e.target.value)}
           />
         </div>
 
-        {/* Known Skills checklist badges */}
+        {/* Skills Taxonomy Mapping */}
         <div className="form-group">
-          <label className="form-label">Select Known Skills</label>
+          <label className="form-label">SDE Skill Taxonomy Tags</label>
           <div className="skills-tags-selector">
             {SKILLS_LIST.map(skill => {
-              const selected = selectedSkills.has(skill);
+              const isSelected = selectedSkills.has(skill);
               return (
-                <button
-                  key={skill}
-                  type="button"
+                <button 
+                  type="button" 
+                  key={skill} 
                   onClick={() => handleToggleSkill(skill)}
-                  className={`skill-tag-badge ${selected ? 'selected' : ''}`}
+                  className={`skill-tag-badge ${isSelected ? 'selected' : ''}`}
                 >
                   {skill}
                 </button>
@@ -404,10 +424,11 @@ export default function StudentForm() {
           </div>
         </div>
 
-        <button type="submit" className="btn-primary form-submit-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-          <span>Continue to Profile Analysis</span>
-          <ArrowRight size={16} />
+        <button type="submit" className="btn-primary form-submit-btn">
+          <span>Assemble Career Roadmap</span>
+          <ArrowRight size={18} />
         </button>
+
       </form>
     </motion.div>
   );

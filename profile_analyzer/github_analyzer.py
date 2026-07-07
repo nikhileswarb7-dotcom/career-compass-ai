@@ -13,12 +13,13 @@ try:
 except ImportError:
     def get_db_connection():
         try:
+            import os
             return psycopg2.connect(
-                host="localhost",
-                port=5432,
-                dbname="career_compass_ai",
-                user="postgres",
-                password="Nikhil@2824"
+                host=os.environ.get("DB_HOST", "localhost"),
+                port=int(os.environ.get("DB_PORT", 5432)),
+                dbname=os.environ.get("DB_NAME", "career_compass_ai"),
+                user=os.environ.get("DB_USER", "postgres"),
+                password=os.environ.get("DB_PASSWORD", "")
             )
         except Exception:
             return None
@@ -53,14 +54,7 @@ class GitHubAnalyzer:
 
     @staticmethod
     def match_skill_in_text(skill_name: str, text: str) -> bool:
-        escaped = re.escape(skill_name)
-        if re.search(r'\W$', skill_name):
-            pattern = r'\b' + escaped
-        elif re.search(r'^\W', skill_name):
-            pattern = escaped + r'\b'
-        else:
-            pattern = r'\b' + escaped + r'\b'
-        return bool(re.search(pattern, text, re.IGNORECASE))
+        return ResumeParser.match_skill_in_text(skill_name, text)
 
     @staticmethod
     def analyze_profile(username_or_url: str) -> dict:

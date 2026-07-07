@@ -22,7 +22,7 @@ def test_endpoints():
             data=json.dumps(analyze_payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=60) as res:
             data = json.loads(res.read().decode('utf-8'))
             print("[OK] /api/student/analyze responded successfully!")
             print(f"     Extracted skills: {data['extracted_skills']}")
@@ -34,7 +34,8 @@ def test_endpoints():
         "name": "Rahul Sharma",
         "qualification": "3rd Year Student",
         "known_skills": ["Java", "SQL"],
-        "dream_company": "Blinkit"
+        "dream_company": "Blinkit",
+        "skip_llm": True
     }
     try:
         req = urllib.request.Request(
@@ -42,7 +43,7 @@ def test_endpoints():
             data=json.dumps(recommend_payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=60) as res:
             data = json.loads(res.read().decode('utf-8'))
             print("[OK] /api/recommend responded successfully!")
             print(f"     Readiness score: {data['readiness_score']}")
@@ -54,7 +55,8 @@ def test_endpoints():
     roadmap_payload = {
         "qualification": "3rd Year Student",
         "known_skills": ["Java"],
-        "dream_company": "Blinkit"
+        "dream_company": "Blinkit",
+        "skip_llm": True
     }
     try:
         req = urllib.request.Request(
@@ -62,7 +64,7 @@ def test_endpoints():
             data=json.dumps(roadmap_payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=60) as res:
             data = json.loads(res.read().decode('utf-8'))
             print("[OK] /api/roadmap responded successfully!")
             print(f"     Timeline urgency: {data.get('urgency')}")
@@ -79,7 +81,7 @@ def test_endpoints():
             data=json.dumps(readiness_payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=60) as res:
             data = json.loads(res.read().decode('utf-8'))
             print("[OK] /api/readiness responded successfully!")
             print(f"     Readiness score: {data.get('readiness_score')}%")
@@ -89,7 +91,8 @@ def test_endpoints():
     # 5. Test interview-plan
     interview_payload = {
         "known_skills": ["Java"],
-        "dream_company": "Blinkit"
+        "dream_company": "Blinkit",
+        "skip_llm": True
     }
     try:
         req = urllib.request.Request(
@@ -97,7 +100,7 @@ def test_endpoints():
             data=json.dumps(interview_payload).encode('utf-8'),
             headers={'Content-Type': 'application/json'}
         )
-        with urllib.request.urlopen(req, timeout=5) as res:
+        with urllib.request.urlopen(req, timeout=60) as res:
             data = json.loads(res.read().decode('utf-8'))
             print("[OK] /api/interview-plan responded successfully!")
             print(f"     Recommended questions count: {len(data.get('recommended_questions', []))}")

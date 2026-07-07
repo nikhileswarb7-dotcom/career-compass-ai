@@ -9,7 +9,7 @@
     "output_summary": {
       "readiness_score": 0,
       "urgency": "Low",
-      "months_to_ready": 8,
+      "months_to_ready": 48,
       "top_missing": [
         "Java",
         "DSA (Combined)",
@@ -26,7 +26,7 @@
         "Low Level Design",
         "High Level Design"
       ],
-      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 8 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 0%. Focus on closing key skill gaps."
     }
   },
   {
@@ -39,7 +39,7 @@
     "output_summary": {
       "readiness_score": 0,
       "urgency": "Low",
-      "months_to_ready": 8,
+      "months_to_ready": 48,
       "top_missing": [
         "Java",
         "DSA (Combined)",
@@ -56,7 +56,7 @@
         "Low Level Design",
         "High Level Design"
       ],
-      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 8 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 0%. Focus on closing key skill gaps."
     }
   },
   {
@@ -64,12 +64,12 @@
     "type": "Recommendation",
     "description": "2nd Year \u00e2\u20ac\u201d Knows Java and Git",
     "status": "PASS",
-    "readiness_score": 13,
+    "readiness_score": 12,
     "errors": [],
     "output_summary": {
-      "readiness_score": 13,
+      "readiness_score": 12,
       "urgency": "Low",
-      "months_to_ready": 6,
+      "months_to_ready": 36,
       "top_missing": [
         "DSA (Combined)",
         "DBMS",
@@ -84,7 +84,7 @@
         "Low Level Design",
         "High Level Design"
       ],
-      "message": "You're at 13% readiness. You have time \u2014 build systematically. Don't rush. Estimated 6 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 12%. Focus on closing key skill gaps."
     }
   },
   {
@@ -92,12 +92,12 @@
     "type": "Recommendation",
     "description": "3rd Year \u00e2\u20ac\u201d Java + Git (typical placement candidate starting prep)",
     "status": "PASS",
-    "readiness_score": 18,
+    "readiness_score": 17,
     "errors": [],
     "output_summary": {
-      "readiness_score": 18,
+      "readiness_score": 17,
       "urgency": "High",
-      "months_to_ready": 3,
+      "months_to_ready": 18,
       "top_missing": [
         "DSA (Combined)",
         "DBMS",
@@ -109,9 +109,12 @@
         "REST APIs",
         "MySQL",
         "Low Level Design",
-        "High Level Design"
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
       ],
-      "message": "You're at 18% readiness. You have time \u2014 build systematically. Don't rush. Estimated 3 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 17%. Focus on closing key skill gaps."
     }
   },
   {
@@ -119,12 +122,12 @@
     "type": "Recommendation",
     "description": "3rd Year \u00e2\u20ac\u201d Strong candidate (Java, DSA, DBMS, OS)",
     "status": "PASS",
-    "readiness_score": 49,
+    "readiness_score": 47,
     "errors": [],
     "output_summary": {
-      "readiness_score": 49,
+      "readiness_score": 47,
       "urgency": "High",
-      "months_to_ready": 2,
+      "months_to_ready": 18,
       "top_missing": [
         "Computer Networks",
         "Spring Boot",
@@ -132,9 +135,12 @@
         "REST APIs",
         "MySQL",
         "Low Level Design",
-        "High Level Design"
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
       ],
-      "message": "You're 49% ready. Follow the roadmap consistently. Estimated 2 month(s) needed."
+      "message": "Based on your profile, you have an SDE readiness score of 47%. Focus on closing key skill gaps."
     }
   },
   {
@@ -142,12 +148,12 @@
     "type": "Recommendation",
     "description": "4th Year \u00e2\u20ac\u201d Almost ready (missing only System Design)",
     "status": "PASS",
-    "readiness_score": 81,
+    "readiness_score": 76,
     "errors": [],
     "output_summary": {
-      "readiness_score": 81,
+      "readiness_score": 76,
       "urgency": "Critical",
-      "months_to_ready": 1,
+      "months_to_ready": 6,
       "top_missing": [
         "System Design",
         "High Level Design",
@@ -155,7 +161,7 @@
         "Redis",
         "Docker"
       ],
-      "message": "You're nearly interview-ready for Blinkit Software Development Engineer! Focus on mock interviews and system design polish. Estimated 1 month(s) to be fully ready."
+      "message": "Based on your profile, you have an SDE readiness score of 76%. Focus on closing key skill gaps."
     }
   },
   {
@@ -168,7 +174,7 @@
     "output_summary": {
       "readiness_score": 0,
       "urgency": "Critical",
-      "months_to_ready": 3,
+      "months_to_ready": 6,
       "top_missing": [
         "Java",
         "DSA (Combined)",
@@ -183,9 +189,12 @@
         "MySQL",
         "Git & GitHub",
         "Low Level Design",
-        "High Level Design"
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
       ],
-      "message": "You're at 0% readiness. You have time \u2014 build systematically. Don't rush. Estimated 3 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 0%. Focus on closing key skill gaps."
     }
   },
   {
@@ -193,12 +202,12 @@
     "type": "Recommendation",
     "description": "Fresh Graduate \u00e2\u20ac\u201d Good foundation, missing advanced topics",
     "status": "PASS",
-    "readiness_score": 49,
+    "readiness_score": 47,
     "errors": [],
     "output_summary": {
-      "readiness_score": 49,
+      "readiness_score": 47,
       "urgency": "Critical",
-      "months_to_ready": 2,
+      "months_to_ready": 6,
       "top_missing": [
         "Operating Systems",
         "Computer Networks",
@@ -206,9 +215,12 @@
         "SQL",
         "Object Oriented Programming",
         "Low Level Design",
-        "High Level Design"
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
       ],
-      "message": "You're 49% ready. Follow the roadmap consistently. Estimated 2 month(s) needed."
+      "message": "Based on your profile, you have an SDE readiness score of 47%. Focus on closing key skill gaps."
     }
   },
   {
@@ -216,12 +228,12 @@
     "type": "Recommendation",
     "description": "Trainee Engineer \u00e2\u20ac\u201d Already working, has backend experience",
     "status": "PASS",
-    "readiness_score": 36,
+    "readiness_score": 34,
     "errors": [],
     "output_summary": {
-      "readiness_score": 36,
+      "readiness_score": 34,
       "urgency": "High",
-      "months_to_ready": 5,
+      "months_to_ready": 9,
       "top_missing": [
         "DSA (Combined)",
         "DBMS",
@@ -230,9 +242,12 @@
         "System Design",
         "SQL",
         "Low Level Design",
-        "High Level Design"
+        "High Level Design",
+        "Microservices",
+        "Redis",
+        "Docker"
       ],
-      "message": "You're at 36% readiness. You have time \u2014 build systematically. Don't rush. Estimated 5 months on your roadmap."
+      "message": "Based on your profile, you have an SDE readiness score of 34%. Focus on closing key skill gaps."
     }
   },
   {
@@ -240,12 +255,12 @@
     "type": "Recommendation",
     "description": "Junior Engineer \u00e2\u20ac\u201d Strong backend, weak on DS/System Design",
     "status": "PASS",
-    "readiness_score": 41,
+    "readiness_score": 44,
     "errors": [],
     "output_summary": {
-      "readiness_score": 41,
+      "readiness_score": 44,
       "urgency": "Medium",
-      "months_to_ready": 4,
+      "months_to_ready": 12,
       "top_missing": [
         "DSA (Combined)",
         "DBMS",
@@ -256,7 +271,7 @@
         "Low Level Design",
         "High Level Design"
       ],
-      "message": "You're 41% ready. Follow the roadmap consistently. Estimated 4 month(s) needed."
+      "message": "Based on your profile, you have an SDE readiness score of 44%. Focus on closing key skill gaps."
     }
   },
   {
@@ -264,17 +279,17 @@
     "type": "Recommendation",
     "description": "Junior Engineer \u00e2\u20ac\u201d Near complete",
     "status": "PASS",
-    "readiness_score": 81,
+    "readiness_score": 82,
     "errors": [],
     "output_summary": {
-      "readiness_score": 81,
+      "readiness_score": 82,
       "urgency": "Medium",
-      "months_to_ready": 2,
+      "months_to_ready": 12,
       "top_missing": [
         "Operating Systems",
         "Computer Networks"
       ],
-      "message": "You're nearly interview-ready for Blinkit Software Development Engineer! Focus on mock interviews and system design polish. Estimated 2 month(s) to be fully ready."
+      "message": "Based on your profile, you have an SDE readiness score of 82%. Focus on closing key skill gaps."
     }
   },
   {
@@ -290,7 +305,7 @@
         "Java"
       ],
       "target_company": "Blinkit",
-      "target_role": "Software Development Engineer",
+      "target_role": "Software Development Engineer (SDE)",
       "missing_entities": [],
       "raw_input": "I'm a third year student. I know Java and Git. I want to become SDE at Blinkit."
     }
@@ -311,7 +326,7 @@
         "Spring Boot"
       ],
       "target_company": "Blinkit",
-      "target_role": "Software Development Engineer",
+      "target_role": "Software Development Engineer (SDE)",
       "missing_entities": [],
       "raw_input": "Just graduated. Know Java, Spring Boot, DSA, DBMS, OS. Want SDE at Blinkit."
     }
@@ -329,7 +344,7 @@
         "REST APIs"
       ],
       "target_company": "Blinkit",
-      "target_role": "Software Development Engineer",
+      "target_role": "Software Development Engineer (SDE)",
       "missing_entities": [
         "target_company",
         "target_role"

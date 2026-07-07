@@ -67,7 +67,7 @@ def verify_intelligence_upgrades():
         project_score=50.0,
         interview_score=40.0,
         dream_company="Google",
-        target_role="Software Development Engineer"
+        target_role="Software Development Engineer (SDE)"
     )
     print(f"  Google fit score: {fit_data['company_fit_score']}% (Category: {fit_data['fit_category']})")
     assert "company_fit_score" in fit_data
@@ -89,7 +89,7 @@ def verify_intelligence_upgrades():
         github_username="test",
         resume_text="Implemented Redis and Go pipelines.",
         company_name="Blinkit",
-        role_name="Software Development Engineer",
+        role_name="Software Development Engineer (SDE)",
         qualification="3rd Year Student"
     )
     print(f"  Computed overall readiness score: {scores['overall_readiness']}%")
@@ -104,7 +104,8 @@ def verify_intelligence_upgrades():
         qualification="3rd Year Student",
         known_skills=["Java", "Git & GitHub"],
         dream_company="Blinkit",
-        target_role="Software Development Engineer"
+        target_role="Software Development Engineer (SDE)",
+        skip_llm=True
     )
     
     coach_recs = rec.get("coach_recommendations", [])

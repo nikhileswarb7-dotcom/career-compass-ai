@@ -116,7 +116,8 @@ class AssessmentRequest(BaseModel):
     dream_company: str = "Blinkit"
     dream_sector: str = "Quick-Commerce"
     fresh_passout: bool = False
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
+    skip_llm: bool = False
 
 class ChatRequest(BaseModel):
     message: str
@@ -144,7 +145,7 @@ class AnalyzeRequest(BaseModel):
     dream_company: str = "Blinkit"
     dream_sector: str = "Quick-Commerce"
     fresh_passout: bool = False
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
 
 class RecommendRequest(BaseModel):
     name: str = "SDE Candidate"
@@ -154,7 +155,7 @@ class RecommendRequest(BaseModel):
     dream_company: str = "Blinkit"
     dream_sector: str = "Quick-Commerce"
     fresh_passout: bool = False
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
     known_skills: list[str] = []
     linkedin_url: str = ""
     github_username: str = ""
@@ -162,6 +163,7 @@ class RecommendRequest(BaseModel):
     text_input: str = ""
     student_id: int = None
     session_id: str = None
+    skip_llm: bool = False
 
 class UpdateProgressRequest(BaseModel):
     status: str
@@ -174,7 +176,8 @@ class RoadmapRequest(BaseModel):
     dream_company: str = "Blinkit"
     dream_sector: str = "Quick-Commerce"
     fresh_passout: bool = False
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
+    skip_llm: bool = False
 
 class ReadinessRequest(BaseModel):
     student_id: str = ""
@@ -185,18 +188,22 @@ class InterviewPlanRequest(BaseModel):
     target_company: str = ""
     dream_company: str = ""
     dream_sector: str = ""
+    target_role: str = ""
     known_skills: list[str] = []
+    skip_llm: bool = False
 
 class RecommendationsRequest(BaseModel):
     student_id: str = ""
     target_company: str = "Blinkit"
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
     known_skills: list[str] = []
+    skip_llm: bool = False
 
 class CareerGuidanceRequest(BaseModel):
     student_id: str
     target_company: str = "Blinkit"
-    target_role: str = "Junior Software Engineer"
+    target_role: str = "Software Development Engineer (SDE)"
+    skip_llm: bool = False
 
 @router.post("/assess")
 def assess_student(req: AssessmentRequest):
@@ -207,7 +214,8 @@ def assess_student(req: AssessmentRequest):
             dream_company=req.dream_company,
             dream_sector=req.dream_sector,
             fresh_passout=req.fresh_passout,
-            target_role=req.target_role
+            target_role=req.target_role,
+            skip_llm=req.skip_llm
         )
         plan["branch"] = req.branch
         plan["cgpa"] = req.cgpa
@@ -224,7 +232,7 @@ def analyze_student_profile(req: AnalyzeRequest):
         
         if req.linkedin_url:
             try:
-                parsed_li = LinkedInParser.parse_profile(req.linkedin_url)
+                parsed_li = LinkedInParser.parse_profile(req.linkedin_url, target_role=req.target_role, qualification=req.qualification)
             except Exception as e:
                 parsed_li = {"error": f"LinkedIn profile analysis is temporarily unavailable: {str(e)}", "skills_raw": []}
             
@@ -266,7 +274,17 @@ def analyze_student_profile(req: AnalyzeRequest):
                     LIMIT 1
                 """, (req.dream_company.lower(), req.target_role.lower()))
                 row = cur.fetchone()
-                company_role_id = row[0] if row else 1
+                if not row:
+                    cur.execute("""
+                        SELECT cr.company_role_id 
+                        FROM company_roles cr
+                        JOIN companies c ON cr.company_id = c.company_id
+                        JOIN roles r ON cr.role_id = r.role_id
+                        WHERE LOWER(c.company_name) = 'blinkit' AND LOWER(r.role_name) = 'software development engineer (sde)'
+                        LIMIT 1
+                    """)
+                    row = cur.fetchone()
+                company_role_id = row[0] if row else 1982
                 
                 import uuid
                 from psycopg2.extras import Json
@@ -372,7 +390,17 @@ def recommend_career_guidance(req: RecommendRequest):
             LIMIT 1
         """, (req.dream_company.lower(), req.target_role.lower()))
         row = cur.fetchone()
-        company_role_id = row[0] if row else 1
+        if not row:
+            cur.execute("""
+                SELECT cr.company_role_id 
+                FROM company_roles cr
+                JOIN companies c ON cr.company_id = c.company_id
+                JOIN roles r ON cr.role_id = r.role_id
+                WHERE LOWER(c.company_name) = 'blinkit' AND LOWER(r.role_name) = 'software development engineer (sde)'
+                LIMIT 1
+            """)
+            row = cur.fetchone()
+        company_role_id = row[0] if row else 1982
         
         # 3. Check/Get student_id
         student_id = req.student_id
@@ -419,7 +447,7 @@ def recommend_career_guidance(req: RecommendRequest):
         
         if li_url:
             try:
-                parsed_li = LinkedInParser.parse_profile(li_url)
+                parsed_li = LinkedInParser.parse_profile(li_url, target_role=req.target_role, qualification=req.qualification)
             except Exception as e:
                 parsed_li = {"error": str(e), "skills_raw": []}
         if gh_user:
@@ -497,7 +525,8 @@ def recommend_career_guidance(req: RecommendRequest):
         res = CareerGuidanceService.generate_career_guidance(
             student_id=str(student_id),
             target_company=req.dream_company,
-            target_role=req.target_role
+            target_role=req.target_role,
+            skip_llm=req.skip_llm
         )
         res["student_id"] = student_id
         res["session_id"] = session_id
@@ -505,7 +534,7 @@ def recommend_career_guidance(req: RecommendRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def get_dynamic_guidance(session_id: str) -> dict:
+def get_dynamic_guidance(session_id: str, skip_llm: bool = False) -> dict:
     conn = get_db_connection()
     if not conn:
         raise HTTPException(status_code=500, detail="Database connection unavailable.")
@@ -581,7 +610,8 @@ def get_dynamic_guidance(session_id: str) -> dict:
             github_username=github_username or "",
             resume_text=resume_text or "",
             cgpa=float(cgpa or 8.0),
-            experience_years=experience_years
+            experience_years=experience_years,
+            skip_llm=skip_llm
         )
         
         rec["name"] = name
@@ -698,8 +728,8 @@ def get_stage_progress(session_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/readiness/{session_id}")
-def get_readiness_by_session(session_id: str):
-    rec = get_dynamic_guidance(session_id)
+def get_readiness_by_session(session_id: str, skip_llm: bool = False):
+    rec = get_dynamic_guidance(session_id, skip_llm=skip_llm)
     return {
         "readiness_score": rec["readiness_score"],
         "name": rec["name"],
@@ -713,12 +743,14 @@ def get_readiness_by_session(session_id: str):
         "assessment_scores": rec.get("assessment_scores", {}),
         "similar_engineers": rec.get("similar_engineers", []),
         "common_transitions": rec.get("common_transitions", []),
-        "common_projects": rec.get("common_projects", [])
+        "common_projects": rec.get("common_projects", []),
+        "known_skills": rec.get("known_skills", []),
+        "projects": rec.get("projects", [])
     }
 
 @router.get("/recommendations/{session_id}")
-def get_recommendations_by_session(session_id: str):
-    rec = get_dynamic_guidance(session_id)
+def get_recommendations_by_session(session_id: str, skip_llm: bool = False):
+    rec = get_dynamic_guidance(session_id, skip_llm=skip_llm)
     return {
         "projects": rec["projects"],
         "resources": rec["resources"],
@@ -726,34 +758,34 @@ def get_recommendations_by_session(session_id: str):
     }
 
 @router.get("/interview-plan/{session_id}")
-def get_interview_plan_by_session(session_id: str):
-    rec = get_dynamic_guidance(session_id)
+def get_interview_plan_by_session(session_id: str, skip_llm: bool = False):
+    rec = get_dynamic_guidance(session_id, skip_llm=skip_llm)
     return {
         "recommended_questions": rec["recommended_questions"]
     }
 
 @router.get("/roadmap/{session_id}")
-def get_roadmap_by_session(session_id: str):
-    rec = get_dynamic_guidance(session_id)
+def get_roadmap_by_session(session_id: str, skip_llm: bool = False):
+    rec = get_dynamic_guidance(session_id, skip_llm=skip_llm)
     return rec["timeline"]
 
 @router.post("/roadmap")
 def get_roadmap_timeline(req: RoadmapRequest):
     try:
         if req.student_id:
-            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, req.dream_company, req.target_role)
+            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, req.dream_company, req.target_role, skip_llm=req.skip_llm)
             return guidance["timeline"]
         else:
-            gaps = analyze_gaps(req.known_skills)
-            timeline = generate_timeline(
+            rec = generate_recommendation(
                 qualification=req.qualification,
-                missing_skills=gaps["missing"],
+                known_skills=req.known_skills,
                 dream_company=req.dream_company,
                 dream_sector=req.dream_sector,
                 fresh_passout=req.fresh_passout,
-                target_role=req.target_role
+                target_role=req.target_role,
+                skip_llm=req.skip_llm
             )
-            return timeline
+            return rec["timeline"]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -774,24 +806,24 @@ def get_readiness_score(req: ReadinessRequest):
 def get_recommendations(req: RecommendationsRequest):
     try:
         if req.student_id:
-            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, req.target_company, req.target_role)
+            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, req.target_company, req.target_role, skip_llm=req.skip_llm)
             return {
                 "projects": guidance["projects"],
                 "resources": guidance["resources"]
             }
         else:
-            gaps = analyze_gaps(req.known_skills)
-            timeline = generate_timeline(
+            rec = generate_recommendation(
                 qualification="3rd Year Student",
-                missing_skills=gaps["missing"],
-                dream_company=req.target_company,
+                known_skills=req.known_skills,
+                dream_company=req.target_company or "Blinkit",
                 dream_sector="Quick-Commerce",
                 fresh_passout=False,
-                target_role=req.target_role
+                target_role=req.target_role or "Software Development Engineer (SDE)",
+                skip_llm=req.skip_llm
             )
             return {
-                "projects": timeline.get("projects", []),
-                "resources": timeline.get("resources", [])
+                "projects": rec["projects"],
+                "resources": rec["resources"]
             }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -801,24 +833,28 @@ def get_interview_plan(req: InterviewPlanRequest):
     try:
         company = req.dream_company or req.target_company or "Blinkit"
         sector = req.dream_sector or "Quick-Commerce"
+        role = req.target_role or "Software Development Engineer (SDE)"
         if req.student_id:
-            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, company)
+            guidance = CareerGuidanceService.generate_career_guidance(req.student_id, company, role, skip_llm=req.skip_llm)
             return {"recommended_questions": guidance["recommended_questions"]}
         else:
-            gaps = analyze_gaps(req.known_skills)
-            questions = recommend_questions(
-                missing_skills=gaps["missing"],
+            rec = generate_recommendation(
+                qualification="3rd Year Student",
+                known_skills=req.known_skills,
                 dream_company=company,
-                dream_sector=sector
+                dream_sector=sector,
+                fresh_passout=False,
+                target_role=role,
+                skip_llm=req.skip_llm
             )
-            return {"recommended_questions": questions}
+            return {"recommended_questions": rec["recommended_questions"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/career-guidance")
 def get_career_guidance(req: CareerGuidanceRequest):
     try:
-        res = CareerGuidanceService.generate_career_guidance(req.student_id, req.target_company, req.target_role)
+        res = CareerGuidanceService.generate_career_guidance(req.student_id, req.target_company, req.target_role, skip_llm=req.skip_llm)
         return res
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -911,6 +947,7 @@ class ProfileOptimizeRequest(BaseModel):
     target_role: str = "Software Development Engineer"
     project_name: str = ""
     skills: list[str] = []
+    skip_llm: bool = False
 
 @router.get("/stages/{stage_id}/content")
 def read_stage_content(stage_id: int):
@@ -928,42 +965,108 @@ def read_stage_assessment(stage_id: int):
 
 @router.post("/profile/optimize")
 def optimize_profile(req: ProfileOptimizeRequest):
-    template = get_profile_builder_template("Software Development Engineer")
-    if not template:
-        raise HTTPException(status_code=404, detail="SDE Profile Optimization template not found.")
-        
     company = req.dream_company or "Blinkit"
     role = req.target_role or "Software Development Engineer"
     proj = req.project_name or "High-Concurrency Order Dispatching Engine"
-    
-    bullets = []
-    for bullet in template["resume_bullets"]:
-        bullet_opt = bullet.replace("{dream_company}", company)\
-                           .replace("{target_role}", role)\
-                           .replace("{project_name}", proj)\
-                           .replace("{name}", req.name)
-        bullets.append(bullet_opt)
+    skills_list = ", ".join(req.skills) if req.skills else "General SDE Skills"
+
+    if True:  # Skip Gemini unconditionally for profile optimization to restrict LLM calls to the chatbot
+        return {
+            "source": "Simulated/Offline AI Optimization",
+            "name": req.name,
+            "dream_company": company,
+            "target_role": role,
+            "project_name": proj,
+            "resume_bullets": [
+                f"Engineered a {proj} in Go, processing over 10,000 requests/second with an average dispatch latency of < 50ms, significantly enhancing throughput.",
+                "Integrated Kafka for asynchronous message processing and event streaming, ensuring reliable message delivery and reducing system latency by 30%.",
+                "Designed and optimized PostgreSQL database schema for scalable order data persistence, managing over 5 million records and achieving query response times under 100ms.",
+                "Utilized Redis for real-time state caching and synchronization, enabling near-instantaneous updates across a monitoring dashboard."
+            ],
+            "linkedin_summary": f"I am a passionate software developer targeting SDE roles at {company}. Experienced in building high-concurrency systems, optimizing database queries, and utilizing modern backend technologies.\n\nMy focus is on writing clean, maintainable code and solving complex SDE scale problems. Let's connect!",
+            "github_readme": f"# {proj}\n\nA high-performance backend application designed for {company}.\n\n## Tech Stack\n- Programming Language: Go / Java\n- Database: PostgreSQL, Redis\n- Messaging Queue: Apache Kafka\n\n## Key Features\n- High throughput design processing > 10k req/sec\n- Real-time order state caching\n- Asynchronous event streaming"
+        }
+
+    # Dynamically load env keys to catch any runtime changes in .env
+    dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+    if os.path.exists(dotenv_path):
+        try:
+            with open(dotenv_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, val = line.split("=", 1)
+                        os.environ[key.strip()] = val.strip().strip('"').strip("'")
+        except Exception:
+            pass
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise HTTPException(
+            status_code=400,
+            detail="Gemini API Key is not configured. Please define GEMINI_API_KEY in your .env file."
+        )
+
+    try:
+        import google.generativeai as genai
+    except ImportError:
+        raise HTTPException(
+            status_code=500,
+            detail="google-generativeai SDK is not installed on the backend server."
+        )
+
+    prompt = (
+        "You are an expert SDE Placement Coach and Technical Career Optimization Engine.\n"
+        "Your task is to generate and optimize three technical profile components based on these candidate details:\n"
+        f"- Candidate Name: {req.name}\n"
+        f"- Target Company: {company}\n"
+        f"- Target SDE Role: {role}\n"
+        f"- Active SDE Project: {proj}\n"
+        f"- Key Tech Skills: {skills_list}\n\n"
+        "Generate these exact components:\n"
+        "1. resume_bullets: Exactly 4 professional, action-oriented, and quantitative resume bullet points about the project. Use the skills provided. Highlight SDE impact (e.g. latency, scale, performance metrics).\n"
+        "2. linkedin_summary: A professional, first-person summary (2-3 paragraphs, around 150 words) for a LinkedIn profile. Show passion, technical depth, and target company/role alignment.\n"
+        "3. github_readme: A clean, complete, professional markdown README file for the project. Include project name as title, brief overview, tech stack list, list of key features, architecture overview, and getting started guide.\n\n"
+        "You MUST return the output strictly as a JSON object with these exact keys: 'resume_bullets' (list of 4 strings), 'linkedin_summary' (string), and 'github_readme' (markdown string).\n"
+        "Return ONLY the raw JSON block. Do not include markdown code block formatting (like ```json or ```)."
+    )
+
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        response = model.generate_content(
+            prompt,
+            generation_config={"response_mime_type": "application/json"}
+        )
+        resp_text = response.text.strip()
         
-    summary = template["linkedin_summary"].replace("{dream_company}", company)\
-                                         .replace("{target_role}", role)\
-                                         .replace("{project_name}", proj)\
-                                         .replace("{name}", req.name)
-                                         
-    readme = template["github_readme"].replace("{dream_company}", company)\
-                                     .replace("{target_role}", role)\
-                                     .replace("{project_name}", proj)\
-                                     .replace("{name}", req.name)
-                                     
-    return {
-        "source": template["source"],
-        "name": req.name,
-        "dream_company": company,
-        "target_role": role,
-        "project_name": proj,
-        "resume_bullets": bullets,
-        "linkedin_summary": summary,
-        "github_readme": readme
-    }
+        # Clean markdown code blocks if present
+        if resp_text.startswith("```"):
+            lines = resp_text.splitlines()
+            if lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines[-1].startswith("```"):
+                lines = lines[:-1]
+            resp_text = "\n".join(lines).strip()
+            
+        import json
+        data = json.loads(resp_text)
+        
+        return {
+            "source": "Google Gemini (Real-Time AI)",
+            "name": req.name,
+            "dream_company": company,
+            "target_role": role,
+            "project_name": proj,
+            "resume_bullets": data.get("resume_bullets", []),
+            "linkedin_summary": data.get("linkedin_summary", ""),
+            "github_readme": data.get("github_readme", "")
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Google Gemini generation failed: {str(e)}"
+        )
 
 
 @router.get("/companies/{company_name}/job-description")
@@ -1108,4 +1211,177 @@ def update_outcome_feedback(student_id: int, req: OutcomeFeedbackRequest):
     except Exception as e:
         if conn: conn.close()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+class InterviewChatRequest(BaseModel):
+    session_id: str
+    jd_id: int
+    message: str
+
+
+@router.get("/job-descriptions")
+def get_all_job_descriptions():
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection unavailable.")
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        cur.execute("""
+            SELECT jd.jd_id, c.company_name, r.role_name, jd.experience_required_years, jd.salary_range, jd.description, jd.responsibilities, jd.requirements
+            FROM job_descriptions jd
+            JOIN companies c ON jd.company_id = c.company_id
+            JOIN roles r ON jd.role_id = r.role_id
+            ORDER BY jd.jd_id;
+        """)
+        rows = cur.fetchall()
+        jds = []
+        for row in rows:
+            import json
+            resp = row[6]
+            if isinstance(resp, str):
+                try: resp = json.loads(resp)
+                except Exception: resp = [resp]
+            elif not resp:
+                resp = []
+                
+            reqs = row[7]
+            if isinstance(reqs, str):
+                try: reqs = json.loads(reqs)
+                except Exception: reqs = [reqs]
+            elif not reqs:
+                reqs = []
+
+            jds.append({
+                "jd_id": row[0],
+                "company_name": row[1],
+                "role_name": row[2],
+                "experience_required_years": row[3],
+                "salary_range": row[4],
+                "description": row[5],
+                "responsibilities": resp,
+                "requirements": reqs
+            })
+        cur.close()
+        conn.close()
+        return jds
+    except Exception as e:
+        if conn: conn.close()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/chat/interview")
+def chat_mock_interview(req: InterviewChatRequest):
+    dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+    if os.path.exists(dotenv_path):
+        try:
+            with open(dotenv_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, val = line.split("=", 1)
+                        os.environ[key.strip()] = val.strip().strip('"').strip("'")
+        except Exception:
+            pass
+
+    api_key = os.environ.get("GEMINI_API_KEY")
+    
+    conn = get_db_connection()
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection unavailable.")
+    try:
+        cur = conn.cursor()
+        cur.execute("SET search_path TO career_compass_ai, public;")
+        cur.execute("""
+            SELECT c.company_name, r.role_name, jd.experience_required_years, jd.salary_range, jd.description, jd.responsibilities, jd.requirements
+            FROM job_descriptions jd
+            JOIN companies c ON jd.company_id = c.company_id
+            JOIN roles r ON jd.role_id = r.role_id
+            WHERE jd.jd_id = %s LIMIT 1;
+        """, (req.jd_id,))
+        row = cur.fetchone()
+        if not row:
+            cur.close()
+            conn.close()
+            raise HTTPException(status_code=404, detail="Job description not found.")
+            
+        company_name, role_name, exp, salary, desc, resp, reqs = row
+        cur.close()
+        conn.close()
+    except Exception as e:
+        if conn: conn.close()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    import json
+    if isinstance(resp, str):
+        try: resp = json.loads(resp)
+        except Exception: resp = [resp]
+    if isinstance(reqs, str):
+        try: reqs = json.loads(reqs)
+        except Exception: reqs = [reqs]
+
+    jd_context = (
+        f"Job Title: {role_name} at {company_name}\n"
+        f"Required Experience: {exp} years\n"
+        f"Salary Range: {salary}\n"
+        f"Job Overview: {desc}\n"
+        f"Core Responsibilities: {', '.join(resp) if resp else 'None'}\n"
+        f"Core Requirements: {', '.join(reqs) if reqs else 'None'}\n"
+    )
+
+    msg = req.message.strip()
+    if not msg or msg.lower() == "/start":
+        start_message = (
+            f"Hello and welcome to your simulated SDE mock interview session for the **{role_name}** position at **{company_name}**!\n\n"
+            f"I have loaded the specific job description requirements:\n"
+            f"- **Focus Tech**: {', '.join(reqs[:4]) if reqs else 'Core SDE Skills'}\n"
+            f"- **Experience Bracket**: {exp} years\n\n"
+            f"Let's begin! Please introduce yourself, summarize your relevant programming/project experience, and mention any of these SDE skills you are comfortable with."
+        )
+        return {"reply": start_message, "mode": "interview_started"}
+
+    if api_key:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel('gemini-2.5-flash')
+            
+            system_instruction = (
+                "You are an SDE Technical Interviewer for a mock interview simulation.\n"
+                "Your task is to conduct an interactive, professional SDE technical interview for the job description provided.\n"
+                "You should ask one technical or behavioral question at a time. Do NOT list all questions at once.\n"
+                "Review the candidate's last answer, provide very brief, constructive feedback on their answer (e.g. correctness, optimization suggestions), and then ask the next relevant question (e.g. system design choice, concurrency question, database normalization topic, or behavioral question).\n"
+                "Keep your response concise (3-4 sentences maximum). Be a professional and slightly challenging interviewer."
+            )
+            
+            prompt = (
+                f"{system_instruction}\n\n"
+                f"Job Description Context:\n{jd_context}\n\n"
+                f"Candidate Response: {msg}\n"
+                f"Interviewer Response:"
+            )
+            
+            response = model.generate_content(prompt)
+            if response and response.text:
+                return {"reply": response.text.strip(), "mode": "interview_ongoing"}
+        except Exception as e:
+            print(f"Gemini mock interview failed: {e}. Falling back to offline interviewer logic.")
+
+    lowered_msg = msg.lower()
+    fallback_questions = [
+        "Can you explain the difference between a load balancer and reverse proxy, and how you would design rate-limiting for this role?",
+        "If our transaction volume spikes by 10x during flash-sales, how would you design database indexing (B-Tree vs GIN/Hash index) and cache eviction policies?",
+        "How would you ensure absolute message ordering in a distributed queue system like Apache Kafka when using multiple partitions?",
+        "Describe a challenging bug you encountered in a recent project. What steps did you take to isolate, debug, and patch it under time constraints?",
+        "Thank you! That completes our simulated mock interview session. Your responses demonstrate solid baseline alignment with our core requirements. Keep refining low-latency design patterns!"
+    ]
+    
+    question_idx = (len(lowered_msg) + len(msg.split())) % len(fallback_questions)
+    reply = (
+        f"[Offline Interviewer Fallback] Thank you for that response. Let's move to the next topic:\n\n"
+        f"{fallback_questions[question_idx]}"
+    )
+    
+    return {"reply": reply, "mode": "interview_ongoing"}
+
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, API_BASE } from '../App';
 import { Target, ChevronDown, AlertCircle, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import './InterviewPlan.css';
 
 export default function InterviewPlan() {
@@ -11,9 +11,9 @@ export default function InterviewPlan() {
   const [data, setData] = useState({ source: '', questions: [] });
   const [openQuestions, setOpenQuestions] = useState(new Set());
   const [loaderSteps, setLoaderSteps] = useState([
-    { label: 'Loading company selective bars', status: 'active' },
-    { label: 'Selecting coding questions', status: 'pending' },
-    { label: 'Generating behavioral guidance', status: 'pending' }
+    { label: 'Loading target company selection parameters', status: 'active' },
+    { label: 'Formulating selective coding problems', status: 'pending' },
+    { label: 'Compiling behavioral checklist modules', status: 'pending' }
   ]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -56,7 +56,8 @@ export default function InterviewPlan() {
       };
 
       try {
-        const response = await fetch(`${API_BASE}/api/interview-plan/${sessionId}`);
+        const skipLlm = localStorage.getItem('skip_llm') === 'true' ? '?skip_llm=true' : '';
+        const response = await fetch(`${API_BASE}/api/interview-plan/${sessionId}${skipLlm}`);
         updateStep(0, 'completed');
         updateStep(1, 'active');
         if (response.ok) {
@@ -85,7 +86,7 @@ export default function InterviewPlan() {
         });
         updateSessionStatus('interview_completed');
       } catch (e) {
-        console.warn("Failed to update gating status on backend", e);
+        console.warn("Failed to update status on backend", e);
         updateSessionStatus('interview_completed');
       }
 
@@ -106,38 +107,18 @@ export default function InterviewPlan() {
     setOpenQuestions(next);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.05
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100, damping: 16 }
-    }
-  };
-
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '70vh' }}>
-        <div className="informative-loader-container glass-panel">
+        <div className="informative-loader-container glass-panel animate-fade-in">
           <div className="loader-header">
-            <div className="loader-spinner animate-spin"></div>
-            <h3>Generating Interview Guidance</h3>
+            <div className="loader-spinner"></div>
+            <h3>Formulating Practice Hub</h3>
           </div>
           <div className="loader-steps">
             {loaderSteps.map((step, idx) => (
               <div key={idx} className={`loader-step-item ${step.status}`}>
-                <span className="step-icon">
+                <span className="step-icon" style={{ marginRight: '0.5rem' }}>
                   {step.status === 'completed' ? '✓' : step.status === 'active' ? '●' : '○'}
                 </span>
                 <span>{step.label}</span>
@@ -153,24 +134,24 @@ export default function InterviewPlan() {
 
   return (
     <motion.div 
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
       className="interview-plan-wrapper"
     >
-      <motion.div className="welcome-banner-row" variants={itemVariants}>
-        <h1>Personalized Interview Plan</h1>
-        <p>Master real-world engineering concepts frequently tested in technical rounds at {company}.</p>
-      </motion.div>
+      <div className="welcome-banner-row">
+        <h1>Practice Hub</h1>
+        <p>Master selective coding problems and behavioral scenarios frequently verified in technical interviews at {company}.</p>
+      </div>
 
-      <motion.div className="section-header-row" variants={itemVariants}>
+      <div className="section-header-row">
         <div className="section-header-title">
-          <Target size={18} />
+          <Target size={18} style={{ color: 'var(--accent-primary)' }} />
           <span>Recommended Technical Questions</span>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div className="questions-container" variants={itemVariants}>
+      <div className="questions-container">
         {data.questions && data.questions.length > 0 ? (
           data.questions.map((q, idx) => {
             const isOpen = openQuestions.has(idx);
@@ -178,7 +159,10 @@ export default function InterviewPlan() {
             const diffClass = `difficulty-${diff.toLowerCase()}`;
             
             return (
-              <div key={idx} className={`glass-card question-card ${isOpen ? 'open' : ''}`}>
+              <div 
+                key={idx} 
+                className="glass-card question-card"
+              >
                 <div className="question-header">
                   <div className="question-title">{idx + 1}. {q.question}</div>
                   <div className="badges-row">
@@ -188,48 +172,51 @@ export default function InterviewPlan() {
                   </div>
                 </div>
                 
-                <button className="accordion-trigger" onClick={() => toggleQuestion(idx)}>
-                  <span>{isOpen ? 'Hide Solution Blueprint' : 'View Solution Blueprint'}</span>
-                  <ChevronDown className="accordion-arrow" size={16} />
+                <button 
+                  className="accordion-trigger" 
+                  onClick={() => toggleQuestion(idx)}
+                >
+                  <span>{isOpen ? 'Hide Solution Blueprint' : 'Explore Solution Blueprint'}</span>
+                  <ChevronDown size={14} style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
                 </button>
  
-                <div className="accordion-content">
+                {isOpen && (
                   <div className="solution-description">
                     <div style={{ marginBottom: '0.5rem' }}>
                       <strong>Solution Approach:</strong>
                     </div>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-                      {q.solution || 'Study concepts related to system architecture, low-latency queues and indexing.'}
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                      {q.solution || 'Focus on system design scaling benchmarks, indexing schema structures, and low latency caching modules.'}
                     </p>
                     <div className="complexity-box">
-                      <span><strong>Time Complexity:</strong> O(N) average</span>
-                      <span><strong>Space Complexity:</strong> O(N) space</span>
+                      <span>Time Complexity: <strong>O(N)</strong> average</span>
+                      <span>Space Complexity: <strong>O(N)</strong> space</span>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             );
           })
         ) : (
           <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center' }}>
             <AlertCircle size={40} style={{ color: 'var(--text-muted)', marginBottom: '1rem' }} />
-            <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>No Custom Questions Prepared</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Practice core skills listed in your timeline stages.</p>
+            <h3 style={{ fontFamily: 'var(--font-title)', fontSize: '1.25rem', marginBottom: '0.5rem' }}>No Selective Questions Generated</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Verify matching taxonomy skills inside your timeline stages first.</p>
           </div>
         )}
-      </motion.div>
+      </div>
 
       {/* Navigation CTA banner */}
-      <motion.div className="dashboard-cta-banner" variants={itemVariants}>
+      <div className="dashboard-cta-banner">
         <div className="cta-left">
-          <h3>Step 3 Completed: Prep Plan Ready!</h3>
-          <p>Your technical questions are reviewed. Ready to begin your interactive coding sandbox and training curriculum?</p>
+          <h3>Prep Plan Assembled!</h3>
+          <p>Ready to clearing coding sandboxes and take assessment milestones on your visual roadmap?</p>
         </div>
         <button className="cta-nav-button" onClick={() => navigate('/roadmap')}>
-          <span>Proceed to Prep Roadmap</span>
+          <span>Begin Prep Roadmap</span>
           <ArrowRight size={18} />
         </button>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

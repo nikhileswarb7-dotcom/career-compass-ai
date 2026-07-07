@@ -16,7 +16,7 @@ PROFILES = {
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "",
         "github_username": "",
         "resume_text": "",
@@ -30,7 +30,7 @@ PROFILES = {
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "https://linkedin.com/in/intermediate-sde",
         "github_username": "intermediateDev",
         "resume_text": "Built a web app using Python, Django, and SQL databases. Used Git & GitHub for version control.",
@@ -44,7 +44,7 @@ PROFILES = {
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "https://linkedin.com/in/advanced-sde",
         "github_username": "advancedDev",
         "resume_text": "Highly skilled Software Engineer with experience building high-throughput microservices. Mastered Java, Go, Python, Spring Boot, gRPC, and System Design. Scaled Postgres database and implemented Redis caches and Kafka message queues. Containerized applications with Docker.",
@@ -170,7 +170,7 @@ def generate_report():
     
     with open(report_path, "w", encoding="utf-8") as f:
         f.write("# CareerCompass AI — Intelligence Verification & Personalization Validation Report\n\n")
-        f.write("This report validates that CareerCompass AI's recommendation and roadmap engines are fully dynamic, isolated, and highly responsive to different student profiles. Each candidate targets **Google** (**Software Development Engineer**).\n\n")
+        f.write("This report validates that CareerCompass AI's recommendation and roadmap engines are fully dynamic, isolated, and highly responsive to different student profiles. Each candidate targets **Google** (**Software Development Engineer (SDE)**).\n\n")
         
         f.write("## 1. Profiles & Input Parameters\n\n")
         f.write("| Profile | Qualification | GPA | Known Skills | resume/LinkedIn depth |\n")

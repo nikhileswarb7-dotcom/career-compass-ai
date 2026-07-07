@@ -1,8 +1,19 @@
 # Integration Test - Session Isolation
 # CareerCompass AI
 
+import os
 import requests
 import psycopg2
+
+# Load local .env file if it exists
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(dotenv_path):
+    with open(dotenv_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, val = line.split("=", 1)
+                os.environ[key.strip()] = val.strip().strip('"').strip("'")
 
 API_BASE = "http://127.0.0.1:8000"
 
@@ -19,7 +30,7 @@ def test_session_isolation():
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "",
         "github_username": "",
         "resume_text": "",
@@ -46,16 +57,23 @@ def test_session_isolation():
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "known_skills": ["Java", "SQL"],
         "student_id": student_id_1,
-        "session_id": session_id_1
+        "session_id": session_id_1,
+        "skip_llm": True
     }
     resp_rec1 = requests.post(f"{API_BASE}/api/recommend", json=payload_rec_1)
     assert resp_rec1.status_code == 200, f"Recommend 1 failed: {resp_rec1.text}"
 
     # Verify User 1 skills in DB
-    conn = psycopg2.connect(host="localhost", port=5432, dbname="career_compass_ai", user="postgres", password="Nikhil@2824")
+    conn = psycopg2.connect(
+        host=os.environ.get("DB_HOST", "localhost"),
+        port=int(os.environ.get("DB_PORT", 5432)),
+        dbname=os.environ.get("DB_NAME", "career_compass_ai"),
+        user=os.environ.get("DB_USER", "postgres"),
+        password=os.environ.get("DB_PASSWORD", "")
+    )
     cur = conn.cursor()
     cur.execute("SET search_path TO career_compass_ai, public;")
     cur.execute("""
@@ -77,7 +95,7 @@ def test_session_isolation():
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "",
         "github_username": "",
         "resume_text": "",
@@ -109,10 +127,11 @@ def test_session_isolation():
         "dream_company": "Google",
         "dream_sector": "SaaS",
         "fresh_passout": False,
-        "target_role": "Software Development Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "known_skills": ["Python"],
         "student_id": student_id_2,
-        "session_id": session_id_2
+        "session_id": session_id_2,
+        "skip_llm": True
     }
     resp_rec2 = requests.post(f"{API_BASE}/api/recommend", json=payload_rec_2)
     assert resp_rec2.status_code == 200, f"Recommend 2 failed: {resp_rec2.text}"

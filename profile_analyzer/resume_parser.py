@@ -9,12 +9,13 @@ try:
 except ImportError:
     def get_db_connection():
         try:
+            import os
             return psycopg2.connect(
-                host="localhost",
-                port=5432,
-                dbname="career_compass_ai",
-                user="postgres",
-                password="Nikhil@2824"
+                host=os.environ.get("DB_HOST", "localhost"),
+                port=int(os.environ.get("DB_PORT", 5432)),
+                dbname=os.environ.get("DB_NAME", "career_compass_ai"),
+                user=os.environ.get("DB_USER", "postgres"),
+                password=os.environ.get("DB_PASSWORD", "")
             )
         except Exception:
             return None
@@ -24,6 +25,37 @@ class ResumeParser:
     Parses resume text transcripts to extract name, education,
     experiences, projects list, certifications, and dynamically mapped skills.
     """
+    
+    CANONICAL_SYNONYMS = {
+        "c programming": ["c programming", r"\bc\b"],
+        "c++": [r"c\+\+"],
+        "java": ["java"],
+        "python": ["python"],
+        "sql": ["sql"],
+        "data structures": ["data structures", "data structure"],
+        "algorithms": ["algorithms"],
+        "dsa (combined)": ["dsa (combined)", r"\bdsa\b"],
+        "dbms": ["dbms", "database management"],
+        "operating systems": ["operating systems", "operating system", r"\bos\b"],
+        "computer networks": ["computer networks", "computer network", r"\bcn\b"],
+        "object oriented programming": ["object oriented programming", "object oriented", r"\boop\b", r"\boops\b"],
+        "spring boot": ["spring boot", "springboot", "spring"],
+        "rest apis": ["rest apis", "rest api", "restful"],
+        "microservices": ["microservices", "microservice"],
+        "message queues (kafka)": ["message queues (kafka)", "kafka"],
+        "mysql": ["mysql"],
+        "postgresql": ["postgresql", "postgres"],
+        "redis": ["redis"],
+        "git & github": ["git & github", "git", "github"],
+        "docker": ["docker"],
+        "aws basics": ["aws basics", "aws"],
+        "linux basics": ["linux basics", "linux"],
+        "low level design": ["low level design", r"\blld\b"],
+        "high level design": ["high level design", r"\bhld\b"],
+        "system design": ["system design"],
+        "go": ["go", "golang"],
+        "kubernetes": ["kubernetes", r"\bk8s\b"]
+    }
     
     @staticmethod
     def get_all_db_skills() -> list:
@@ -50,14 +82,24 @@ class ResumeParser:
 
     @staticmethod
     def match_skill_in_text(skill_name: str, text: str) -> bool:
-        escaped = re.escape(skill_name)
-        if re.search(r'\W$', skill_name):
-            pattern = r'\b' + escaped
-        elif re.search(r'^\W', skill_name):
-            pattern = escaped + r'\b'
-        else:
-            pattern = r'\b' + escaped + r'\b'
-        return bool(re.search(pattern, text, re.IGNORECASE))
+        if not skill_name or not text:
+            return False
+        
+        name_lower = skill_name.lower().strip()
+        synonyms = ResumeParser.CANONICAL_SYNONYMS.get(name_lower, [name_lower])
+        
+        for syn in synonyms:
+            if "\\" in syn or "^" in syn or "$" in syn:
+                if re.search(syn, text, re.IGNORECASE):
+                    return True
+            else:
+                escaped = re.escape(syn)
+                boundary_before = r'(?:^|[\s\.,;\(\)\[\]\{\}/\|])'
+                boundary_after = r'(?:$|[\s\.,;\(\)\[\]\{\}/\|])'
+                pattern = boundary_before + escaped + boundary_after
+                if re.search(pattern, text, re.IGNORECASE):
+                    return True
+        return False
 
     @staticmethod
     def parse_resume(text: str) -> dict:

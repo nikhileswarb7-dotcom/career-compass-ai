@@ -164,7 +164,7 @@ class CandidateBuilder:
                 # Infer technical competencies/skills for this experience
                 exp_skills = []
                 for s in db_skills:
-                    if re.search(r'\b' + re.escape(s.lower()) + r'\b', desc.lower()):
+                    if ResumeParser.match_skill_in_text(s, desc):
                         exp_skills.append(s)
                 if exp_skills:
                     candidate_projects.append({

@@ -26,7 +26,7 @@ class CareerGuidanceService:
     """
 
     @staticmethod
-    def generate_career_guidance(student_id: str, target_company: str = "Blinkit", target_role: str = "Junior Software Engineer") -> Dict[str, Any]:
+    def generate_career_guidance(student_id: str, target_company: str = "Blinkit", target_role: str = "Junior Software Engineer", skip_llm: bool = False) -> Dict[str, Any]:
         """
         Loads a student profile and their skills from PostgreSQL, runs the recommendation engine
         workflow, caches the results in career_assessments, and returns a unified JSON response.
@@ -80,7 +80,7 @@ class CareerGuidanceService:
                 parsed_gh = {}
                 parsed_res = {}
                 if linkedin_url:
-                    try: parsed_li = LinkedInParser.parse_profile(linkedin_url)
+                    try: parsed_li = LinkedInParser.parse_profile(linkedin_url, target_role=target_role, qualification=qualification)
                     except Exception: parsed_li = {}
                 if github_username:
                     try: parsed_gh = GitHubAnalyzer.analyze_profile(github_username)
@@ -145,7 +145,8 @@ class CareerGuidanceService:
                 resume_text=resume_text or "",
                 cgpa=float(cgpa or 8.0),
                 experience_years=experience_years,
-                candidate_profile=candidate_profile
+                candidate_profile=candidate_profile,
+                skip_llm=skip_llm
             )
             
             # 4. Cache Assessment in career_assessments Table

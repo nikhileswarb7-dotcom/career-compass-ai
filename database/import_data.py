@@ -20,13 +20,9 @@ from psycopg2.extras import Json
 # ----------------------------------------------------------------
 # Database connection config — update before running
 # ----------------------------------------------------------------
-DB_CONFIG = {
-    "host":     "localhost",
-    "port":     5432,
-    "dbname":   "career_compass_ai",
-    "user":     "postgres",
-    "password": "Nikhil@2824",   # <-- change this
-}
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from api.database_connector import DB_CONFIG
 
 DATASETS_DIR = os.path.join(os.path.dirname(__file__), "datasets")
 
@@ -141,7 +137,7 @@ def import_interview_questions(conn):
         SELECT cr.company_role_id FROM company_roles cr
         JOIN companies c ON cr.company_id = c.company_id
         JOIN roles r ON cr.role_id = r.role_id
-        WHERE c.company_name = 'Blinkit' AND r.role_name = 'Software Development Engineer'
+        WHERE c.company_name = 'Blinkit' AND r.role_name = 'Software Development Engineer (SDE)'
     """)
     row = cur.fetchone()
     company_role_id = row[0] if row else None
@@ -266,7 +262,7 @@ def import_roadmaps(conn):
         SELECT cr.company_role_id FROM company_roles cr
         JOIN companies c ON cr.company_id = c.company_id
         JOIN roles r ON cr.role_id = r.role_id
-        WHERE c.company_name = 'Blinkit' AND r.role_name = 'Software Development Engineer'
+        WHERE c.company_name = 'Blinkit' AND r.role_name = 'Software Development Engineer (SDE)'
     """)
     row = cur.fetchone()
     if not row:
@@ -329,7 +325,7 @@ def import_roadmaps(conn):
 
 
 def import_job_descriptions(conn):
-    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "database", "hiring_layer", "job_descriptions.csv"))
+    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "hiring_layer", "job_descriptions.csv"))
     data = load_csv(csv_path)
     cur = conn.cursor()
     for r in data:
@@ -354,7 +350,7 @@ def import_job_descriptions(conn):
 
 
 def import_interview_experiences(conn):
-    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "database", "hiring_layer", "interview_experiences.csv"))
+    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "hiring_layer", "interview_experiences.csv"))
     data = load_csv(csv_path)
     cur = conn.cursor()
     for r in data:
@@ -379,7 +375,7 @@ def import_interview_experiences(conn):
 
 
 def import_skill_roadmaps(conn):
-    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "database", "learning_layer", "skill_roadmaps.csv"))
+    csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "learning_layer", "skill_roadmaps.csv"))
     data = load_csv(csv_path)
     cur = conn.cursor()
     for r in data:

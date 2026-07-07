@@ -21,14 +21,10 @@ RAW_DATA_DIR = os.path.join(BASE_DIR, "raw_data")
 # 1. Database Connection Config loader
 # ----------------------------------------------------------------
 def load_db_config():
-    config = {
-        "host":     "localhost",
-        "port":     5432,
-        "dbname":   "career_compass_ai",
-        "user":     "postgres",
-        "password": "Nikhil@2824"
-    }
-    return config
+    import sys
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+    from api.database_connector import DB_CONFIG
+    return DB_CONFIG
 
 # ----------------------------------------------------------------
 # 2. LinkedIn PDF Heuristic Parser

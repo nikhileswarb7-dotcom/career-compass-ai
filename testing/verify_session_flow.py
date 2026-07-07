@@ -1,9 +1,20 @@
 # Integration Test - Session-Based Workflow Gating & Data Isolation
 # CareerCompass AI
 
+import os
 import requests
 import uuid
 import psycopg2
+
+# Load local .env file if it exists
+dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+if os.path.exists(dotenv_path):
+    with open(dotenv_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, val = line.split("=", 1)
+                os.environ[key.strip()] = val.strip().strip('"').strip("'")
 
 API_BASE = "http://127.0.0.1:8000"
 
@@ -20,7 +31,7 @@ def test_session_workflow():
         "dream_company": "Blinkit",
         "dream_sector": "Quick-Commerce",
         "fresh_passout": False,
-        "target_role": "Junior Software Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "linkedin_url": "https://linkedin.com/in/test-candidate",
         "github_username": "testcandidate",
         "resume_text": "Experienced in Java, SQL, Git & GitHub.",
@@ -60,10 +71,11 @@ def test_session_workflow():
         "dream_company": "Blinkit",
         "dream_sector": "Quick-Commerce",
         "fresh_passout": False,
-        "target_role": "Junior Software Engineer",
+        "target_role": "Software Development Engineer (SDE)",
         "known_skills": ["Java", "Git & GitHub", "SQL"],
         "student_id": student_id,
-        "session_id": session_id
+        "session_id": session_id,
+        "skip_llm": True
     }
 
     print("Sending POST /api/recommend...")
@@ -93,14 +105,14 @@ def test_session_workflow():
 
     # 5. Verify dynamic sub-endpoints (Modification 4)
     print(f"Testing dynamic GET /api/readiness/{session_id}...")
-    resp_readiness = requests.get(f"{API_BASE}/api/readiness/{session_id}")
+    resp_readiness = requests.get(f"{API_BASE}/api/readiness/{session_id}?skip_llm=true")
     assert resp_readiness.status_code == 200
     readiness_data = resp_readiness.json()
     print(f"  Readiness Score: {readiness_data['readiness_score']}%")
     assert "readiness_score" in readiness_data
 
     print(f"Testing dynamic GET /api/recommendations/{session_id}...")
-    resp_recs = requests.get(f"{API_BASE}/api/recommendations/{session_id}")
+    resp_recs = requests.get(f"{API_BASE}/api/recommendations/{session_id}?skip_llm=true")
     assert resp_recs.status_code == 200
     recs_data = resp_recs.json()
     print(f"  Projects found: {len(recs_data.get('projects', []))}")
@@ -109,21 +121,27 @@ def test_session_workflow():
     assert "resources" in recs_data
 
     print(f"Testing dynamic GET /api/interview-plan/{session_id}...")
-    resp_interview = requests.get(f"{API_BASE}/api/interview-plan/{session_id}")
+    resp_interview = requests.get(f"{API_BASE}/api/interview-plan/{session_id}?skip_llm=true")
     assert resp_interview.status_code == 200
     int_data = resp_interview.json()
     print(f"  Interview questions found: {len(int_data.get('recommended_questions', []))}")
     assert "recommended_questions" in int_data
 
     print(f"Testing dynamic GET /api/roadmap/{session_id}...")
-    resp_roadmap = requests.get(f"{API_BASE}/api/roadmap/{session_id}")
+    resp_roadmap = requests.get(f"{API_BASE}/api/roadmap/{session_id}?skip_llm=true")
     assert resp_roadmap.status_code == 200
     roadmap_data = resp_roadmap.json()
     print(f"  Roadmap stages: {len(roadmap_data.get('stages', []))}")
     assert "stages" in roadmap_data
 
     # 6. Verify PostgreSQL as Source of Truth & metadata-only storage (Modification 2 & 3)
-    conn = psycopg2.connect(host="localhost", port=5432, dbname="career_compass_ai", user="postgres", password="Nikhil@2824")
+    conn = psycopg2.connect(
+        host=os.environ.get("DB_HOST", "localhost"),
+        port=int(os.environ.get("DB_PORT", 5432)),
+        dbname=os.environ.get("DB_NAME", "career_compass_ai"),
+        user=os.environ.get("DB_USER", "postgres"),
+        password=os.environ.get("DB_PASSWORD", "")
+    )
     cur = conn.cursor()
     cur.execute("SELECT student_id, target_company, target_role, status FROM career_compass_ai.analysis_sessions WHERE session_id = %s", (session_id,))
     db_row = cur.fetchone()
@@ -133,7 +151,7 @@ def test_session_workflow():
     assert db_row is not None
     assert db_row[0] == student_id
     assert db_row[1] == "Blinkit"
-    assert db_row[2] == "Junior Software Engineer"
+    assert db_row[2] == "Software Development Engineer (SDE)"
     assert db_row[3] == "dashboard_completed"
     print("  Verified session record exists in PostgreSQL and stores metadata only (no nested JSON recommendation caches)!")
 

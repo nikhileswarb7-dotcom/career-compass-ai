@@ -66,11 +66,96 @@ COMPANY_PATTERNS = {
 }
 
 ROLE_PATTERNS = {
-    "Software Development Engineer": [
-        r"\bsde\b", r"\bsoftware\s?development\s?engineer\b",
-        r"\bsoftware\s?engineer\b", r"\bbackend\s?engineer\b",
-        r"\bsoftware\s?developer\b"
+    "Software Development Engineer (SDE)": [
+        r"\bsde\b", r"\bsoftware\s?development\s?engineer\b"
     ],
+    "Backend Developer": [
+        r"\bbackend\b", r"\bbackend\s?developer\b", r"\bbackend\s?engineer\b"
+    ],
+    "Frontend Developer": [
+        r"\bfrontend\b", r"\bfrontend\s?developer\b", r"\bfrontend\s?engineer\b"
+    ],
+    "Full Stack Developer": [
+        r"\bfull\s?stack\b", r"\bfullstack\b", r"\bfull\s?stack\s?developer\b", r"\bfull\s?stack\s?engineer\b"
+    ],
+    "Software Engineer": [
+        r"\bsoftware\s?engineer\b", r"\bsoftware\s?developer\b"
+    ],
+    "Mobile App Developer (Android)": [
+        r"\bandroid\b", r"\bandroid\s?developer\b", r"\bandroid\s?engineer\b"
+    ],
+    "Mobile App Developer (iOS)": [
+        r"\bios\b", r"\bios\s?developer\b", r"\bios\s?engineer\b"
+    ],
+    "Flutter Developer": [
+        r"\bflutter\b", r"\bflutter\s?developer\b"
+    ],
+    "React Native Developer": [
+        r"\breact\s?native\b", r"\breact\s?native\s?developer\b"
+    ],
+    "DevOps Engineer": [
+        r"\bdevops\b", r"\bdevops\s?engineer\b"
+    ],
+    "Cloud Engineer": [
+        r"\bcloud\s?engineer\b", r"\bcloud\s?developer\b"
+    ],
+    "Site Reliability Engineer (SRE)": [
+        r"\bsre\b", r"\bsite\s?reliability\b", r"\bsite\s?reliability\s?engineer\b"
+    ],
+    "Data Analyst": [
+        r"\bdata\s?analyst\b"
+    ],
+    "Data Engineer": [
+        r"\bdata\s?engineer\b"
+    ],
+    "Data Scientist": [
+        r"\bdata\s?scientist\b"
+    ],
+    "AI Engineer": [
+        r"\bai\s?engineer\b", r"\bai\s?developer\b", r"\bartificial\s?intelligence\b"
+    ],
+    "Machine Learning Engineer": [
+        r"\bml\s?engineer\b", r"\bml\s?developer\b", r"\bmachine\s?learning\b", r"\bmachine\s?learning\s?engineer\b"
+    ],
+    "Deep Learning Engineer": [
+        r"\bdeep\s?learning\b", r"\bdeep\s?learning\s?engineer\b"
+    ],
+    "NLP Engineer": [
+        r"\bnlp\b", r"\bnlp\s?engineer\b", r"\bnatural\s?language\s?processing\b"
+    ],
+    "Computer Vision Engineer": [
+        r"\bcomputer\s?vision\b", r"\bcomputer\s?vision\s?engineer\b"
+    ],
+    "MLOps Engineer": [
+        r"\bmlops\b", r"\bmlops\s?engineer\b"
+    ],
+    "Cyber Security Engineer": [
+        r"\bcyber\s?security\b", r"\bcyber\s?security\s?engineer\b", r"\bsecurity\s?engineer\b"
+    ],
+    "Security Analyst": [
+        r"\bsecurity\s?analyst\b"
+    ],
+    "SDET (Software Development Engineer in Test)": [
+        r"\bsdet\b", r"\bsoftware\s?development\s?engineer\s?in\s?test\b"
+    ],
+    "QA Automation Engineer": [
+        r"\bqa\b", r"\bqa\s?automation\b", r"\bautomation\s?engineer\b", r"\bqa\s?engineer\b"
+    ],
+    "Product Manager": [
+        r"\bproduct\s?manager\b", r"\bpm\b"
+    ],
+    "Associate Product Manager (APM)": [
+        r"\bapm\b", r"\bassociate\s?product\s?manager\b"
+    ],
+    "Business Analyst": [
+        r"\bbusiness\s?analyst\b"
+    ],
+    "UI/UX Designer": [
+        r"\bui\/ux\b", r"\bui\s?ux\b", r"\bdesigner\b", r"\bui\s?designer\b", r"\bux\s?designer\b"
+    ],
+    "Embedded Software Engineer": [
+        r"\bembedded\b", r"\bembedded\s?engineer\b", r"\bembedded\s?software\s?engineer\b"
+    ]
 }
 
 
@@ -139,7 +224,7 @@ def parse_user_input(text: str) -> dict:
             "qualification": "3rd Year Student",
             "known_skills": ["Git & GitHub", "Java"],
             "target_company": "Blinkit",
-            "target_role": "Software Development Engineer",
+            "target_role": "Software Development Engineer (SDE)",
             "missing_entities": []
         }
     """
@@ -160,7 +245,7 @@ def parse_user_input(text: str) -> dict:
         "qualification": qualification,
         "known_skills": skills,
         "target_company": company or "Blinkit",
-        "target_role": role or "Software Development Engineer",
+        "target_role": role or "Software Development Engineer (SDE)",
         "missing_entities": missing,
         "raw_input": text,
     }
