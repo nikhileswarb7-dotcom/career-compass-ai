@@ -102,7 +102,7 @@ The platform runs candidate queries through a multi-stage pipeline:
         [Interactive React SPA View]
 ```
 
-Detailed architectural diagrams and state-transition parameters are available in the [System Architecture Document](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/SYSTEM_ARCHITECTURE.md).
+Detailed architectural diagrams and state-transition parameters are available in the [System Architecture Document](./docs/SYSTEM_ARCHITECTURE.md).
 
 ---
 
@@ -134,11 +134,11 @@ Planned future enhancements include:
 
 To review detailed design metrics, evaluation datasets, and codebase parameters, explore the following documents:
 
-*   **[System Architecture (SYSTEM_ARCHITECTURE.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/SYSTEM_ARCHITECTURE.md)**: Deep dive into the hybrid decision loop, positive stage filters, and session transition gates.
-*   **[Model Card (MODEL_CARD.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/MODEL_CARD.md)**: Detailed ML model metrics, classification PR-AUC values, calibration curves, and OOD performance.
-*   **[Data Card (DATA_CARD.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/DATA_CARD.md)**: Structured database layers (employee, company, interview, learning, coding, student, intelligence) and row statistics.
-*   **[Submission Report (SUBMISSION_REPORT.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/SUBMISSION_REPORT.md)**: Internship milestones, verification artifacts, and validation suite summaries.
-*   **[Known Limitations (KNOWN_LIMITATIONS.md)](file:///C:/Users/nikhi/.gemini/antigravity-ide/brain/dd0d8955-9343-4ea0-8812-3b8d612846f0/KNOWN_LIMITATIONS.md)**: Analysis of class imbalances, ontology boundaries, and external data dependencies.
+*   **[System Architecture (SYSTEM_ARCHITECTURE.md)](./docs/SYSTEM_ARCHITECTURE.md)**: Deep dive into the hybrid decision loop, positive stage filters, and session transition gates.
+*   **[Model Card (MODEL_CARD.md)](./docs/MODEL_CARD.md)**: Detailed ML model metrics, classification PR-AUC values, calibration curves, and OOD performance.
+*   **[Data Card (DATA_CARD.md)](./docs/DATA_CARD.md)**: Structured database layers (employee, company, interview, learning, coding, student, intelligence) and row statistics.
+*   **[Submission Report (SUBMISSION_REPORT.md)](./docs/SUBMISSION_REPORT.md)**: Internship milestones, verification artifacts, and validation suite summaries.
+*   **[Known Limitations (KNOWN_LIMITATIONS.md)](./docs/KNOWN_LIMITATIONS.md)**: Analysis of class imbalances, ontology boundaries, and external data dependencies.
 
 ---
 
