@@ -67,6 +67,11 @@ export default function ProfileBuilder() {
   const [projectName, setProjectName] = useState('');
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState('');
+  const [resumeText, setResumeText] = useState('');
+  const [suggestedProjects, setSuggestedProjects] = useState([]);
+  const [atsScoreBackend, setAtsScoreBackend] = useState(null);
+  const [matchedKeywords, setMatchedKeywords] = useState([]);
+  const [missingKeywords, setMissingKeywords] = useState([]);
   
   // Tabs: 'resume' | 'linkedin' | 'github'
   const [activeTab, setActiveTab] = useState('linkedin');
@@ -105,7 +110,28 @@ export default function ProfileBuilder() {
           setDreamCompany(data.dream_company || 'Blinkit');
           setTargetRole(data.target_role || 'Software Development Engineer');
           setSkills(data.known_skills || []);
+          setResumeText(data.resume_text || '');
           
+          const combinedProjs = [];
+          if (data.common_projects && data.common_projects.length > 0) {
+            combinedProjs.push(...data.common_projects);
+          }
+          if (data.projects && data.projects.length > 0) {
+            data.projects.forEach(p => {
+              if (p.name && !combinedProjs.includes(p.name)) {
+                combinedProjs.push(p.name);
+              }
+            });
+          }
+          if (combinedProjs.length === 0) {
+            combinedProjs.push(
+              "High-Concurrency Order Dispatching System",
+              "Real-Time Geo-Indexing Rider Service",
+              "Distributed Rate Limiter Gateway"
+            );
+          }
+          setSuggestedProjects(combinedProjs.slice(0, 4));
+
           if (data.projects && data.projects.length > 0) {
             const firstProj = data.projects[0];
             setProjectName(firstProj.name || firstProj.title || 'High-Concurrency Geo-Dispatch Engine');
@@ -163,6 +189,7 @@ export default function ProfileBuilder() {
       target_role: targetRole,
       project_name: projectName,
       skills: skills,
+      resume_text: resumeText,
       skip_llm: isSkipLlmEnabled
     };
 
@@ -176,6 +203,11 @@ export default function ProfileBuilder() {
       if (response.ok) {
         const resData = await response.json();
         setGeneratedData(resData);
+        if (resData.ats_score !== undefined) {
+          setAtsScoreBackend(resData.ats_score);
+          setMatchedKeywords(resData.matched_keywords || []);
+          setMissingKeywords(resData.missing_keywords || []);
+        }
       } else {
         const errText = await response.text();
         if (errText.includes("429") || errText.includes("quota") || errText.includes("LimitExceeded") || errText.includes("Quota exceeded") || response.status === 500) {
@@ -189,6 +221,11 @@ export default function ProfileBuilder() {
             if (mockResponse.ok) {
               const resData = await mockResponse.json();
               setGeneratedData(resData);
+              if (resData.ats_score !== undefined) {
+                setAtsScoreBackend(resData.ats_score);
+                setMatchedKeywords(resData.matched_keywords || []);
+                setMissingKeywords(resData.missing_keywords || []);
+              }
               localStorage.setItem('skip_llm', 'true');
             } else {
               throw new Error("Simulated fallback failed.");
@@ -223,7 +260,7 @@ export default function ProfileBuilder() {
     return base + additional;
   };
 
-  const atsScore = calculateATSScore();
+  const atsScore = atsScoreBackend !== null ? atsScoreBackend : calculateATSScore();
 
   return (
     <div className="profile-builder-page">
@@ -288,6 +325,61 @@ export default function ProfileBuilder() {
                 onChange={(e) => setProjectName(e.target.value)} 
                 placeholder="e.g. Geo-caching system"
               />
+              {/* Suggested Projects Chips */}
+              {suggestedProjects && suggestedProjects.length > 0 && (
+                <div style={{ marginTop: '8px' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Suggested SDE Projects:</span>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {suggestedProjects.map((proj, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setProjectName(proj)}
+                        style={{
+                          fontSize: '0.7rem',
+                          padding: '3px 8px',
+                          borderRadius: '12px',
+                          background: projectName === proj ? 'var(--accent-primary)' : 'rgba(255,255,255,0.03)',
+                          color: projectName === proj ? 'var(--bg-main)' : 'var(--text-muted)',
+                          border: '1px solid rgba(255,255,255,0.05)',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                          maxWidth: '180px'
+                        }}
+                        title={proj}
+                      >
+                        {proj}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Resume Content Text Area */}
+            <div className="form-group">
+              <label htmlFor="builder-resume">Your Current Resume Content (for ATS Scoring)</label>
+              <textarea 
+                id="builder-resume"
+                value={resumeText} 
+                onChange={(e) => setResumeText(e.target.value)} 
+                placeholder="Paste your current resume content here to analyze SDE keyword match rate and calculate ATS score..."
+                style={{
+                  width: '100%',
+                  minHeight: '120px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '6px',
+                  color: 'var(--text-primary)',
+                  padding: '10px',
+                  fontSize: '0.82rem',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  lineHeight: '1.4'
+                }}
+              />
             </div>
 
             {/* Skills Tag Input */}
@@ -334,6 +426,28 @@ export default function ProfileBuilder() {
               <span className="ats-status-msg">
                 {atsScore < 70 ? 'Incomplete: Add more core technology keywords to clear corporate SDE scans.' : 'Optimal: Keyword count is highly aligned with selective parameters.'}
               </span>
+
+              {matchedKeywords && matchedKeywords.length > 0 && (
+                <div style={{ marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '10px', textAlign: 'left' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#4caf50', fontWeight: 'bold', display: 'block' }}>✓ Matched SDE Keywords:</span>
+                  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {matchedKeywords.map((k, idx) => (
+                      <span key={idx} style={{ fontSize: '0.68rem', padding: '2px 6px', background: 'rgba(76, 175, 80, 0.1)', color: '#4caf50', borderRadius: '4px', border: '1px solid rgba(76, 175, 80, 0.15)' }}>{k}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {missingKeywords && missingKeywords.length > 0 && (
+                <div style={{ marginTop: '12px', textAlign: 'left' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#ff9800', fontWeight: 'bold', display: 'block' }}>⚠ Missing SDE Keywords (Recommended):</span>
+                  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '6px' }}>
+                    {missingKeywords.map((k, idx) => (
+                      <span key={idx} style={{ fontSize: '0.68rem', padding: '2px 6px', background: 'rgba(255, 152, 0, 0.1)', color: '#ff9800', borderRadius: '4px', border: '1px solid rgba(255, 152, 0, 0.15)' }}>{k}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <button 

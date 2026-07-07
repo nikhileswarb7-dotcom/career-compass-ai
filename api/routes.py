@@ -15,6 +15,7 @@ from ai_engine.roadmap_generator import generate_timeline
 from ai_engine.skill_gap_engine import analyze_gaps
 from ai_engine.readiness_score import calculate_readiness
 from ai_engine.interview_recommender import recommend_questions
+from ai_engine.assessment.skill_assessor import get_role_skills_requirements
 from services.career_guidance_service import CareerGuidanceService
 from profile_analyzer.linkedin_parser import LinkedInParser
 from profile_analyzer.github_analyzer import GitHubAnalyzer
@@ -624,6 +625,7 @@ def get_dynamic_guidance(session_id: str, skip_llm: bool = False) -> dict:
         rec["dream_sector"] = target_sector
         rec["target_role"] = target_role
         rec["status"] = status
+        rec["resume_text"] = resume_text
         
         return rec
     except Exception as e:
@@ -746,7 +748,9 @@ def get_readiness_by_session(session_id: str, skip_llm: bool = False):
         "common_projects": rec.get("common_projects", []),
         "known_skills": rec.get("known_skills", []),
         "projects": rec.get("projects", []),
-        "recommended_next_project": rec.get("recommended_next_project")
+        "recommended_next_project": rec.get("recommended_next_project"),
+        "resume_text": rec.get("resume_text", ""),
+        "common_projects": rec.get("common_projects", [])
     }
 
 @router.get("/recommendations/{session_id}")
@@ -948,6 +952,7 @@ class ProfileOptimizeRequest(BaseModel):
     target_role: str = "Software Development Engineer"
     project_name: str = ""
     skills: list[str] = []
+    resume_text: str = ""
     skip_llm: bool = False
 
 @router.get("/stages/{stage_id}/content")
@@ -969,25 +974,52 @@ def optimize_profile(req: ProfileOptimizeRequest):
     company = req.dream_company or "Blinkit"
     role = req.target_role or "Software Development Engineer"
     proj = req.project_name or "High-Concurrency Order Dispatching Engine"
-    skills_list = ", ".join(req.skills) if req.skills else "General SDE Skills"
+    
+    # 1. Fetch SDE skills from database to calculate ATS Score
+    conn = get_db_connection()
+    db_skills = []
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            cur.execute("SELECT skill_name FROM skills;")
+            db_skills = [r[0] for r in cur.fetchall()]
+            cur.close()
+            conn.close()
+        except Exception:
+            if conn: conn.close()
+            
+    if not db_skills:
+        db_skills = ["Java", "Spring Boot", "Go", "Redis", "Kafka", "PostgreSQL", "System Design", "Docker", "Kubernetes", "AWS Basics", "TypeScript", "React"]
 
-    if True:  # Skip Gemini unconditionally for profile optimization to restrict LLM calls to the chatbot
-        return {
-            "source": "Simulated/Offline AI Optimization",
-            "name": req.name,
-            "dream_company": company,
-            "target_role": role,
-            "project_name": proj,
-            "resume_bullets": [
-                f"Engineered a {proj} in Go, processing over 10,000 requests/second with an average dispatch latency of < 50ms, significantly enhancing throughput.",
-                "Integrated Kafka for asynchronous message processing and event streaming, ensuring reliable message delivery and reducing system latency by 30%.",
-                "Designed and optimized PostgreSQL database schema for scalable order data persistence, managing over 5 million records and achieving query response times under 100ms.",
-                "Utilized Redis for real-time state caching and synchronization, enabling near-instantaneous updates across a monitoring dashboard."
-            ],
-            "linkedin_summary": f"I am a passionate software developer targeting SDE roles at {company}. Experienced in building high-concurrency systems, optimizing database queries, and utilizing modern backend technologies.\n\nMy focus is on writing clean, maintainable code and solving complex SDE scale problems. Let's connect!",
-            "github_readme": f"# {proj}\n\nA high-performance backend application designed for {company}.\n\n## Tech Stack\n- Programming Language: Go / Java\n- Database: PostgreSQL, Redis\n- Messaging Queue: Apache Kafka\n\n## Key Features\n- High throughput design processing > 10k req/sec\n- Real-time order state caching\n- Asynchronous event streaming"
-        }
+    # 2. Extract matched SDE skills from resume_text
+    matched_skills = []
+    if req.resume_text:
+        text_lower = req.resume_text.lower()
+        for skill in db_skills:
+            if skill.lower().strip() in text_lower:
+                matched_skills.append(skill)
+    else:
+        # Fallback to selected tags
+        matched_skills = req.skills
 
+    # 3. Calculate ATS Score based on company SDE requirements
+    company_reqs = get_role_skills_requirements(company, role)
+    required_company_skills = [sk for sk, prio in company_reqs.items() if prio in ("High", "Medium")]
+    if not required_company_skills:
+        required_company_skills = ["Java", "SQL", "Git", "Data Structures", "Algorithms", "Spring Boot"]
+        
+    matched_required = [sk for sk in required_company_skills if any(sk.lower().strip() in ms.lower().strip() for ms in matched_skills)]
+    
+    match_rate = len(matched_required) / len(required_company_skills) if required_company_skills else 0.5
+    ats_score = int(50 + (match_rate * 45))
+    ats_score = min(max(ats_score, 0), 100)
+    
+    missing_required = [sk for sk in required_company_skills if sk not in matched_required]
+
+    # Check if Gemini key is set and we can call it
+    is_offline = req.skip_llm
+    
     # Dynamically load env keys to catch any runtime changes in .env
     dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
     if os.path.exists(dotenv_path):
@@ -1003,10 +1035,33 @@ def optimize_profile(req: ProfileOptimizeRequest):
 
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise HTTPException(
-            status_code=400,
-            detail="Gemini API Key is not configured. Please define GEMINI_API_KEY in your .env file."
-        )
+        is_offline = True
+
+    if is_offline:
+        # Build smart custom offline bullets using user's SDE keywords
+        bullets = []
+        user_skills = matched_skills[:4] if matched_skills else ["Go", "Redis", "Kafka", "PostgreSQL"]
+        if len(user_skills) < 4:
+            user_skills.extend(["Git", "System Design", "REST APIs", "DSA"][:4 - len(user_skills)])
+            
+        bullets.append(f"Engineered and deployed a highly scalable {proj} backend using {user_skills[0]}, handling transaction workloads with low-latency execution.")
+        bullets.append(f"Implemented asynchronous communications and event streaming channels using {user_skills[1]} to reduce system queuing latency by 30%.")
+        bullets.append(f"Optimized relational schemas and cache query patterns utilizing {user_skills[2]}, reducing index lookups and cut-off load by 40%.")
+        bullets.append(f"Utilized {user_skills[3]} and SDE design principles to construct comprehensive verification test coverage for backend microservices.")
+
+        return {
+            "source": "Simulated/Offline AI Optimization",
+            "name": req.name,
+            "dream_company": company,
+            "target_role": role,
+            "project_name": proj,
+            "resume_bullets": bullets,
+            "linkedin_summary": f"Experienced software developer targeting SDE roles at {company}. Experienced in building high-concurrency systems, optimizing database queries, and utilizing modern backend technologies like {', '.join(user_skills[:3])}.\n\nMy focus is on writing clean, maintainable code, implementing SDE scaling practices, and closing critical technical gaps. Let's connect!",
+            "github_readme": f"# {proj}\n\nA high-performance backend application designed for {company}.\n\n## Tech Stack\n- Language: {user_skills[0]}\n- Data Storage: {user_skills[2]}\n- Messaging/Caching: {user_skills[1]}\n\n## Key Features\n- High throughput design matching target company requirements\n- Concurrent connection management\n- Comprehensive verification test suite",
+            "ats_score": ats_score,
+            "matched_keywords": matched_required,
+            "missing_keywords": missing_required[:5]
+        }
 
     try:
         import google.generativeai as genai
@@ -1023,9 +1078,10 @@ def optimize_profile(req: ProfileOptimizeRequest):
         f"- Target Company: {company}\n"
         f"- Target SDE Role: {role}\n"
         f"- Active SDE Project: {proj}\n"
-        f"- Key Tech Skills: {skills_list}\n\n"
+        f"- Key Tech Skills: {matched_skills}\n"
+        f"- Current Resume Content: {req.resume_text or 'Not provided'}\n\n"
         "Generate these exact components:\n"
-        "1. resume_bullets: Exactly 4 professional, action-oriented, and quantitative resume bullet points about the project. Use the skills provided. Highlight SDE impact (e.g. latency, scale, performance metrics).\n"
+        "1. resume_bullets: Exactly 4 professional, action-oriented, and quantitative SDE resume bullet points about the project. Integrate the skills and optimize the project bullet points from their current resume text if provided. Highlight SDE impact (e.g. latency, scale, performance metrics).\n"
         "2. linkedin_summary: A professional, first-person summary (2-3 paragraphs, around 150 words) for a LinkedIn profile. Show passion, technical depth, and target company/role alignment.\n"
         "3. github_readme: A clean, complete, professional markdown README file for the project. Include project name as title, brief overview, tech stack list, list of key features, architecture overview, and getting started guide.\n\n"
         "You MUST return the output strictly as a JSON object with these exact keys: 'resume_bullets' (list of 4 strings), 'linkedin_summary' (string), and 'github_readme' (markdown string).\n"
@@ -1061,7 +1117,10 @@ def optimize_profile(req: ProfileOptimizeRequest):
             "project_name": proj,
             "resume_bullets": data.get("resume_bullets", []),
             "linkedin_summary": data.get("linkedin_summary", ""),
-            "github_readme": data.get("github_readme", "")
+            "github_readme": data.get("github_readme", ""),
+            "ats_score": ats_score,
+            "matched_keywords": matched_required,
+            "missing_keywords": missing_required[:5]
         }
     except Exception as e:
         raise HTTPException(
