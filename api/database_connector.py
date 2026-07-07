@@ -324,28 +324,51 @@ def get_company_interview_experiences(company_name: str):
 
 def get_skill_roadmap_details(skill_name: str):
     skill_id = None
-    skills_csv = read_csv_layer("career_layer", "skills_master.csv")
-    for s in skills_csv:
-        if s["skill_name"].lower() == skill_name.lower():
-            skill_id = int(s["skill_id"])
-            break
-            
-    if not skill_id:
-        return None
-        
     conn = get_db_connection()
     if conn:
         try:
             cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
+            cur.execute("SELECT skill_id FROM skills WHERE LOWER(skill_name) = LOWER(%s) LIMIT 1", (skill_name.strip(),))
+            row = cur.fetchone()
+            if row:
+                skill_id = row[0]
+            cur.close()
+        except Exception:
+            pass
+
+    # Fallback to CSV search if skill_id not found in DB
+    if not skill_id:
+        try:
+            skills_csv = read_csv_layer("career_layer", "skills_master.csv")
+            for s in skills_csv:
+                if s["skill_name"].lower().strip() == skill_name.lower().strip():
+                    skill_id = int(s["skill_id"])
+                    break
+        except Exception:
+            pass
+
+    if not skill_id:
+        skill_id = abs(hash(skill_name.strip())) % 10000 + 1000
+
+    res = []
+    if conn:
+        try:
+            cur = conn.cursor()
+            cur.execute("SET search_path TO career_compass_ai, public;")
             cur.execute("""
                 SELECT roadmap_id, level, duration_weeks, learning_goals, recommended_resources, milestone 
                 FROM skill_roadmaps 
                 WHERE skill_id = %s
+                ORDER BY CASE 
+                    WHEN LOWER(level) = 'beginner' THEN 1
+                    WHEN LOWER(level) = 'intermediate' THEN 2
+                    WHEN LOWER(level) = 'advanced' THEN 3
+                    ELSE 4
+                END
             """, (skill_id,))
             rows = cur.fetchall()
             cur.close()
-            conn.close()
-            res = []
             for r in rows:
                 res.append({
                     "source": "PostgreSQL",
@@ -358,11 +381,66 @@ def get_skill_roadmap_details(skill_name: str):
                     "recommended_resources": r[4],
                     "milestone": r[5]
                 })
-            return res
         except Exception as e:
-            if conn: conn.close()
-            raise RuntimeError(f"Database query failed in get_skill_roadmap_details: {str(e)}")
-    return []
+            pass
+        finally:
+            try:
+                conn.close()
+            except:
+                pass
+
+    if not res:
+        # Generate dynamic 3-stage syllabus fallback
+        levels = [
+            {
+                "level": "Beginner",
+                "duration_weeks": 4,
+                "learning_goals": [
+                    f"Understand syntax, core concepts and setup for {skill_name}",
+                    f"Build simple programs/scripts using {skill_name}",
+                    f"Learn fundamental libraries and tools associated with {skill_name}"
+                ],
+                "recommended_resources": f"{skill_name} crash course, Official {skill_name} documentation",
+                "milestone": f"Complete 5 beginner console or simple projects in {skill_name}."
+            },
+            {
+                "level": "Intermediate",
+                "duration_weeks": 6,
+                "learning_goals": [
+                    f"Explore concurrency, advanced data structures, or patterns in {skill_name}",
+                    f"Build a robust CRUD or backend service with {skill_name}",
+                    f"Learn unit testing and debugging tools for {skill_name}"
+                ],
+                "recommended_resources": f"Intermediate {skill_name} programming course, GitHub boilerplate projects",
+                "milestone": f"Build and deploy a scalable, tested application using {skill_name}."
+            },
+            {
+                "level": "Advanced",
+                "duration_weeks": 8,
+                "learning_goals": [
+                    f"Performance optimization, memory profiling, and tuning in {skill_name}",
+                    f"Design and architect distributed scale architectures using {skill_name}",
+                    f"Conduct code reviews and follow production design patterns for {skill_name}"
+                ],
+                "recommended_resources": f"Advanced {skill_name} design guides, Production scale open-source repos",
+                "milestone": f"Optimize performance, latency, and load throughput of a {skill_name}-based system by 30%."
+            }
+        ]
+        
+        for idx, lvl in enumerate(levels):
+            res.append({
+                "source": "Dynamic Fallback",
+                "roadmap_id": skill_id * 10 + idx,  # Unique mock roadmap_id
+                "skill_id": skill_id,
+                "skill_name": skill_name,
+                "level": lvl["level"],
+                "duration_weeks": lvl["duration_weeks"],
+                "learning_goals": lvl["learning_goals"],
+                "recommended_resources": lvl["recommended_resources"],
+                "milestone": lvl["milestone"]
+            })
+            
+    return res
 
 def create_analysis_session(student_id: int, target_company: str, target_role: str) -> str:
     """

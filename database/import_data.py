@@ -378,15 +378,67 @@ def import_skill_roadmaps(conn):
     csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "learning_layer", "skill_roadmaps.csv"))
     data = load_csv(csv_path)
     cur = conn.cursor()
+    cur.execute("SET search_path TO career_compass_ai, public;")
+    
+    # Pre-fetch all skill name to skill_id mappings from DB
+    cur.execute("SELECT skill_id, skill_name FROM skills;")
+    db_skills = {r[1].lower().strip(): r[0] for r in cur.fetchall()}
+    
+    skills_csv_mapping = {
+        1: "Go",
+        2: "Java",
+        3: "Python",
+        4: "Message Queues (Kafka)",
+        5: "Redis",
+        6: "PostgreSQL",
+        7: "Docker",
+        8: "Kubernetes",
+        9: "gRPC",
+        10: "Microservices",
+        11: "Spring Boot",
+        12: "NodeJS",
+        13: "AWS Basics",
+        14: "GCP",
+        15: "DynamoDB",
+        16: "MySQL",
+        17: "ElasticSearch",
+        18: "Django",
+        19: "React",
+        20: "TypeScript",
+        21: "NextJS",
+        22: "Kotlin",
+        23: "Android",
+        24: "SRE",
+        25: "System Design",
+        26: "Distributed Systems"
+    }
+
     for r in data:
+        csv_skill_id = int(r["skill_id"])
+        skill_name = skills_csv_mapping.get(csv_skill_id)
+        
+        db_skill_id = None
+        if skill_name:
+            db_skill_id = db_skills.get(skill_name.lower().strip())
+            
+        # Fallback if no matching DB skill name found
+        if not db_skill_id:
+            db_skill_id = csv_skill_id
+            
         cur.execute("""
             INSERT INTO skill_roadmaps
                 (roadmap_id, skill_id, level, duration_weeks, learning_goals, recommended_resources, milestone)
             VALUES (%s,%s,%s,%s,%s,%s,%s)
-            ON CONFLICT (roadmap_id) DO NOTHING
+            ON CONFLICT (roadmap_id) DO UPDATE 
+            SET skill_id = EXCLUDED.skill_id,
+                level = EXCLUDED.level,
+                duration_weeks = EXCLUDED.duration_weeks,
+                learning_goals = EXCLUDED.learning_goals,
+                recommended_resources = EXCLUDED.recommended_resources,
+                milestone = EXCLUDED.milestone
         """, (
             int(r["roadmap_id"]),
-            int(r["skill_id"]),
+            db_skill_id,
             r["level"],
             int(r["duration_weeks"]),
             r["learning_goals"],
