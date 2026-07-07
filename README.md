@@ -135,7 +135,17 @@ CREATE DATABASE career_compass_ai;
 \i database/seed_data.sql
 ```
 
-### 3. Setup Backend Environment & Dependencies
+### 3. Setup Environment Variables
+Copy `.env.example` to `.env` in the root of the project:
+```bash
+cp .env.example .env
+```
+Open the `.env` file and fill in your Gemini API key, local database password, and Quiz API key:
+- `GEMINI_API_KEY`: Obtain from Google AI Studio.
+- `DB_PASSWORD`: Your local PostgreSQL postgres user password.
+- `QUIZ_API_KEY`: Obtain from QuizAPI.io.
+
+### 4. Setup Backend Environment & Dependencies
 Create a virtual environment and install dependencies:
 ```bash
 # In project root
@@ -146,14 +156,14 @@ source .venv/bin/activate    # For macOS/Linux
 pip install fastapi uvicorn psycopg2-binary pydantic python-dotenv
 ```
 
-### 4. Launch Backend Web Server
+### 5. Launch Backend Web Server
 Run the FastAPI application:
 ```bash
 python api/app.py
 ```
 The server will start up at `http://127.0.0.1:8000`.
 
-### 5. Setup React Frontend
+### 6. Setup React Frontend
 Navigate to the React project folder, install packages, and launch the Vite development server:
 ```bash
 cd frontend-react
@@ -162,7 +172,7 @@ npm run dev
 ```
 The web application will open at `http://localhost:5173`.
 
-### 6. Run Integration Test Suite
+### 7. Run Integration Test Suite
 To verify the DB connector, classification accuracy, and session sandboxing:
 ```bash
 # Run NLP classifier validations
