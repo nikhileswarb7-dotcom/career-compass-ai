@@ -313,7 +313,7 @@ def get_projects_by_skill_ids_db(skill_ids: list, future_skill_ids: list = None)
             cur.execute("SET search_path TO career_compass_ai, public;")
             placeholders = ",".join(["%s"] * len(skill_ids))
             query = f"""
-                SELECT DISTINCT p.project_id, p.project_name, p.description, p.difficulty, p.skills_covered
+                SELECT DISTINCT p.project_id, p.project_name, p.description, p.difficulty, p.skills_covered, p.estimated_days
                 FROM projects p
                 JOIN project_skill_mapping psm ON p.project_id = psm.project_id
                 WHERE psm.skill_id IN ({placeholders})
@@ -345,7 +345,8 @@ def get_projects_by_skill_ids_db(skill_ids: list, future_skill_ids: list = None)
                     "name": r[1],
                     "details": r[2],
                     "difficulty": r[3],
-                    "skills": skills if isinstance(skills, list) else []
+                    "skills": skills if isinstance(skills, list) else [],
+                    "estimated_days": r[5] or 15
                 })
             return res
         except Exception:

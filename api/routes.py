@@ -745,7 +745,8 @@ def get_readiness_by_session(session_id: str, skip_llm: bool = False):
         "common_transitions": rec.get("common_transitions", []),
         "common_projects": rec.get("common_projects", []),
         "known_skills": rec.get("known_skills", []),
-        "projects": rec.get("projects", [])
+        "projects": rec.get("projects", []),
+        "recommended_next_project": rec.get("recommended_next_project")
     }
 
 @router.get("/recommendations/{session_id}")

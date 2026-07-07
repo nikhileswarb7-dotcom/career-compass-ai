@@ -48,7 +48,7 @@ Students preparing for software development engineering (SDE) roles face signifi
 - **Lack of Explainability**: Recommendations are typically static checklists that do not explain the technical reasoning behind required milestones.
 
 ### Solution
-**CareerCompass AI** is a Career Intelligence Platform that integrates a structured knowledge layer, explainable decision engines, and custom machine learning models to generate personalized, time-sensitive roadmaps. The system evaluates candidate input against a 53-skill ontology and a dataset of 486 software engineering profiles, returning readiness scores, prioritized skill gaps, and custom assessments supported by transparent audit traces.
+Unlike static roadmap generators, **CareerCompass AI** adapts learning pace, project complexity, profile-building guidance, and preparation priorities based on the student's current academic stage, existing skills, and remaining time until graduation. By integrating a structured knowledge layer, explainable decision engines, and custom machine learning models, the platform evaluates candidate inputs against a 53-skill ontology and a dataset of 486 software engineering profiles, returning readiness scores, prioritized skill gaps, and custom assessments supported by transparent audit traces.
 
 ---
 
@@ -63,6 +63,7 @@ Students preparing for software development engineering (SDE) roles face signifi
 *   **✔ Career Twin Similarity**: Matches candidates against database profiles to find professional twins.
 *   **✔ Custom ML Specialization Affinity**: Estimates alignment with frontend, backend, or general tracks.
 *   **✔ Adaptive Roadmap Generator**: Schedules stage-by-stage prep tasks based on graduation timeline.
+*   **✔ Adaptive Project Recommendation**: Recommends a single high-priority next project based on academic year, current skills, time remaining, target company, target role, and assessment scores.
 *   **✔ Stage-wise Assessments**: Links roadmaps to multiple-choice checkpoints and coding templates.
 *   **✔ Customized Interview Planner**: Generates company-specific mock interview questions.
 *   **✔ ATS Resume Assistant**: Matches candidate project descriptions to target job keywords.

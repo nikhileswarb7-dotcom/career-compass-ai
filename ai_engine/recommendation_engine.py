@@ -45,6 +45,92 @@ def set_cached_recommendation(qualification, known_skills, dream_company, target
     except Exception:
         pass
 
+def get_recommended_next_project(
+    projects: list, 
+    known_skills: list, 
+    qualification: str, 
+    months_remaining: int, 
+    target_company: str, 
+    target_role: str,
+    assessment_scores: dict,
+    weekly_hours: int
+) -> dict:
+    if not projects:
+        return None
+        
+    scored_projects = []
+    
+    # Define ideal difficulty based on academic year & time remaining
+    ideal_difficulty = "Intermediate"
+    qual_lower = qualification.lower()
+    if "1st year" in qual_lower or "2nd year" in qual_lower:
+        ideal_difficulty = "Easy" if months_remaining > 24 else "Intermediate"
+    elif "3rd year" in qual_lower:
+        ideal_difficulty = "Intermediate"
+    else:
+        ideal_difficulty = "Advanced"
+
+    # Adjust difficulty if time remaining is extremely short (compress)
+    if months_remaining <= 6:
+        ideal_difficulty = "Intermediate"
+    
+    # Assess if the student's project strength is low vs skill strength
+    project_strength = 0.5
+    skill_strength = 0.5
+    if assessment_scores:
+        project_strength = assessment_scores.get("project_strength", 0.5)
+        skill_strength = assessment_scores.get("skill_strength", 0.5)
+        
+    for p in projects:
+        score = 0.0
+        
+        # 1. Match difficulty
+        diff = p.get("difficulty", "Intermediate")
+        if diff == ideal_difficulty:
+            score += 30.0
+        elif diff == "Intermediate" and ideal_difficulty == "Advanced":
+            score += 15.0
+        elif diff == "Advanced" and ideal_difficulty == "Intermediate":
+            score += 10.0
+            
+        # 2. Count skills alignment:
+        p_skills = p.get("skills", [])
+        missing_skills_covered = [s for s in p_skills if s not in known_skills]
+        known_skills_covered = [s for s in p_skills if s in known_skills]
+        
+        # Score positively for covering missing skills
+        score += len(missing_skills_covered) * 15.0
+        
+        # Foundry overlap
+        if known_skills_covered:
+            score += 10.0
+            
+        # 3. Time remaining compatibility
+        est_days = p.get("estimated_days", 20)
+        time_factor = (weekly_hours / 30.0)
+        adjusted_days = est_days / max(time_factor, 0.5)
+        
+        time_limit_days = months_remaining * 10
+        if adjusted_days > time_limit_days:
+            score -= (adjusted_days - time_limit_days) * 2.0
+            
+        # 4. Project vs Skill strength gap:
+        if project_strength < skill_strength:
+            if diff in ("Easy", "Intermediate"):
+                score += 20.0
+                
+        # 5. Target company priority:
+        details = p.get("details", "").lower()
+        if target_company.lower() in details or (p.get("name") and target_company.lower() in p["name"].lower()):
+            score += 25.0
+            
+        scored_projects.append((score, p))
+        
+    scored_projects.sort(key=lambda x: x[0], reverse=True)
+    best_project = scored_projects[0][1] if scored_projects else None
+    
+    return best_project
+
 def generate_recommendation(
     qualification: str, 
     known_skills: list[str], 
@@ -344,6 +430,16 @@ def generate_recommendation(
         "projects": adapted_timeline.get("projects", []),
         "resources": adapted_timeline.get("resources", []),
         "recommended_questions": recommended_questions,
+        "recommended_next_project": get_recommended_next_project(
+            projects=adapted_timeline.get("projects", []),
+            known_skills=known_skills,
+            qualification=qualification,
+            months_remaining=calculated_months,
+            target_company=dream_company,
+            target_role=target_role,
+            assessment_scores=assessment_scores,
+            weekly_hours=calculated_weekly_hours
+        ),
         
         # New upgrades integration
         "decision_trace": decision_trace,

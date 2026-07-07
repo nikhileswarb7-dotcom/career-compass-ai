@@ -187,7 +187,7 @@ export default function Dashboard() {
     const company = plan.dream_company || "Blinkit";
     const role = plan.target_role || "Software Development Engineer";
     const g = plan.gaps?.high_priority_missing || [];
-    
+
     if (score < 40) {
       return `Welcome, ${name}! Your profile aligns at ${score}% readiness for ${company}'s SDE criteria. The similarity matching engine indicates strong gaps in critical high-concurrency skills, specifically ${g.join(', ') || 'distributed systems and message brokers'}. Your immediate focus should be finishing Stage 1 (Core Alignment) and executing the SDE learning blueprints.`;
     } else if (score < 70) {
@@ -201,7 +201,7 @@ export default function Dashboard() {
   const careerTwin = peersList.length > 0 ? peersList[0] : null;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
@@ -240,11 +240,11 @@ export default function Dashboard() {
             <div className="dial-svg-box">
               <svg width="150" height="150" viewBox="0 0 150 150">
                 <circle cx="75" cy="75" r="60" className="dial-bg-circle" />
-                <circle 
-                  cx="75" 
-                  cy="75" 
-                  r="60" 
-                  className="dial-active-circle" 
+                <circle
+                  cx="75"
+                  cy="75"
+                  r="60"
+                  className="dial-active-circle"
                   style={{ strokeDasharray: 377, strokeDashoffset: 377 - (377 * score) / 100 }}
                 />
               </svg>
@@ -298,7 +298,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '8px' }}>
-              Based on patterns learned from versioned professional-profile data (Model: {plan.ml_affinity.model_version}, Dataset Hash: {plan.ml_affinity.dataset_version}). 
+              Based on patterns learned from versioned professional-profile data (Model: {plan.ml_affinity.model_version}, Dataset Hash: {plan.ml_affinity.dataset_version}).
               Used as experimental supporting evidence alongside skill gaps, hiring evidence, career similarity, and year-aware planning.
             </div>
           </details>
@@ -372,8 +372,8 @@ export default function Dashboard() {
           <h3>Your SDE Workspace is Active!</h3>
           <p>Ready to close your remaining skill gaps and study selective coding blueprints?</p>
         </div>
-        <button 
-          className="cta-nav-button" 
+        <button
+          className="cta-nav-button"
           onClick={() => navigate('/roadmap')}
         >
           <span>Continue Journey</span>
